@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from Property import Property
 
 # ========================= Constants =========================#
-baseURL = "http://www.realestate.com.au/buy/with-2-bedrooms-between-%minRange%-%maxRange%-in-" \
+baseURL = "http://www.realestate.com.au/buy/with-%numBedrooms%-bedrooms-between-%minRange%-%maxRange%-in-" \
           + "homebush%2c+nsw+2140%3b" \
           + "+homebush+west%2c+nsw+2140%3b" \
           + "+homebush+south%2c+nsw+2140%3b" \
@@ -30,11 +30,23 @@ result = dict()
 minPrice = 250000
 maxPrice = 300000
 priceCeiling = 700000
+numBedrooms = 2
+pageNumber = 1
 
 
 # ========================== Methods ==========================#
 
-def parseProperty(propertyLink, priceRange):
+def parseSearchResults(pageSource):
+    soup = BeautifulSoup(pageSource, 'html.parser')
+    for article in soup.find(id='searchResultsTbl').find_all('article'):
+        propertyLink = article.find('a')['href']
+        if propertyLink in result:
+            continue
+        priceRange = str(minPrice) + '-' + str(maxPrice)
+        parsePropertyPage(propertyLink, priceRange)
+
+
+def parsePropertyPage(propertyLink, priceRange):
     address = locality = postalCode = ''
     bed = bath = car = price = '0'
 
@@ -47,26 +59,16 @@ def parseProperty(propertyLink, priceRange):
         locality = propertySoup.find(id='listing_header').find(itemprop='addressLocality').get_text()
         postalCode = propertySoup.find(id='listing_header').find(itemprop='postalCode').get_text()
         bed = propertySoup.find(id='listing_info').find('dt', {"class": 'rui-icon-bed'}).findNext('dd').get_text()
-        bath = propertySoup.find(id='listing_info').find('dt', {"class": 'rui-icon-bed'}).findNext('dd').get_text()
-        car = propertySoup.find(id='listing_info').find('dt', {"class": 'rui-icon-bed'}).findNext('dd').get_text()
+        bath = propertySoup.find(id='listing_info').find('dt', {"class": 'rui-icon-bath'}).findNext('dd').get_text()
+        car = propertySoup.find(id='listing_info').find('dt', {"class": 'rui-icon-car'}).findNext('dd').get_text()
     except Exception as e:
         print(e)
     result[propertyLink] = Property(propertyLink, priceRange, address, locality, postalCode, bed, bath, car, price)
 
 
-def parseSearchResults(pageSource):
-    soup = BeautifulSoup(pageSource, 'html.parser')
-    for article in soup.find(id='searchResultsTbl').find_all('article'):
-        propertyLink = article.find('a')['href']
-        if propertyLink in result:
-            continue
-        priceRange = str(minPrice) + '-' + str(maxPrice)
-        parseProperty(propertyLink, priceRange)
-
-
 # ============================ Run ============================#
-pageNumber = 1
 try:
+    baseURL = baseURL.replace('%numBedrooms%', str(numBedrooms))
     while maxPrice <= priceCeiling:
         print('Current price range ' + str(minPrice) + '-' + str(maxPrice))
         print('Current page ' + str(pageNumber))
@@ -104,5 +106,4 @@ for property in result.values():
     ))
 
 csvFile.close()
-print(list(result.values()))
 print("End of job")
