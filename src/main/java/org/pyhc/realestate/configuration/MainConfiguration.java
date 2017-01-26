@@ -1,17 +1,17 @@
 package org.pyhc.realestate.configuration;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
-@ComponentScan(
-        value = "org.pyhc.realestate",
-        excludeFilters = @ComponentScan.Filter(value = Configuration.class, type = FilterType.ANNOTATION)
-)
-@Import(value = {})
-@EnableJpaRepositories
+@ComponentScan("org.pyhc.realestate")
 public class MainConfiguration {
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+
 }
