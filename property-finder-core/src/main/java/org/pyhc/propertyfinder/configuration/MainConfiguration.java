@@ -9,9 +9,4 @@ import org.springframework.web.client.RestTemplate;
 @ComponentScan("org.pyhc.propertyfinder")
 public class MainConfiguration {
 
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
-
 }

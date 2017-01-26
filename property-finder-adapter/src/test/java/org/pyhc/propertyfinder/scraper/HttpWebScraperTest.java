@@ -1,14 +1,14 @@
 package org.pyhc.propertyfinder.scraper;
 
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.pyhc.configuration.TestConfiguration;
+import org.pyhc.propertyfinder.configuration.AdapterTest;
+import org.pyhc.propertyfinder.scraper.model.RealEstateQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,9 +20,11 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration(classes = {TestConfiguration.class})
-public class WebScraperTest {
+@AdapterTest
+public class HttpWebScraperTest {
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Autowired
     private WebScraper webScraper;
@@ -31,12 +33,13 @@ public class WebScraperTest {
 
     @Before
     public void setup() {
-        mockRestServiceServer = MockRestServiceServer.createServer(new RestTemplate());
+        mockRestServiceServer = MockRestServiceServer.createServer(restTemplate);
     }
 
     @Test
     public void canQueryRealEstate_WithSuburbParameter() throws Exception {
         StringBuilder stringBuilder = new StringBuilder();
+
         Files.readAllLines(Paths.get("src/test/resources/stub/realestate/suburb-search.html")).forEach(stringBuilder::append);
         String htmlPage = stringBuilder.toString();
         mockRestServiceServer.expect(once(), requestTo("http://www.realestate.com.au/buy/in-parramatta%2c+nsw+2150/list-1?source=location-search"))
@@ -47,5 +50,4 @@ public class WebScraperTest {
 
         mockRestServiceServer.verify();
     }
-
 }
