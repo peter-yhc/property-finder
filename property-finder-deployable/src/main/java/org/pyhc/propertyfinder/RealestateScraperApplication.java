@@ -1,6 +1,6 @@
-package org.pyhc.realestate;
+package org.pyhc.propertyfinder;
 
-import org.pyhc.realestate.configuration.MainConfiguration;
+import org.pyhc.propertyfinder.configuration.MainConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;

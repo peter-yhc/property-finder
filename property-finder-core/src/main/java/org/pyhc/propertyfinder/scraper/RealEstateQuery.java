@@ -1,4 +1,4 @@
-package org.pyhc.realestate.scraper;
+package org.pyhc.propertyfinder.scraper;
 
 import lombok.AllArgsConstructor;
 

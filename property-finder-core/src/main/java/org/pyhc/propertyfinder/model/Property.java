@@ -1,4 +1,4 @@
-package org.pyhc.realestate.model;
+package org.pyhc.propertyfinder.model;
 
 import javax.persistence.*;
 

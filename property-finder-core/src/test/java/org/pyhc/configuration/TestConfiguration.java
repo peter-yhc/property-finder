@@ -1,6 +1,6 @@
 package org.pyhc.configuration;
 
-import org.pyhc.realestate.configuration.MainConfiguration;
+import org.pyhc.propertyfinder.configuration.MainConfiguration;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
