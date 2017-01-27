@@ -7,7 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class PropertyResult {
 
-    private String href;
+    private String propertyLink;
     private String priceRange;
     private String address;
     private Integer bed;

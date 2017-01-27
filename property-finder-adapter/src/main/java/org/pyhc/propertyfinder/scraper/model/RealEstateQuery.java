@@ -1,11 +1,12 @@
 package org.pyhc.propertyfinder.scraper.model;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class RealEstateQuery extends Query {
 
-    private static final String REALESTATE_URL = "http://www.realestate.com.au/buy/";
+    private static final String REALESTATE_URL = "http://www.realestate.com.au";
 
     private RealEstateQuery(){}
 
@@ -14,7 +15,7 @@ public class RealEstateQuery extends Query {
 
     @Override
     public String toString() {
-        return REALESTATE_URL + String.format("in-%s%%2c+nsw+%s/list-1?source=location-search", suburb, postalCode);
+        return REALESTATE_URL + String.format("/buy/in-%s%%2c+nsw+%s/list-1?source=location-search", suburb, postalCode);
     }
 
     public static Builder builder() {
