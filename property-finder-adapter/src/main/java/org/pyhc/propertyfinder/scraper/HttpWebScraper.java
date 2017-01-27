@@ -38,14 +38,6 @@ public class HttpWebScraper implements WebScraper {
         RealEstateLink link = RealEstateLink.builder().withLink(propertyLink).build();
         restTemplate.getForObject(URI.create(link.toString()), String.class);
 
-        return new PropertyResult(propertyLink, null, null, null, null, null, null, null, null, null);
+        return PropertyResult.builder().propertyLink(propertyLink).build();
     }
 }
-/*
-for article in soup.find(id='searchResultsTbl').find_all('article'):
-        propertyLink = article.find('a')['propertyLink']
-        if propertyLink in result:
-            continue
-        priceRange = str(minPrice) + '-' + str(maxPrice)
-        parsePropertyPage(propertyLink, priceRange)
- */

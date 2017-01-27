@@ -1,10 +1,10 @@
 package org.pyhc.propertyfinder.scraper.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
-@Data
-@AllArgsConstructor
+@Getter
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class PropertyResult {
 
     private String propertyLink;

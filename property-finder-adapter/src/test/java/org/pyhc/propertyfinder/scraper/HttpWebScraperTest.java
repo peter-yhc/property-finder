@@ -69,7 +69,7 @@ public class HttpWebScraperTest {
         mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/property-apartment-nsw-parramatta-124424934")).andRespond(withSuccess());
         mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/property-apartment-nsw-parramatta-124471342")).andRespond(withSuccess());
 
-        RealEstateQuery realEstateQuery = RealEstateQuery.builder().withSuburb("parramatta", 2150).build();
+        RealEstateQuery realEstateQuery = RealEstateQuery.builder().suburb("parramatta").postalCode(2150).build();
         webScraper.query(realEstateQuery);
 
         mockServer.verify();
