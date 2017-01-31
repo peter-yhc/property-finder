@@ -41,7 +41,7 @@ public class HttpWebScraperTest {
 
     @Test
     public void canQueryRealEstate_WithSuburbParameter_AndMakeSubsequentCallsToGetDetailedPages() throws Exception {
-        String htmlPage = loadPageFromTestResources("src/test/resources/stub/realestate/suburb-search.html");
+        String htmlPage = loadPageFromTestResources("src/test/resources/stub/realestate/generic-response.html");
         mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/buy/in-parramatta%2c+nsw+2150/list-1?numParkingSpaces=any&maxBeds=any"))
                 .andRespond(withSuccess(htmlPage, TEXT_HTML));
         mockServer.expect(between(1, 20), new PropertyRequestMatcher()).andRespond(withSuccess());
@@ -53,8 +53,8 @@ public class HttpWebScraperTest {
     }
 
     @Test
-    public void canQueryRealEstate_WithSuburb_AndConfiguration() throws Exception {
-        String htmlPage = loadPageFromTestResources("src/test/resources/stub/realestate/suburb-configuration-search.html");
+    public void canQueryRealEstate_WithSuburb_AndMinBeds_AndCar() throws Exception {
+        String htmlPage = loadPageFromTestResources("src/test/resources/stub/realestate/generic-response.html");
         mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/buy/with-2-bedrooms-in-homebush+west%2c+nsw+2140/list-1?numParkingSpaces=1&maxBeds=any"))
                 .andRespond(withSuccess(htmlPage, TEXT_HTML));
         mockServer.expect(between(1, 20), new PropertyRequestMatcher()).andRespond(withSuccess());
@@ -64,6 +64,115 @@ public class HttpWebScraperTest {
                 .postalCode(2140)
                 .minBeds(2)
                 .carSpaces(1)
+                .build();
+        webScraper.query(realEstateQuery);
+
+        mockServer.verify();
+    }
+
+    @Test
+    public void canQueryRealEstate_WithSuburb_AndMaxBeds_AndCar() throws Exception {
+        String htmlPage = loadPageFromTestResources("src/test/resources/stub/realestate/generic-response.html");
+        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/buy/with-studio-in-homebush+west%2c+nsw+2140/list-1?numParkingSpaces=2&maxBeds=2"))
+                .andRespond(withSuccess(htmlPage, TEXT_HTML));
+        mockServer.expect(between(1, 20), new PropertyRequestMatcher()).andRespond(withSuccess());
+
+        RealEstateQuery realEstateQuery = RealEstateQuery.builder()
+                .suburb("homebush west")
+                .postalCode(2140)
+                .maxBeds(2)
+                .carSpaces(2)
+                .build();
+        webScraper.query(realEstateQuery);
+
+        mockServer.verify();
+    }
+
+    @Test
+    public void canQueryRealEstate_WithSuburb_AndMinMaxBeds_AndCar() throws Exception {
+        String htmlPage = loadPageFromTestResources("src/test/resources/stub/realestate/generic-response.html");
+        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/buy/with-1-bedrooms-in-homebush+west%2c+nsw+2140/list-1?numParkingSpaces=2&maxBeds=3"))
+                .andRespond(withSuccess(htmlPage, TEXT_HTML));
+        mockServer.expect(between(1, 20), new PropertyRequestMatcher()).andRespond(withSuccess());
+
+        RealEstateQuery realEstateQuery = RealEstateQuery.builder()
+                .suburb("homebush west")
+                .postalCode(2140)
+                .minBeds(1)
+                .maxBeds(3)
+                .carSpaces(2)
+                .build();
+        webScraper.query(realEstateQuery);
+
+        mockServer.verify();
+    }
+
+    @Test
+    public void canQueryRealEstate_WithSuburb_AndMinPrice() throws Exception {
+        String htmlPage = loadPageFromTestResources("src/test/resources/stub/realestate/generic-response.html");
+        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/buy/between-700000-any-in-parramatta%2c+nsw+2150/list-1?numParkingSpaces=any&maxBeds=any"))
+                .andRespond(withSuccess(htmlPage, TEXT_HTML));
+        mockServer.expect(between(1, 20), new PropertyRequestMatcher()).andRespond(withSuccess());
+
+        RealEstateQuery realEstateQuery = RealEstateQuery.builder()
+                .suburb("parramatta")
+                .postalCode(2150)
+                .minPrice(700000)
+                .build();
+        webScraper.query(realEstateQuery);
+
+        mockServer.verify();
+    }
+
+    @Test
+    public void canQueryRealEstate_WithSuburb_AndMaxPrice() throws Exception {
+        String htmlPage = loadPageFromTestResources("src/test/resources/stub/realestate/generic-response.html");
+        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/buy/between-0-650000-in-parramatta%2c+nsw+2150/list-1?numParkingSpaces=any&maxBeds=any"))
+                .andRespond(withSuccess(htmlPage, TEXT_HTML));
+        mockServer.expect(between(1, 20), new PropertyRequestMatcher()).andRespond(withSuccess());
+
+        RealEstateQuery realEstateQuery = RealEstateQuery.builder()
+                .suburb("parramatta")
+                .postalCode(2150)
+                .maxPrice(650000)
+                .build();
+        webScraper.query(realEstateQuery);
+
+        mockServer.verify();
+    }
+
+    @Test
+    public void canQueryRealEstate_WithSuburb_AndMinMaxPrice() throws Exception {
+        String htmlPage = loadPageFromTestResources("src/test/resources/stub/realestate/generic-response.html");
+        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/buy/between-500000-650000-in-parramatta%2c+nsw+2150/list-1?numParkingSpaces=any&maxBeds=any"))
+                .andRespond(withSuccess(htmlPage, TEXT_HTML));
+        mockServer.expect(between(1, 20), new PropertyRequestMatcher()).andRespond(withSuccess());
+
+        RealEstateQuery realEstateQuery = RealEstateQuery.builder()
+                .suburb("parramatta")
+                .postalCode(2150)
+                .minPrice(500000)
+                .maxPrice(650000)
+                .build();
+        webScraper.query(realEstateQuery);
+
+        mockServer.verify();
+    }
+
+    @Test
+    public void canQueryRealEstate_WithSuburb_AndMinMaxPrice_AndMinMaxBeds_AndCar() throws Exception {
+        String htmlPage = loadPageFromTestResources("src/test/resources/stub/realestate/generic-response.html");
+        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/buy/with-2-bedrooms-between-500000-650000-in-parramatta%2c+nsw+2150/list-1?numParkingSpaces=any&maxBeds=3"))
+                .andRespond(withSuccess(htmlPage, TEXT_HTML));
+        mockServer.expect(between(1, 20), new PropertyRequestMatcher()).andRespond(withSuccess());
+
+        RealEstateQuery realEstateQuery = RealEstateQuery.builder()
+                .suburb("parramatta")
+                .postalCode(2150)
+                .minBeds(2)
+                .maxBeds(3)
+                .minPrice(500000)
+                .maxPrice(650000)
                 .build();
         webScraper.query(realEstateQuery);
 

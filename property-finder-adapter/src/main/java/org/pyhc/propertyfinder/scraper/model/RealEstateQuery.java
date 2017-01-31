@@ -19,16 +19,23 @@ public class RealEstateQuery extends Query {
     private Integer minBeds;
     private Integer maxBeds;
     private Integer carSpaces;
+    private Integer minPrice;
+    private Integer maxPrice;
 
     @Override
     public String toString() {
         suburb = suburb.replace(" ", "+");
-        String initialBedroomQuery = "/";
-        if (minBeds != null) {
-            initialBedroomQuery = format("/with-%s-bedrooms-", minBeds);
+        String initialBedroomQuery = "";
+        if (minBeds != null || maxBeds != null) {
+            initialBedroomQuery = format("with-%s-", minBeds == null ? "studio" : minBeds + "-bedrooms");
         }
-        return REALESTATE_URL + format("/buy%sin-%s%%2c+nsw+%s/list-1?numParkingSpaces=%s&maxBeds=%s",
+        String priceQuery = "";
+        if (minPrice != null || maxPrice != null) {
+            priceQuery = format("between-%s-%s-", minPrice == null ? 0 : minPrice, maxPrice == null ? "any" : maxPrice);
+        }
+        return REALESTATE_URL + format("/buy/%s%sin-%s%%2c+nsw+%s/list-1?numParkingSpaces=%s&maxBeds=%s",
                 initialBedroomQuery,
+                priceQuery,
                 suburb,
                 postalCode,
                 carSpaces == null ? "any" : carSpaces,
