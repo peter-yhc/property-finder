@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.pyhc.propertyfinder.configuration.AdapterTest;
-import org.pyhc.propertyfinder.scraper.model.PropertyResult;
 import org.pyhc.propertyfinder.scraper.model.RealEstateQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -15,10 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.springframework.http.MediaType.TEXT_HTML;
 import static org.springframework.test.web.client.ExpectedCount.once;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
@@ -70,6 +66,23 @@ public class HttpWebScraperTest {
         mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/property-apartment-nsw-parramatta-124471342")).andRespond(withSuccess());
 
         RealEstateQuery realEstateQuery = RealEstateQuery.builder().suburb("parramatta").postalCode(2150).build();
+        webScraper.query(realEstateQuery);
+
+        mockServer.verify();
+    }
+
+    @Test
+    public void canQueryRealEstate_WithSuburb_AndConfiguration() throws Exception {
+        String htmlPage = loadPageFromTestResources("src/test/resources/stub/realestate/suburb-configuration-search.html");
+        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/buy/with-2-bedrooms-in-homebush+west%2c+nsw+2140/list-1?numParkingSpaces=1&maxBeds=any"))
+                .andRespond(withSuccess(htmlPage, TEXT_HTML));
+
+        RealEstateQuery realEstateQuery = RealEstateQuery.builder()
+                .suburb("homebush west")
+                .postalCode(2140)
+                .minBeds(2)
+                .carSpaces(1)
+                .build();
         webScraper.query(realEstateQuery);
 
         mockServer.verify();

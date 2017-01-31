@@ -35,7 +35,7 @@ public class HttpWebScraper implements WebScraper {
     }
 
     private PropertyResult queryDetailedPage(String propertyLink) {
-        RealEstateLink link = RealEstateLink.builder().withLink(propertyLink).build();
+        RealEstateLink link = RealEstateLink.builder().propertyLink(propertyLink).build();
         restTemplate.getForObject(URI.create(link.toString()), String.class);
 
         return PropertyResult.builder().propertyLink(propertyLink).build();
