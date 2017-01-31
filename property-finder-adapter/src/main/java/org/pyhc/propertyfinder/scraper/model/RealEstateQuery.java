@@ -23,7 +23,7 @@ public class RealEstateQuery extends Query {
     @Override
     public String toString() {
         suburb = suburb.replace(" ", "+");
-        String initialBedroomQuery = "";
+        String initialBedroomQuery = "/";
         if (minBeds != null) {
             initialBedroomQuery = format("/with-%s-bedrooms-", minBeds);
         }

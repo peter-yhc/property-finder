@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import static org.springframework.http.MediaType.TEXT_HTML;
+import static org.springframework.test.web.client.ExpectedCount.between;
 import static org.springframework.test.web.client.ExpectedCount.once;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
@@ -41,29 +42,9 @@ public class HttpWebScraperTest {
     @Test
     public void canQueryRealEstate_WithSuburbParameter_AndMakeSubsequentCallsToGetDetailedPages() throws Exception {
         String htmlPage = loadPageFromTestResources("src/test/resources/stub/realestate/suburb-search.html");
-        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/buy/in-parramatta%2c+nsw+2150/list-1?source=location-search"))
+        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/buy/in-parramatta%2c+nsw+2150/list-1?numParkingSpaces=any&maxBeds=any"))
                 .andRespond(withSuccess(htmlPage, TEXT_HTML));
-
-        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/property-unit-nsw-parramatta-124572450")).andRespond(withSuccess());
-        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/property-unit-nsw-parramatta-124571682")).andRespond(withSuccess());
-        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/property-apartment-nsw-parramatta-124561254")).andRespond(withSuccess());
-        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/property-apartment-nsw-parramatta-124560930")).andRespond(withSuccess());
-        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/property-apartment-nsw-parramatta-124560754")).andRespond(withSuccess());
-        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/property-apartment-nsw-parramatta-124559470")).andRespond(withSuccess());
-        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/property-apartment-nsw-parramatta-124439506")).andRespond(withSuccess());
-        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/project-promenade-nsw-parramatta-600005175")).andRespond(withSuccess());
-        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/project-altitude-nsw-parramatta-600004063")).andRespond(withSuccess());
-        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/property-apartment-nsw-parramatta-124552474")).andRespond(withSuccess());
-        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/project-8+phillip+st-nsw-parramatta-600014174")).andRespond(withSuccess());
-        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/property-apartment-nsw-parramatta-124547214")).andRespond(withSuccess());
-        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/property-unit-nsw-parramatta-123793898")).andRespond(withSuccess());
-        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/property-apartment-nsw-parramatta-124402982")).andRespond(withSuccess());
-        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/property-house-nsw-parramatta-124435254")).andRespond(withSuccess());
-        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/property-unit-nsw-parramatta-123868322")).andRespond(withSuccess());
-        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/property-apartment-nsw-parramatta-124534502")).andRespond(withSuccess());
-        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/property-unit-nsw-parramatta-124424954")).andRespond(withSuccess());
-        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/property-apartment-nsw-parramatta-124424934")).andRespond(withSuccess());
-        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/property-apartment-nsw-parramatta-124471342")).andRespond(withSuccess());
+        mockServer.expect(between(1, 20), new PropertyRequestMatcher()).andRespond(withSuccess());
 
         RealEstateQuery realEstateQuery = RealEstateQuery.builder().suburb("parramatta").postalCode(2150).build();
         webScraper.query(realEstateQuery);
@@ -76,6 +57,7 @@ public class HttpWebScraperTest {
         String htmlPage = loadPageFromTestResources("src/test/resources/stub/realestate/suburb-configuration-search.html");
         mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/buy/with-2-bedrooms-in-homebush+west%2c+nsw+2140/list-1?numParkingSpaces=1&maxBeds=any"))
                 .andRespond(withSuccess(htmlPage, TEXT_HTML));
+        mockServer.expect(between(1, 20), new PropertyRequestMatcher()).andRespond(withSuccess());
 
         RealEstateQuery realEstateQuery = RealEstateQuery.builder()
                 .suburb("homebush west")
