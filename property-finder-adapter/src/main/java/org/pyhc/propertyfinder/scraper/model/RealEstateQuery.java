@@ -18,6 +18,7 @@ public class RealEstateQuery extends Query {
     private Integer postalCode;
     private Integer minBeds;
     private Integer maxBeds;
+    private Integer bathrooms;
     private Integer carSpaces;
     private Integer minPrice;
     private Integer maxPrice;
@@ -33,11 +34,12 @@ public class RealEstateQuery extends Query {
         if (minPrice != null || maxPrice != null) {
             priceQuery = format("between-%s-%s-", minPrice == null ? 0 : minPrice, maxPrice == null ? "any" : maxPrice);
         }
-        return REALESTATE_URL + format("/buy/%s%sin-%s%%2c+nsw+%s/list-1?numParkingSpaces=%s&maxBeds=%s",
+        return REALESTATE_URL + format("/buy/%s%sin-%s%%2c+nsw+%s/list-1?numBaths=%s&numParkingSpaces=%s&maxBeds=%s",
                 initialBedroomQuery,
                 priceQuery,
                 suburb,
                 postalCode,
+                bathrooms == null ? "any" : bathrooms,
                 carSpaces == null ? "any" : carSpaces,
                 maxBeds == null ? "any" : maxBeds);
     }
