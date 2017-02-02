@@ -1,12 +1,13 @@
 package org.pyhc.propertyfinder.scraper;
 
 
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.pyhc.propertyfinder.configuration.AdapterTest;
+import org.pyhc.propertyfinder.scraper.model.PropertyProfile;
+import org.pyhc.propertyfinder.scraper.model.Query;
+import org.pyhc.propertyfinder.scraper.model.RealEstateLink;
 import org.pyhc.propertyfinder.scraper.model.RealEstateQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -17,6 +18,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.springframework.http.MediaType.TEXT_HTML;
 import static org.springframework.test.web.client.ExpectedCount.between;
 import static org.springframework.test.web.client.ExpectedCount.once;
@@ -48,7 +51,7 @@ public class HttpWebScraperTest {
                 .andRespond(withSuccess(htmlPage, TEXT_HTML));
         mockServer.expect(between(1, 20), new PropertyRequestMatcher()).andRespond(withSuccess());
 
-        RealEstateQuery realEstateQuery = RealEstateQuery.builder().suburb("parramatta").postalCode(2150).build();
+        Query realEstateQuery = RealEstateQuery.builder().suburb("parramatta").postalCode(2150).build();
         webScraper.query(realEstateQuery);
 
         mockServer.verify();
@@ -61,7 +64,7 @@ public class HttpWebScraperTest {
                 .andRespond(withSuccess(htmlPage, TEXT_HTML));
         mockServer.expect(between(1, 20), new PropertyRequestMatcher()).andRespond(withSuccess());
 
-        RealEstateQuery realEstateQuery = RealEstateQuery.builder()
+        Query realEstateQuery = RealEstateQuery.builder()
                 .suburb("homebush west")
                 .postalCode(2140)
                 .minBeds(2)
@@ -79,7 +82,7 @@ public class HttpWebScraperTest {
                 .andRespond(withSuccess(htmlPage, TEXT_HTML));
         mockServer.expect(between(1, 20), new PropertyRequestMatcher()).andRespond(withSuccess());
 
-        RealEstateQuery realEstateQuery = RealEstateQuery.builder()
+        Query realEstateQuery = RealEstateQuery.builder()
                 .suburb("homebush west")
                 .postalCode(2140)
                 .maxBeds(2)
@@ -97,7 +100,7 @@ public class HttpWebScraperTest {
                 .andRespond(withSuccess(htmlPage, TEXT_HTML));
         mockServer.expect(between(1, 20), new PropertyRequestMatcher()).andRespond(withSuccess());
 
-        RealEstateQuery realEstateQuery = RealEstateQuery.builder()
+        Query realEstateQuery = RealEstateQuery.builder()
                 .suburb("homebush west")
                 .postalCode(2140)
                 .minBeds(1)
@@ -116,7 +119,7 @@ public class HttpWebScraperTest {
                 .andRespond(withSuccess(htmlPage, TEXT_HTML));
         mockServer.expect(between(1, 20), new PropertyRequestMatcher()).andRespond(withSuccess());
 
-        RealEstateQuery realEstateQuery = RealEstateQuery.builder()
+        Query realEstateQuery = RealEstateQuery.builder()
                 .suburb("parramatta")
                 .postalCode(2150)
                 .minPrice(700000)
@@ -133,7 +136,7 @@ public class HttpWebScraperTest {
                 .andRespond(withSuccess(htmlPage, TEXT_HTML));
         mockServer.expect(between(1, 20), new PropertyRequestMatcher()).andRespond(withSuccess());
 
-        RealEstateQuery realEstateQuery = RealEstateQuery.builder()
+        Query realEstateQuery = RealEstateQuery.builder()
                 .suburb("parramatta")
                 .postalCode(2150)
                 .maxPrice(650000)
@@ -150,7 +153,7 @@ public class HttpWebScraperTest {
                 .andRespond(withSuccess(htmlPage, TEXT_HTML));
         mockServer.expect(between(1, 20), new PropertyRequestMatcher()).andRespond(withSuccess());
 
-        RealEstateQuery realEstateQuery = RealEstateQuery.builder()
+        Query realEstateQuery = RealEstateQuery.builder()
                 .suburb("parramatta")
                 .postalCode(2150)
                 .minPrice(500000)
@@ -168,7 +171,7 @@ public class HttpWebScraperTest {
                 .andRespond(withSuccess(htmlPage, TEXT_HTML));
         mockServer.expect(between(1, 20), new PropertyRequestMatcher()).andRespond(withSuccess());
 
-        RealEstateQuery realEstateQuery = RealEstateQuery.builder()
+        Query realEstateQuery = RealEstateQuery.builder()
                 .suburb("homebush")
                 .postalCode(2140)
                 .bathrooms(1)
@@ -185,7 +188,7 @@ public class HttpWebScraperTest {
                 .andRespond(withSuccess(htmlPage, TEXT_HTML));
         mockServer.expect(between(1, 20), new PropertyRequestMatcher()).andRespond(withSuccess());
 
-        RealEstateQuery realEstateQuery = RealEstateQuery.builder()
+        Query realEstateQuery = RealEstateQuery.builder()
                 .suburb("parramatta")
                 .postalCode(2150)
                 .minBeds(2)
@@ -195,6 +198,30 @@ public class HttpWebScraperTest {
                 .maxPrice(650000)
                 .build();
         webScraper.query(realEstateQuery);
+
+        mockServer.verify();
+    }
+
+    @Test
+    public void canQueryRealEstatePropertyProfile1() throws Exception {
+        String htmlPage = loadPageFromTestResources("src/test/resources/stub/realestate/property-profile-page-1.html");
+        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/property-apartment-nsw-hornsby-124578062"))
+                .andRespond(withSuccess(htmlPage, TEXT_HTML));
+
+        Query realEstateQuery = RealEstateLink.builder()
+                .propertyLink("/property-apartment-nsw-hornsby-124578062")
+                .build();
+        PropertyProfile propertyProfile = webScraper.queryProfilePage(realEstateQuery);
+
+        assertThat(propertyProfile.getPropertyLink(), is("http://www.realestate.com.au/property-apartment-nsw-hornsby-124578062"));
+        assertThat(propertyProfile.getAddress(), is("4/10 Albert Street"));
+        assertThat(propertyProfile.getBed(), is(2));
+        assertThat(propertyProfile.getBath(), is(1));
+        assertThat(propertyProfile.getCar(), is(1));
+        assertThat(propertyProfile.getSuburb(), is("Hornsby"));
+        assertThat(propertyProfile.getPostalCode(), is(2077));
+        assertThat(propertyProfile.getPropertyCode(), is("124578062"));
+        assertThat(propertyProfile.getPriceEstimate(), is("640000-680000"));
 
         mockServer.verify();
     }

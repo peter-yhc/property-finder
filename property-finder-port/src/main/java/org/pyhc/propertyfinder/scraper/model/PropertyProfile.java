@@ -5,10 +5,10 @@ import lombok.*;
 @Getter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class PropertyResult {
+public class PropertyProfile {
 
     private String propertyLink;
-    private String priceRange;
+    private String priceEstimate;
     private String address;
     private Integer bed;
     private Integer bath;
