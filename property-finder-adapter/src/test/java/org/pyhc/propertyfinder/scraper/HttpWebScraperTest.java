@@ -26,6 +26,7 @@ import static org.springframework.test.web.client.ExpectedCount.once;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
+@SuppressWarnings("ALL")
 @RunWith(SpringJUnit4ClassRunner.class)
 @AdapterTest
 public class HttpWebScraperTest {
@@ -53,7 +54,6 @@ public class HttpWebScraperTest {
 
         Query realEstateQuery = RealEstateQuery.builder().suburb("parramatta").postalCode(2150).build();
         webScraper.query(realEstateQuery);
-
         mockServer.verify();
     }
 
@@ -71,7 +71,6 @@ public class HttpWebScraperTest {
                 .carSpaces(1)
                 .build();
         webScraper.query(realEstateQuery);
-
         mockServer.verify();
     }
 
@@ -89,7 +88,6 @@ public class HttpWebScraperTest {
                 .carSpaces(2)
                 .build();
         webScraper.query(realEstateQuery);
-
         mockServer.verify();
     }
 
@@ -108,7 +106,6 @@ public class HttpWebScraperTest {
                 .carSpaces(2)
                 .build();
         webScraper.query(realEstateQuery);
-
         mockServer.verify();
     }
 
@@ -125,7 +122,6 @@ public class HttpWebScraperTest {
                 .minPrice(700000)
                 .build();
         webScraper.query(realEstateQuery);
-
         mockServer.verify();
     }
 
@@ -142,7 +138,6 @@ public class HttpWebScraperTest {
                 .maxPrice(650000)
                 .build();
         webScraper.query(realEstateQuery);
-
         mockServer.verify();
     }
 
@@ -160,7 +155,6 @@ public class HttpWebScraperTest {
                 .maxPrice(650000)
                 .build();
         webScraper.query(realEstateQuery);
-
         mockServer.verify();
     }
 
@@ -177,7 +171,6 @@ public class HttpWebScraperTest {
                 .bathrooms(1)
                 .build();
         webScraper.query(realEstateQuery);
-
         mockServer.verify();
     }
 
@@ -198,7 +191,6 @@ public class HttpWebScraperTest {
                 .maxPrice(650000)
                 .build();
         webScraper.query(realEstateQuery);
-
         mockServer.verify();
     }
 
@@ -222,7 +214,75 @@ public class HttpWebScraperTest {
         assertThat(propertyProfile.getPostalCode(), is(2077));
         assertThat(propertyProfile.getPropertyCode(), is("124578062"));
         assertThat(propertyProfile.getPriceEstimate(), is("640000-680000"));
+        mockServer.verify();
+    }
 
+    @Test
+    public void canQueryRealEstatePropertyProfile2() throws Exception {
+        String htmlPage = loadPageFromTestResources("src/test/resources/stub/realestate/property-profile-page-2.html");
+        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/property-unit-nsw-strathfield-124523042"))
+                .andRespond(withSuccess(htmlPage, TEXT_HTML));
+
+        Query realEstateQuery = RealEstateLink.builder()
+                .propertyLink("/property-unit-nsw-strathfield-124523042")
+                .build();
+        PropertyProfile propertyProfile = webScraper.queryProfilePage(realEstateQuery);
+
+        assertThat(propertyProfile.getPropertyLink(), is("http://www.realestate.com.au/property-unit-nsw-strathfield-124523042"));
+        assertThat(propertyProfile.getAddress(), is("102/5-7 Beresford Road"));
+        assertThat(propertyProfile.getBed(), is(3));
+        assertThat(propertyProfile.getBath(), is(2));
+        assertThat(propertyProfile.getCar(), is(2));
+        assertThat(propertyProfile.getSuburb(), is("Strathfield"));
+        assertThat(propertyProfile.getPostalCode(), is(2135));
+        assertThat(propertyProfile.getPropertyCode(), is("124523042"));
+        assertThat(propertyProfile.getPriceEstimate(), is("Auction"));
+        mockServer.verify();
+    }
+
+    @Test
+    public void canQueryRealEstatePropertyProfile3() throws Exception {
+        String htmlPage = loadPageFromTestResources("src/test/resources/stub/realestate/property-profile-page-3.html");
+        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/property-apartment-nsw-naremburn-124506658"))
+                .andRespond(withSuccess(htmlPage, TEXT_HTML));
+
+        Query realEstateQuery = RealEstateLink.builder()
+                .propertyLink("/property-apartment-nsw-naremburn-124506658")
+                .build();
+        PropertyProfile propertyProfile = webScraper.queryProfilePage(realEstateQuery);
+
+        assertThat(propertyProfile.getPropertyLink(), is("http://www.realestate.com.au/property-apartment-nsw-naremburn-124506658"));
+        assertThat(propertyProfile.getAddress(), is("9/34 Station Street"));
+        assertThat(propertyProfile.getBed(), is(3));
+        assertThat(propertyProfile.getBath(), is(2));
+        assertThat(propertyProfile.getCar(), is(2));
+        assertThat(propertyProfile.getSuburb(), is("Naremburn"));
+        assertThat(propertyProfile.getPostalCode(), is(2065));
+        assertThat(propertyProfile.getPropertyCode(), is("124506658"));
+        assertThat(propertyProfile.getPriceEstimate(), is("1250000"));
+        mockServer.verify();
+    }
+
+    @Test
+    public void canQueryRealEstatePropertyProfile4() throws Exception {
+        String htmlPage = loadPageFromTestResources("src/test/resources/stub/realestate/property-profile-page-4.html");
+        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/property-studio-nsw-st+leonards-124640542"))
+                .andRespond(withSuccess(htmlPage, TEXT_HTML));
+
+        Query realEstateQuery = RealEstateLink.builder()
+                .propertyLink("/property-studio-nsw-st+leonards-124640542")
+                .build();
+        PropertyProfile propertyProfile = webScraper.queryProfilePage(realEstateQuery);
+
+        assertThat(propertyProfile.getPropertyLink(), is("http://www.realestate.com.au/property-studio-nsw-st+leonards-124640542"));
+        assertThat(propertyProfile.getAddress(), is("102/38 Atchison Street"));
+        assertThat(propertyProfile.getBed(), is(0));
+        assertThat(propertyProfile.getBath(), is(1));
+        assertThat(propertyProfile.getCar(), is(1));
+        assertThat(propertyProfile.getSuburb(), is("St Leonards"));
+        assertThat(propertyProfile.getPostalCode(), is(2065));
+        assertThat(propertyProfile.getPropertyCode(), is("124640542"));
+        assertThat(propertyProfile.getPriceEstimate(), is("Contact"));
         mockServer.verify();
     }
 

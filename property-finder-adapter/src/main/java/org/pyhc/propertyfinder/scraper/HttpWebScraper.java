@@ -75,7 +75,7 @@ public class HttpWebScraper implements WebScraper {
 
     private String parsePriceEstimate(String rawPriceEstimate) {
         rawPriceEstimate = rawPriceEstimate.replace(",", "");
-        Pattern pattern = Pattern.compile("[0-9]{5,7}");
+        Pattern pattern = Pattern.compile("[0-9]{5,7}|(?i)Auction");
         Matcher matcher = pattern.matcher(rawPriceEstimate);
         StringBuilder builder = new StringBuilder();
         while(matcher.find()) {
