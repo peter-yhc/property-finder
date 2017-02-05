@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static java.lang.Integer.parseInt;
+import static java.lang.String.format;
 
 
 @Service
@@ -56,9 +57,9 @@ public class HttpWebScraper implements WebScraper {
 
         Element propertyInfo = page.getElementById("listing_info");
 
-        String bed = propertyInfo.getElementsByTag("dt").get(0).getElementsByClass("rui-icon-bed").get(0).nextElementSibling().text();
-        String bath = propertyInfo.getElementsByTag("dt").get(1).getElementsByClass("rui-icon-bath").get(0).nextElementSibling().text();
-        String car = propertyInfo.getElementsByTag("dt").get(2).getElementsByClass("rui-icon-car").get(0).nextElementSibling().text();
+        String bed = getPropertyInfoElement(propertyInfo, "rui-icon-bed");
+        String bath = getPropertyInfoElement(propertyInfo, "rui-icon-bath");
+        String car = getPropertyInfoElement(propertyInfo, "rui-icon-car");
 
         return PropertyProfile.builder()
                 .propertyLink(query.toString())
@@ -73,9 +74,22 @@ public class HttpWebScraper implements WebScraper {
                 .build();
     }
 
+    private String getPropertyInfoElement(Element propertyInfo, String elementName) {
+        try {
+            return propertyInfo.getElementsByTag("dt")
+                    .stream()
+                    .filter(dt -> dt.getElementsByClass(elementName).size() != 0)
+                    .findFirst().orElseThrow(() -> new IllegalArgumentException(format("No matches in property info for %s.", elementName)))
+                    .nextElementSibling()
+                    .text();
+        } catch (Exception e ) {
+            return "0";
+        }
+    }
+
     private String parsePriceEstimate(String rawPriceEstimate) {
         rawPriceEstimate = rawPriceEstimate.replace(",", "");
-        Pattern pattern = Pattern.compile("[0-9]{5,7}|(?i)Auction");
+        Pattern pattern = Pattern.compile("[0-9]{5,7}|(?i)Auction|(?i)Contact");
         Matcher matcher = pattern.matcher(rawPriceEstimate);
         StringBuilder builder = new StringBuilder();
         while(matcher.find()) {
