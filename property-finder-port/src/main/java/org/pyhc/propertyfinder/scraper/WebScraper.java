@@ -10,4 +10,6 @@ public interface WebScraper {
     List<PropertyProfile> query(Query query);
 
     PropertyProfile queryProfilePage(Query query);
+
+    void recursivelySearchAllPages(boolean flag);
 }

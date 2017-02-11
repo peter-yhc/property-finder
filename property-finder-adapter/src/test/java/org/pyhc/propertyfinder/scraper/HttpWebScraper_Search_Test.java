@@ -4,10 +4,12 @@ package org.pyhc.propertyfinder.scraper;
 import org.junit.Test;
 import org.pyhc.propertyfinder.scraper.model.Query;
 import org.pyhc.propertyfinder.scraper.model.RealEstateQuery;
+import org.springframework.test.web.client.ExpectedCount;
 
 import static org.springframework.http.MediaType.TEXT_HTML;
 import static org.springframework.test.web.client.ExpectedCount.between;
 import static org.springframework.test.web.client.ExpectedCount.once;
+import static org.springframework.test.web.client.ExpectedCount.times;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
@@ -158,6 +160,26 @@ public class HttpWebScraper_Search_Test extends HttpWebScraper_Base_Test {
                 .minPrice(500000)
                 .maxPrice(650000)
                 .build();
+        webScraper.query(realEstateQuery);
+        mockServer.verify();
+    }
+
+    @Test
+    public void canGetNextPage() throws Exception {
+        String firstpage = loadPageFromTestResources("src/test/resources/stub/realestate/generic-search-page.html");
+        String secondpage = loadPageFromTestResources("src/test/resources/stub/realestate/single-page-result-search-page.html");
+        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/buy/in-parramatta%2c+nsw+2150/list-1?numBaths=any&numParkingSpaces=any&maxBeds=any"))
+                .andRespond(withSuccess(firstpage, TEXT_HTML));
+        mockServer.expect(times(20), new PropertyRequestMatcher()).andRespond(withSuccess());
+        mockServer.expect(once(), requestTo(REALESTATE_DOMAIN + "/buy/in-parramatta%2c+nsw+2150/list-2"))
+                .andRespond(withSuccess(secondpage, TEXT_HTML));
+//        mockServer.expect(between(1, 12), new PropertyRequestMatcher()).andRespond(withSuccess());
+
+        Query realEstateQuery = RealEstateQuery.builder()
+                .suburb("parramatta")
+                .postalCode(2150)
+                .build();
+        webScraper.recursivelySearchAllPages(true);
         webScraper.query(realEstateQuery);
         mockServer.verify();
     }
