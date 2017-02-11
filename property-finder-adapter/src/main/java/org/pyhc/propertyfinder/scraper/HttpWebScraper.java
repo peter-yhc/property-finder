@@ -14,7 +14,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -40,8 +39,6 @@ public class HttpWebScraper implements WebScraper {
         Elements propertyResults = searchResultsTbl.getElementsByTag("article");
 
         List<PropertyProfile> results = new ArrayList<>();
-        results.addAll(parsePropertySearchResults(propertyResults));
-
         if (continueToNextPage) {
             try {
                 String nextPageHref = getNextPageHref(page);
@@ -50,7 +47,7 @@ public class HttpWebScraper implements WebScraper {
                 // do nothing for now
             }
         }
-
+        results.addAll(parsePropertySearchResults(propertyResults));
         return results;
     }
 

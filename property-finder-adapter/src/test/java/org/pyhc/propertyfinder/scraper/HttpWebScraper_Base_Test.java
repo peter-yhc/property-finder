@@ -1,6 +1,7 @@
 package org.pyhc.propertyfinder.scraper;
 
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.pyhc.propertyfinder.configuration.AdapterTest;
@@ -30,6 +31,11 @@ public abstract class HttpWebScraper_Base_Test {
     @Before
     public void setup() {
         mockServer = MockRestServiceServer.createServer(restTemplate);
+    }
+
+    @After
+    public void reset() {
+        mockServer.reset();
     }
 
     protected String loadPageFromTestResources(String resourcePath) throws IOException {
