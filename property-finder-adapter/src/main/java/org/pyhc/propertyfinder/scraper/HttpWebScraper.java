@@ -4,6 +4,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.pyhc.propertyfinder.archive.PropertyArchiverPort;
 import org.pyhc.propertyfinder.exception.NextPageLinkNotFoundException;
 import org.pyhc.propertyfinder.scraper.model.PropertyProfile;
 import org.pyhc.propertyfinder.scraper.model.Query;
@@ -13,11 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.String.format;
@@ -31,24 +29,25 @@ public class HttpWebScraper implements WebScraper {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private PropertyArchiverPort propertyArchiverPort;
+
     @Override
-    public List<PropertyProfile> query(Query query) {
+    public void query(Query query) {
         String rawPageHtml = restTemplate.getForObject(URI.create(query.toString()), String.class);
         Document page = Jsoup.parse(rawPageHtml);
         Element searchResultsTbl = page.getElementById("searchResultsTbl");
         Elements propertyResults = searchResultsTbl.getElementsByTag("article");
 
-        List<PropertyProfile> results = new ArrayList<>();
         if (continueToNextPage) {
             try {
                 String nextPageHref = getNextPageHref(page);
-                results.addAll(query(RealEstateLink.builder().propertyLink(nextPageHref).build()));
+                query(RealEstateLink.builder().propertyLink(nextPageHref).build());
             } catch (NextPageLinkNotFoundException e) {
                 // do nothing for now
             }
         }
-        results.addAll(parsePropertySearchResults(propertyResults));
-        return results;
+        parsePropertySearchResults(propertyResults);
     }
 
     private String getNextPageHref(Document page) {
@@ -65,23 +64,22 @@ public class HttpWebScraper implements WebScraper {
         return nextLink.get(0).getElementsByAttribute("href").get(0).attr("href");
     }
 
-    private List<PropertyProfile> parsePropertySearchResults(Elements propertySearchResults) {
-        return propertySearchResults.stream().map(searchResult -> {
+    private void parsePropertySearchResults(Elements propertySearchResults) {
+        propertySearchResults.forEach(searchResult -> {
             String propertyLink = searchResult.getElementsByTag("a").get(0).attributes().get("href");
             RealEstateLink realEstateLink = RealEstateLink.builder().propertyLink(propertyLink).build();
-            return queryProfilePage(realEstateLink);
-        }).collect(Collectors.toList());
+            queryProfilePage(realEstateLink);
+        });
     }
 
     @Override
-    public PropertyProfile queryProfilePage(Query query) {
-        System.out.println("profile page");
+    public void queryProfilePage(Query query) {
         String[] propertyLinkSplit = query.toString().split("-");
         String propertyCode = propertyLinkSplit[propertyLinkSplit.length - 1];
 
         String rawPageHtml = restTemplate.getForObject(URI.create(query.toString()), String.class);
         if (rawPageHtml == null) {
-            return null;
+            return;
         }
         Document page = Jsoup.parse(rawPageHtml);
         String priceEstimate = parsePriceEstimate(page.getElementById("listing_info").getElementsByTag("p").get(0).text());
@@ -95,7 +93,7 @@ public class HttpWebScraper implements WebScraper {
         String bath = getPropertyInfoElement(propertyInfo, "rui-icon-bath");
         String car = getPropertyInfoElement(propertyInfo, "rui-icon-car");
 
-        return PropertyProfile.builder()
+        PropertyProfile profile = PropertyProfile.builder()
                 .propertyLink(query.toString())
                 .propertyCode(propertyCode)
                 .priceEstimate(priceEstimate)
@@ -106,6 +104,7 @@ public class HttpWebScraper implements WebScraper {
                 .suburb(locality)
                 .postalCode(parseInt(postalCode))
                 .build();
+        propertyArchiverPort.archive(profile);
     }
 
     @Override

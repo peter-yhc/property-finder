@@ -4,8 +4,10 @@ package org.pyhc.propertyfinder.scraper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.pyhc.propertyfinder.archive.PropertyArchiverPort;
 import org.pyhc.propertyfinder.configuration.AdapterTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
@@ -13,6 +15,8 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import static org.mockito.Mockito.reset;
 
 @SuppressWarnings("ALL")
 @RunWith(SpringRunner.class)
@@ -26,6 +30,9 @@ public abstract class HttpWebScraper_Base_Test {
     @Autowired
     protected WebScraper webScraper;
 
+    @MockBean
+    protected PropertyArchiverPort propertyArchiverPort;
+
     protected MockRestServiceServer mockServer;
 
     @Before
@@ -34,8 +41,9 @@ public abstract class HttpWebScraper_Base_Test {
     }
 
     @After
-    public void reset() {
+    public void resetMocks() {
         mockServer.reset();
+        reset(propertyArchiverPort);
     }
 
     protected String loadPageFromTestResources(String resourcePath) throws IOException {
