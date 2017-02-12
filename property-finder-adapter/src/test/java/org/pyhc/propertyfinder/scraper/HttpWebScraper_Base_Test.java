@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.pyhc.propertyfinder.configuration.AdapterTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
@@ -15,7 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 @SuppressWarnings("ALL")
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @AdapterTest
 public abstract class HttpWebScraper_Base_Test {
     protected static final String REALESTATE_DOMAIN = "http://www.realestate.com.au";
