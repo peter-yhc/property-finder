@@ -8,5 +8,4 @@ public interface WebScraper {
 
     void queryProfilePage(Query query);
 
-    void recursivelySearchAllPages(boolean flag);
 }

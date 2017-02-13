@@ -24,8 +24,6 @@ import static java.lang.String.format;
 @Service
 public class HttpWebScraper implements WebScraper {
 
-    private boolean continueToNextPage = false;
-
     @Autowired
     private RestTemplate restTemplate;
 
@@ -36,17 +34,16 @@ public class HttpWebScraper implements WebScraper {
     public void query(Query query) {
         String rawPageHtml = restTemplate.getForObject(URI.create(query.toString()), String.class);
         Document page = Jsoup.parse(rawPageHtml);
+
+        try {
+            String nextPageHref = getNextPageHref(page);
+            query(RealEstateLink.builder().propertyLink(nextPageHref).build());
+        } catch (NextPageLinkNotFoundException e) {
+            // Do nothing
+        }
+
         Element searchResultsTbl = page.getElementById("searchResultsTbl");
         Elements propertyResults = searchResultsTbl.getElementsByTag("article");
-
-        if (continueToNextPage) {
-            try {
-                String nextPageHref = getNextPageHref(page);
-                query(RealEstateLink.builder().propertyLink(nextPageHref).build());
-            } catch (NextPageLinkNotFoundException e) {
-                // do nothing for now
-            }
-        }
         parsePropertySearchResults(propertyResults);
     }
 
@@ -105,11 +102,6 @@ public class HttpWebScraper implements WebScraper {
                 .postalCode(parseInt(postalCode))
                 .build();
         propertyArchiverPort.archive(profile);
-    }
-
-    @Override
-    public void recursivelySearchAllPages(boolean flag) {
-        this.continueToNextPage = flag;
     }
 
     private String getPropertyInfoElement(Element propertyInfo, String elementName) {
