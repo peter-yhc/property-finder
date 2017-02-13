@@ -1,5 +1,6 @@
 package org.pyhc.propertyfinder.scraper;
 
+import org.pyhc.propertyfinder.scraper.model.PropertyProfile;
 import org.pyhc.propertyfinder.scraper.model.Query;
 
 import java.util.List;
@@ -9,6 +10,6 @@ public interface WebScraper {
 
     CompletableFuture<List<Query>> search(Query query);
 
-    void queryProfilePage(Query query);
+    CompletableFuture<PropertyProfile> queryProfilePage(Query query);
 
 }

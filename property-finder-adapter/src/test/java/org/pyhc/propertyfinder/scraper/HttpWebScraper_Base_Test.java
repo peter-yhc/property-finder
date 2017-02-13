@@ -30,9 +30,6 @@ public abstract class HttpWebScraper_Base_Test {
     @Autowired
     protected WebScraper webScraper;
 
-    @MockBean
-    protected PropertyArchiverPort propertyArchiverPort;
-
     protected MockRestServiceServer mockServer;
 
     @Before
@@ -43,7 +40,6 @@ public abstract class HttpWebScraper_Base_Test {
     @After
     public void resetMocks() {
         mockServer.reset();
-        reset(propertyArchiverPort);
     }
 
     protected String loadPageFromTestResources(String resourcePath) throws IOException {

@@ -2,8 +2,6 @@ package org.pyhc.propertyfinder.scraper;
 
 
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 import org.pyhc.propertyfinder.scraper.model.PropertyProfile;
 import org.pyhc.propertyfinder.scraper.model.Query;
 import org.pyhc.propertyfinder.scraper.model.RealEstateLink;
@@ -26,11 +24,7 @@ public class HttpWebScraper_PropertyPage_Test extends HttpWebScraper_Base_Test {
         Query realEstateQuery = RealEstateLink.builder()
                 .propertyLink("/property-apartment-nsw-hornsby-124578062")
                 .build();
-        webScraper.queryProfilePage(realEstateQuery);
-
-        ArgumentCaptor<PropertyProfile> profileCaptor = ArgumentCaptor.forClass(PropertyProfile.class);
-        Mockito.verify(propertyArchiverPort).archive(profileCaptor.capture());
-        PropertyProfile propertyProfile = profileCaptor.getValue();
+        PropertyProfile propertyProfile = webScraper.queryProfilePage(realEstateQuery).get();
 
         assertThat(propertyProfile.getPropertyLink(), is("http://www.realestate.com.au/property-apartment-nsw-hornsby-124578062"));
         assertThat(propertyProfile.getAddress(), is("4/10 Albert Street"));
@@ -53,11 +47,7 @@ public class HttpWebScraper_PropertyPage_Test extends HttpWebScraper_Base_Test {
         Query realEstateQuery = RealEstateLink.builder()
                 .propertyLink("/property-unit-nsw-strathfield-124523042")
                 .build();
-        webScraper.queryProfilePage(realEstateQuery);
-
-        ArgumentCaptor<PropertyProfile> profileCaptor = ArgumentCaptor.forClass(PropertyProfile.class);
-        Mockito.verify(propertyArchiverPort).archive(profileCaptor.capture());
-        PropertyProfile propertyProfile = profileCaptor.getValue();
+        PropertyProfile propertyProfile = webScraper.queryProfilePage(realEstateQuery).get();
 
         assertThat(propertyProfile.getPropertyLink(), is("http://www.realestate.com.au/property-unit-nsw-strathfield-124523042"));
         assertThat(propertyProfile.getAddress(), is("102/5-7 Beresford Road"));
@@ -80,11 +70,7 @@ public class HttpWebScraper_PropertyPage_Test extends HttpWebScraper_Base_Test {
         Query realEstateQuery = RealEstateLink.builder()
                 .propertyLink("/property-apartment-nsw-naremburn-124506658")
                 .build();
-        webScraper.queryProfilePage(realEstateQuery);
-
-        ArgumentCaptor<PropertyProfile> profileCaptor = ArgumentCaptor.forClass(PropertyProfile.class);
-        Mockito.verify(propertyArchiverPort).archive(profileCaptor.capture());
-        PropertyProfile propertyProfile = profileCaptor.getValue();
+        PropertyProfile propertyProfile = webScraper.queryProfilePage(realEstateQuery).get();
 
         assertThat(propertyProfile.getPropertyLink(), is("http://www.realestate.com.au/property-apartment-nsw-naremburn-124506658"));
         assertThat(propertyProfile.getAddress(), is("9/34 Station Street"));
@@ -107,11 +93,7 @@ public class HttpWebScraper_PropertyPage_Test extends HttpWebScraper_Base_Test {
         Query realEstateQuery = RealEstateLink.builder()
                 .propertyLink("/property-studio-nsw-st+leonards-124640542")
                 .build();
-        webScraper.queryProfilePage(realEstateQuery);
-
-        ArgumentCaptor<PropertyProfile> profileCaptor = ArgumentCaptor.forClass(PropertyProfile.class);
-        Mockito.verify(propertyArchiverPort).archive(profileCaptor.capture());
-        PropertyProfile propertyProfile = profileCaptor.getValue();
+        PropertyProfile propertyProfile = webScraper.queryProfilePage(realEstateQuery).get();
 
         assertThat(propertyProfile.getPropertyLink(), is("http://www.realestate.com.au/property-studio-nsw-st+leonards-124640542"));
         assertThat(propertyProfile.getAddress(), is("102/38 Atchison Street"));
