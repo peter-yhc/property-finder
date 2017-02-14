@@ -5,6 +5,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan("org.pyhc.propertyfinder")
-public class MainConfiguration {
+public class CoreConfiguration {
 
 }

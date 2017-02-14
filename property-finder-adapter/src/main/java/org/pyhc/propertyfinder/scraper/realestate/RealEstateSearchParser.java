@@ -5,7 +5,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.pyhc.propertyfinder.exception.NextPageLinkNotFoundException;
 import org.pyhc.propertyfinder.scraper.realestate.query.RealEstateLink;
-import org.pyhc.propertyfinder.scraper.realestate.query.SearchResult;
+import org.pyhc.propertyfinder.scraper.realestate.result.SearchResult;
 
 import java.util.List;
 import java.util.stream.Collectors;

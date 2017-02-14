@@ -1,6 +1,5 @@
 package org.pyhc.propertyfinder.scraper;
 
-
 import org.junit.Test;
 import org.pyhc.propertyfinder.scraper.realestate.query.Query;
 import org.pyhc.propertyfinder.scraper.realestate.query.RealEstateQuery;

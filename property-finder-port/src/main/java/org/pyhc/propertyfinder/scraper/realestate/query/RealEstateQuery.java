@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.Objects;
+
 import static java.lang.String.format;
 
 @Builder
@@ -44,4 +46,23 @@ public class RealEstateQuery extends Query {
                 maxBeds == null ? "any" : maxBeds);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RealEstateQuery that = (RealEstateQuery) o;
+        return Objects.equals(suburb, that.suburb) &&
+                Objects.equals(postalCode, that.postalCode) &&
+                Objects.equals(minBeds, that.minBeds) &&
+                Objects.equals(maxBeds, that.maxBeds) &&
+                Objects.equals(bathrooms, that.bathrooms) &&
+                Objects.equals(carSpaces, that.carSpaces) &&
+                Objects.equals(minPrice, that.minPrice) &&
+                Objects.equals(maxPrice, that.maxPrice);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(suburb, postalCode, minBeds, maxBeds, bathrooms, carSpaces, minPrice, maxPrice);
+    }
 }

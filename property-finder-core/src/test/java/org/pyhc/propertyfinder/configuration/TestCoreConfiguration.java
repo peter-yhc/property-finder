@@ -1,0 +1,7 @@
+package org.pyhc.propertyfinder.configuration;
+
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class TestCoreConfiguration extends CoreConfiguration {
+}
