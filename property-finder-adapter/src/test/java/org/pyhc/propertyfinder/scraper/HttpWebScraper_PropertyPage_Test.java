@@ -2,9 +2,9 @@ package org.pyhc.propertyfinder.scraper;
 
 
 import org.junit.Test;
-import org.pyhc.propertyfinder.scraper.model.PropertyProfile;
-import org.pyhc.propertyfinder.scraper.model.Query;
-import org.pyhc.propertyfinder.scraper.model.RealEstateLink;
+import org.pyhc.propertyfinder.scraper.realestate.query.PropertyProfile;
+import org.pyhc.propertyfinder.scraper.realestate.query.Query;
+import org.pyhc.propertyfinder.scraper.realestate.query.RealEstateLink;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;

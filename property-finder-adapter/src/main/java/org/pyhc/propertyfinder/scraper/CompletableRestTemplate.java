@@ -2,7 +2,7 @@ package org.pyhc.propertyfinder.scraper;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.pyhc.propertyfinder.scraper.model.Query;
+import org.pyhc.propertyfinder.scraper.realestate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;

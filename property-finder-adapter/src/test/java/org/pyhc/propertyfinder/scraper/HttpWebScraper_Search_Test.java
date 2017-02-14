@@ -2,8 +2,8 @@ package org.pyhc.propertyfinder.scraper;
 
 
 import org.junit.Test;
-import org.pyhc.propertyfinder.scraper.model.Query;
-import org.pyhc.propertyfinder.scraper.model.RealEstateQuery;
+import org.pyhc.propertyfinder.scraper.realestate.query.Query;
+import org.pyhc.propertyfinder.scraper.realestate.query.RealEstateQuery;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package org.pyhc.propertyfinder.scraper.model;
+package org.pyhc.propertyfinder.scraper.realestate.query;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

@@ -2,7 +2,7 @@ package org.pyhc.propertyfinder.scraper.realestate;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.pyhc.propertyfinder.scraper.model.PropertyProfile;
+import org.pyhc.propertyfinder.scraper.realestate.query.PropertyProfile;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

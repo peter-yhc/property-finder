@@ -1,7 +1,7 @@
 package org.pyhc.propertyfinder.scraper;
 
-import org.pyhc.propertyfinder.scraper.model.PropertyProfile;
-import org.pyhc.propertyfinder.scraper.model.Query;
+import org.pyhc.propertyfinder.scraper.realestate.query.PropertyProfile;
+import org.pyhc.propertyfinder.scraper.realestate.query.Query;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
