@@ -1,7 +1,5 @@
 package org.pyhc.propertyfinder.archive;
 
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.pyhc.propertyfinder.configuration.CoreTest;
