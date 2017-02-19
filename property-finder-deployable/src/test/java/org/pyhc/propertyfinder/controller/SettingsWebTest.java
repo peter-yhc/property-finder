@@ -7,7 +7,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class SettingsWebTest extends AbstractWebTest {
 
-
     @Override
     public String getWebDriver() {
         return "chrome";
