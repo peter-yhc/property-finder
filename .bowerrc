@@ -1,4 +1,4 @@
 {
-    "directory": "property-finder-adapter/src/main/resources/vendor",
+    "directory": "property-finder-adapter/src/main/resources/templates/vendor",
     "timeout": 30000
 }

@@ -3,11 +3,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 
-<head th:include="fragment/common :: headerFragment(title='Property Finder - Settings')">
-    <meta charset="UTF-8"/>
-    <title>Property Finder - Settings</title>
-</head>
+<head th:include="fragment/common :: headerFragment(title='Property Finder - Settings')"></head>
+
+<navbar th:include="fragment/common :: navbarFragment"></navbar>
+
 <body>
-<h2>Settings Page</h2>
+
+<div th:include="fragment/common :: navbarFragment"></div>
+
+<div id="property-finder-content-container" class="container-fluid">
+    <div class="col-md-12">
+
+        <div class="row">
+            <h2>Settings Page</h2>
+        </div>
+
+    </div>
+</div>
 </body>
 </html>

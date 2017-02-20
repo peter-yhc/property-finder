@@ -11,10 +11,35 @@
     <title th:text="${title ?: 'Property Finder' }"></title>
 
     <!-- Bootstrap -->
-    <link href="../../vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
 
+    <style>
+        #proper-finder-navbar {
+            margin-bottom: 0;
+        }
+
+        body {
+            padding-top: 50px;
+        }
+    </style>
 </head>
+
 <body>
+
+<div th:fragment="navbarFragment">
+    <nav id="proper-finder-navbar" class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a id="property-finder-brand" class="navbar-brand" href="#">Property Finder</a>
+            </div>
+        </div>
+    </nav>
+</div>
 
 </body>
 </html>

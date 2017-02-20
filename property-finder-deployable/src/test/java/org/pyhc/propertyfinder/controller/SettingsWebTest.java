@@ -17,5 +17,6 @@ public class SettingsWebTest extends AbstractWebTest {
         goTo("http://localhost:" + serverPort + "/" + "settings");
 
         assertThat(window().title(), is("Property Finder - Settings"));
+        assertThat($("#property-finder-brand").text(), is("Property Finder"));
     }
 }
