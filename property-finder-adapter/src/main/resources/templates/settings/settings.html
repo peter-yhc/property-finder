@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="fragment/common :: headerFragment(title='Property Finder - Settings')"></head>
+
+<style>
+</style>
+
+<body>
+<div th:include="fragment/common :: navbarFragment"></div>
+<div id="property-finder-content-container" class="container-fluid">
+    <div class="col-md-12">
+        <div class="row">
+            <h3>Settings Page</h3>
+
+            <div class="input-group">
+                <input type="text" class="form-control" aria-label="..."/>
+                <div class="input-group-btn">
+                    <!-- Button and dropdown menu -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:include="fragment/common :: footerFragment"></div>
+<script src="settings.js"></script>
+</body>
+</html>

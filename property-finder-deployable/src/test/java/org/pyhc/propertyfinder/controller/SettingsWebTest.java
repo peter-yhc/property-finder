@@ -18,5 +18,7 @@ public class SettingsWebTest extends AbstractWebTest {
 
         assertThat(window().title(), is("Property Finder - Settings"));
         assertThat($("#property-finder-brand").text(), is("Property Finder"));
+
+        assertThat($("#search-location-container").present(), is(true));
     }
 }

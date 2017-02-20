@@ -9,7 +9,7 @@ public class SettingsController {
 
     @RequestMapping("/settings")
     public String settingHome(Model model) {
-        return "settings";
+        return "settings/settings";
     }
 
 }
