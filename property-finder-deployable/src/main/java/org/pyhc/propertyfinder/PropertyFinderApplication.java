@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RealestateScraperApplication {
+public class PropertyFinderApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(RealestateScraperApplication.class, args);
+        SpringApplication.run(PropertyFinderApplication.class, args);
     }
 }

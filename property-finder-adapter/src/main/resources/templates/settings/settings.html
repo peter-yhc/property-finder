@@ -5,27 +5,50 @@
 
 <head th:include="fragment/common :: headerFragment(title='Property Finder - Settings')"></head>
 
+<body>
 <style>
+    .pf-search-location-listing {
+        line-height: 3em;
+        padding-top: 0;
+        padding-bottom: 0;
+        vertical-align: middle;
+    }
 </style>
 
-<body>
 <div th:include="fragment/common :: navbarFragment"></div>
-<div id="property-finder-content-container" class="container-fluid">
-    <div class="col-md-12">
+<div id="pf-content-container" class="container-fluid">
+    <div class="col-md-offset-3 col-md-6">
         <div class="row">
-            <h3>Settings Page</h3>
-
+            <h3>Edit Search Settings</h3>
+        </div>
+        <div class="row">
+            <h4>Add locations</h4>
             <div class="input-group">
-                <input type="text" class="form-control" aria-label="..."/>
+                <input id="pf-search-location-input" type="text" class="form-control" placeholder="Add a location"/>
                 <div class="input-group-btn">
-                    <!-- Button and dropdown menu -->
+                    <button class="btn btn-primary">Search</button>
                 </div>
             </div>
+        </div>
+        <br/>
+        <div class="row">
+            <h4>Currently Watching</h4> 
+            <ul id="pf-saved-searches-list" class="list-group">
+                <li th:each="savedSearch,iter : ${savedSearches}" th:id="${'pf-saved-searches-item-' + iter.index}"
+                    class="list-group-item pf-search-location-listing clearfix">
+                    <span th:text="${savedSearch.suburb + ' ' + savedSearch.state + ', ' + savedSearch.postcode}"></span>
+                    <span class="pull-right">
+                        <button th:id="${'pf-saved-searches-delete-' + iter.index}" type="button" class="btn btn-default">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                    </span>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
 
 <div th:include="fragment/common :: footerFragment"></div>
-<script src="settings.js"></script>
+<script th:src="settings-source.js"></script>
 </body>
 </html>
