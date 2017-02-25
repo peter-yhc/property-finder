@@ -23,7 +23,7 @@ public class SettingsWebTest extends AbstractWebTest {
 
     @Test
     public void canViewSettingsPage() {
-        when(settingsPort.getSearchLocations()).thenReturn(asList(
+        when(settingsPort.getSavedSearches()).thenReturn(asList(
                 SearchLocation.builder().suburb("Homebush").postcode(2140).state("NSW").build(),
                 SearchLocation.builder().suburb("Strathfield").postcode(2135).state("NSW").build()
         ));
@@ -40,6 +40,23 @@ public class SettingsWebTest extends AbstractWebTest {
         assertThat($("#pf-saved-searches-delete-0").present(), is(true));
         assertThat($("#pf-saved-searches-delete-1").present(), is(true));
 
-        verify(settingsPort).getSearchLocations();
+        verify(settingsPort).getSavedSearches();
+    }
+
+    @Test
+    public void canUseAutocompleteOnSearchBar() {
+        when(settingsPort.getSearchableLocations()).thenReturn(asList(
+                SearchLocation.builder().suburb("Homebush").postcode(2140).state("NSW").build(),
+                SearchLocation.builder().suburb("Homebush West").postcode(2140).state("NSW").build(),
+                SearchLocation.builder().suburb("Sydney Olympic Park").postcode(2127).state("NSW").build(),
+                SearchLocation.builder().suburb("Auburn").postcode(2144).state("NSW").build(),
+                SearchLocation.builder().suburb("Strathfield").postcode(2135).state("NSW").build()
+        ));
+
+        goTo("http://localhost:" + serverPort + "/" + "settings");
+
+        $("#pf-search-location-input").fill().with("Home");
+
+        System.out.println("breakpiont");
     }
 }

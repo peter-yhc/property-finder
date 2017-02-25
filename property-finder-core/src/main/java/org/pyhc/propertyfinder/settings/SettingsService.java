@@ -8,7 +8,12 @@ import java.util.List;
 public class SettingsService implements SettingsPort {
 
     @Override
-    public List<SearchLocation> getSearchLocations() {
+    public List<SearchLocation> getSavedSearches() {
+        return null;
+    }
+
+    @Override
+    public List<SearchLocation> getSearchableLocations() {
         return null;
     }
 }

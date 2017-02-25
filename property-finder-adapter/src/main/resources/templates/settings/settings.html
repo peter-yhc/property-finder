@@ -6,14 +6,7 @@
 <head th:include="fragment/common :: headerFragment(title='Property Finder - Settings')"></head>
 
 <body>
-<style>
-    .pf-search-location-listing {
-        line-height: 3em;
-        padding-top: 0;
-        padding-bottom: 0;
-        vertical-align: middle;
-    }
-</style>
+<link href="css/settings.css" rel="stylesheet"/>
 
 <div th:include="fragment/common :: navbarFragment"></div>
 <div id="pf-content-container" class="container-fluid">
@@ -49,6 +42,6 @@
 </div>
 
 <div th:include="fragment/common :: footerFragment"></div>
-<script th:src="settings-source.js"></script>
+<script src="src/settings.js"></script>
 </body>
 </html>
