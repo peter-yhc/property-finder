@@ -3,7 +3,9 @@ package org.pyhc.propertyfinder.controller;
 import org.fluentlenium.core.domain.FluentList;
 import org.fluentlenium.core.domain.FluentWebElement;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.pyhc.propertyfinder.settings.SearchLocation;
 import org.pyhc.propertyfinder.settings.SettingsPort;
@@ -14,6 +16,8 @@ import java.util.concurrent.TimeUnit;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -89,5 +93,54 @@ public class SettingsWebTest extends AbstractWebTest {
         await().explicitlyFor(1, TimeUnit.SECONDS);
 
         assertThat($("#ui-id-1").find(".ui-menu-item").size(), is(0));
+    }
+
+    @Test
+    public void clickingDeleteButton_ForFirstRow_RemovesSavedSearch() throws Exception {
+        when(settingsPort.getSavedSearches()).thenReturn(asList(
+                SearchLocation.builder().suburb("Homebush").postcode(2140).state("NSW").build(),
+                SearchLocation.builder().suburb("Strathfield").postcode(2135).state("NSW").build()
+        ));
+
+        goTo("http://localhost:" + serverPort + "/" + "settings");
+
+        await().until(()-> $("#pf-saved-searches-delete-0").present());
+        getDriver().findElement(By.id("pf-saved-searches-delete-0")).sendKeys(Keys.RETURN);
+
+        assertThat($("#pf-saved-searches-item-1").text(), is("Strathfield NSW, 2135"));
+        await().until(() -> !$("#pf-saved-searches-item-0").present());
+
+        ArgumentCaptor<SearchLocation> argumentCaptor = ArgumentCaptor.forClass(SearchLocation.class);
+        verify(settingsPort).removeSavedLocation(argumentCaptor.capture());
+
+        SearchLocation searchLocation = argumentCaptor.getValue();
+        assertThat(searchLocation.getSuburb(), is("Homebush"));
+        assertThat(searchLocation.getState(), is("NSW"));
+        assertThat(searchLocation.getPostcode(), is(2140));
+    }
+
+    @Test
+    public void clickingDeleteButton_ForSecondRow_RemovesSavedSearch() throws Exception {
+        when(settingsPort.getSavedSearches()).thenReturn(asList(
+                SearchLocation.builder().suburb("Homebush").postcode(2140).state("NSW").build(),
+                SearchLocation.builder().suburb("Strathfield").postcode(2135).state("NSW").build()
+        ));
+        doNothing().when(settingsPort).removeSavedLocation(any());
+
+        goTo("http://localhost:" + serverPort + "/" + "settings");
+
+        await().until(()-> $("#pf-saved-searches-delete-1").present());
+        getDriver().findElement(By.id("pf-saved-searches-delete-1")).sendKeys(Keys.RETURN);
+
+        assertThat($("#pf-saved-searches-item-0").text(), is("Homebush NSW, 2140"));
+        await().until(() -> !$("#pf-saved-searches-item-1").present());
+
+        ArgumentCaptor<SearchLocation> argumentCaptor = ArgumentCaptor.forClass(SearchLocation.class);
+        verify(settingsPort).removeSavedLocation(argumentCaptor.capture());
+
+        SearchLocation searchLocation = argumentCaptor.getValue();
+        assertThat(searchLocation.getSuburb(), is("Strathfield"));
+        assertThat(searchLocation.getState(), is("NSW"));
+        assertThat(searchLocation.getPostcode(), is(2135));
     }
 }

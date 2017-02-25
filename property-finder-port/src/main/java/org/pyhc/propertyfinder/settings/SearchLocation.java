@@ -14,6 +14,8 @@ public class SearchLocation {
     private String state;
     private Integer postcode;
 
+    private SearchLocation(){}
+
     @Override
     public String toString() {
         return String.format("%s %s, %s", suburb, state, postcode);

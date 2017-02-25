@@ -16,4 +16,9 @@ public class SettingsService implements SettingsPort {
     public List<SearchLocation> getSearchableLocations() {
         return null;
     }
+
+    @Override
+    public void removeSavedLocation(SearchLocation searchLocation) {
+
+    }
 }

@@ -7,4 +7,6 @@ public interface SettingsPort {
     List<SearchLocation> getSavedSearches();
 
     List<SearchLocation> getSearchableLocations();
+
+    void removeSavedLocation(SearchLocation searchLocation);
 }

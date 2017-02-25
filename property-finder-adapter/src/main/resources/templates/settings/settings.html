@@ -31,7 +31,7 @@
                     class="list-group-item pf-search-location-listing clearfix">
                     <span th:text="${savedSearch.suburb + ' ' + savedSearch.state + ', ' + savedSearch.postcode}"></span>
                     <span class="pull-right">
-                        <button th:id="${'pf-saved-searches-delete-' + iter.index}" type="button" class="btn btn-default">
+                        <button th:id="${'pf-saved-searches-delete-' + iter.index}" type="button" class="btn btn-default pf-saved-searches-delete-button">
                             <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
                     </span>
