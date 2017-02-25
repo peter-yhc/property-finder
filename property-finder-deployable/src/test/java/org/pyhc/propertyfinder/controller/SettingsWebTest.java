@@ -1,9 +1,15 @@
 package org.pyhc.propertyfinder.controller;
 
+import org.fluentlenium.core.domain.FluentList;
+import org.fluentlenium.core.domain.FluentWebElement;
 import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.pyhc.propertyfinder.settings.SearchLocation;
 import org.pyhc.propertyfinder.settings.SettingsPort;
 import org.springframework.boot.test.mock.mockito.MockBean;
+
+import java.util.concurrent.TimeUnit;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
@@ -44,7 +50,7 @@ public class SettingsWebTest extends AbstractWebTest {
     }
 
     @Test
-    public void canUseAutocompleteOnSearchBar() {
+    public void autocompleteOnSearchBar_ReturnsCorrectMatches() {
         when(settingsPort.getSearchableLocations()).thenReturn(asList(
                 SearchLocation.builder().suburb("Homebush").postcode(2140).state("NSW").build(),
                 SearchLocation.builder().suburb("Homebush West").postcode(2140).state("NSW").build(),
@@ -55,8 +61,33 @@ public class SettingsWebTest extends AbstractWebTest {
 
         goTo("http://localhost:" + serverPort + "/" + "settings");
 
-        $("#pf-search-location-input").fill().with("Home");
+        WebElement searchInput = getDriver().findElement(By.id("pf-search-location-input"));
+        searchInput.click();
+        searchInput.sendKeys("home");
+        await().atMost(1000).until(() -> $("#ui-id-1").find(".ui-menu-item").size() == 2);
 
-        System.out.println("breakpiont");
+        FluentList<FluentWebElement> autocompleteFields = $("#ui-id-1").find(".ui-menu-item");
+        assertThat(autocompleteFields.get(0).text(), is("Homebush NSW, 2140"));
+        assertThat(autocompleteFields.get(1).text(), is("Homebush West NSW, 2140"));
+    }
+
+    @Test
+    public void canUseAutocompleteOnSearchBar_ReturnsNothingForNoMatches() {
+        when(settingsPort.getSearchableLocations()).thenReturn(asList(
+                SearchLocation.builder().suburb("Homebush").postcode(2140).state("NSW").build(),
+                SearchLocation.builder().suburb("Homebush West").postcode(2140).state("NSW").build(),
+                SearchLocation.builder().suburb("Sydney Olympic Park").postcode(2127).state("NSW").build(),
+                SearchLocation.builder().suburb("Auburn").postcode(2144).state("NSW").build(),
+                SearchLocation.builder().suburb("Strathfield").postcode(2135).state("NSW").build()
+        ));
+
+        goTo("http://localhost:" + serverPort + "/" + "settings");
+
+        WebElement searchInput = getDriver().findElement(By.id("pf-search-location-input"));
+        searchInput.click();
+        searchInput.sendKeys("nothing matches me");
+        await().explicitlyFor(1, TimeUnit.SECONDS);
+
+        assertThat($("#ui-id-1").find(".ui-menu-item").size(), is(0));
     }
 }

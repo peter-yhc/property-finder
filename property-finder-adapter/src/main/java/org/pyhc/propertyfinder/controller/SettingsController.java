@@ -19,7 +19,6 @@ public class SettingsController {
 
     @RequestMapping("/settings")
     public String settingHome(Model model) {
-
         List<SearchLocation> searchLocations = settingsPort.getSavedSearches();
 
         model.addAttribute("savedSearches", searchLocations);
