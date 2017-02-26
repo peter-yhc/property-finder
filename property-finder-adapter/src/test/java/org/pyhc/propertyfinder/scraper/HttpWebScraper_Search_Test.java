@@ -22,7 +22,7 @@ public class HttpWebScraper_Search_Test extends HttpWebScraper_Base_Test {
                 .andRespond(withSuccess(htmlPage, TEXT_HTML));
 
         Query realEstateQuery = RealEstateQuery.builder().suburb("parramatta").postalCode(2150).build();
-        List<Query> queries = webScraper.search(realEstateQuery).get();
+        List<Query> queries = httpWebScraper.search(realEstateQuery).get();
         assertThat(queries.size(), is(12));
         mockServer.verify();
     }
@@ -39,7 +39,7 @@ public class HttpWebScraper_Search_Test extends HttpWebScraper_Base_Test {
                 .minBeds(2)
                 .carSpaces(1)
                 .build();
-        List<Query> queries = webScraper.search(realEstateQuery).get();
+        List<Query> queries = httpWebScraper.search(realEstateQuery).get();
         assertThat(queries.size(), is(12));
         mockServer.verify();
     }
@@ -56,7 +56,7 @@ public class HttpWebScraper_Search_Test extends HttpWebScraper_Base_Test {
                 .maxBeds(2)
                 .carSpaces(2)
                 .build();
-        List<Query> queries = webScraper.search(realEstateQuery).get();
+        List<Query> queries = httpWebScraper.search(realEstateQuery).get();
         assertThat(queries.size(), is(12));
         mockServer.verify();
     }
@@ -74,7 +74,7 @@ public class HttpWebScraper_Search_Test extends HttpWebScraper_Base_Test {
                 .maxBeds(3)
                 .carSpaces(2)
                 .build();
-        List<Query> queries = webScraper.search(realEstateQuery).get();
+        List<Query> queries = httpWebScraper.search(realEstateQuery).get();
         assertThat(queries.size(), is(12));
         mockServer.verify();
     }
@@ -90,7 +90,7 @@ public class HttpWebScraper_Search_Test extends HttpWebScraper_Base_Test {
                 .postalCode(2150)
                 .minPrice(700000)
                 .build();
-        List<Query> queries = webScraper.search(realEstateQuery).get();
+        List<Query> queries = httpWebScraper.search(realEstateQuery).get();
         assertThat(queries.size(), is(12));
         mockServer.verify();
     }
@@ -106,7 +106,7 @@ public class HttpWebScraper_Search_Test extends HttpWebScraper_Base_Test {
                 .postalCode(2150)
                 .maxPrice(650000)
                 .build();
-        List<Query> queries = webScraper.search(realEstateQuery).get();
+        List<Query> queries = httpWebScraper.search(realEstateQuery).get();
         assertThat(queries.size(), is(12));
         mockServer.verify();
     }
@@ -123,7 +123,7 @@ public class HttpWebScraper_Search_Test extends HttpWebScraper_Base_Test {
                 .minPrice(500000)
                 .maxPrice(650000)
                 .build();
-        List<Query> queries = webScraper.search(realEstateQuery).get();
+        List<Query> queries = httpWebScraper.search(realEstateQuery).get();
         assertThat(queries.size(), is(12));
         mockServer.verify();
     }
@@ -139,7 +139,7 @@ public class HttpWebScraper_Search_Test extends HttpWebScraper_Base_Test {
                 .postalCode(2140)
                 .bathrooms(1)
                 .build();
-        List<Query> queries = webScraper.search(realEstateQuery).get();
+        List<Query> queries = httpWebScraper.search(realEstateQuery).get();
         assertThat(queries.size(), is(12));
         mockServer.verify();
     }
@@ -159,7 +159,7 @@ public class HttpWebScraper_Search_Test extends HttpWebScraper_Base_Test {
                 .minPrice(500000)
                 .maxPrice(650000)
                 .build();
-        List<Query> queries = webScraper.search(realEstateQuery).get();
+        List<Query> queries = httpWebScraper.search(realEstateQuery).get();
         assertThat(queries.size(), is(12));
         mockServer.verify();
     }
@@ -177,7 +177,7 @@ public class HttpWebScraper_Search_Test extends HttpWebScraper_Base_Test {
                 .suburb("parramatta")
                 .postalCode(2150)
                 .build();
-        List<Query> queries = webScraper.search(realEstateQuery).get();
+        List<Query> queries = httpWebScraper.search(realEstateQuery).get();
         assertThat(queries.size(), is(32));
         mockServer.verify();
     }

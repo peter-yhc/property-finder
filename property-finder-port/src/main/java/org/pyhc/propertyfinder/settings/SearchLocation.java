@@ -1,10 +1,11 @@
 package org.pyhc.propertyfinder.settings;
 
-import com.sun.istack.internal.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Builder
