@@ -14,12 +14,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.concurrent.TimeUnit;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class SettingsWebTest extends AbstractWebTest {
 
@@ -104,7 +104,7 @@ public class SettingsWebTest extends AbstractWebTest {
 
         goTo("http://localhost:" + serverPort + "/" + "settings");
 
-        await().until(()-> $("#pf-saved-searches-delete-0").present());
+        await().until(() -> $("#pf-saved-searches-delete-0").present());
         getDriver().findElement(By.id("pf-saved-searches-delete-0")).sendKeys(Keys.RETURN);
 
         assertThat($("#pf-saved-searches-item-1").text(), is("Strathfield NSW, 2135"));
@@ -129,7 +129,7 @@ public class SettingsWebTest extends AbstractWebTest {
 
         goTo("http://localhost:" + serverPort + "/" + "settings");
 
-        await().until(()-> $("#pf-saved-searches-delete-1").present());
+        await().until(() -> $("#pf-saved-searches-delete-1").present());
         getDriver().findElement(By.id("pf-saved-searches-delete-1")).sendKeys(Keys.RETURN);
 
         assertThat($("#pf-saved-searches-item-0").text(), is("Homebush NSW, 2140"));
@@ -145,9 +145,17 @@ public class SettingsWebTest extends AbstractWebTest {
     }
 
     @Test
-    public void canAddNewSavedLocation() throws Exception {
+    public void canAddNewSavedLocation_AndReloadPage() throws Exception {
+        when(settingsPort.getSavedSearches())
+                .thenReturn(emptyList())
+                .thenReturn(singletonList(
+                        SearchLocation.builder().suburb("Chatswood").postcode(2067).state("NSW").build()
+                ));
         doNothing().when(settingsPort).addSavedLocation(any());
+
         goTo("http://localhost:" + serverPort + "/" + "settings");
+
+        assertThat($("#pf-saved-searches-item-0").present(), is(false));
 
         WebElement searchInput = getDriver().findElement(By.id("pf-search-location-input"));
         searchInput.click();
@@ -162,5 +170,7 @@ public class SettingsWebTest extends AbstractWebTest {
         assertThat(searchLocation.getSuburb(), is("Chatswood"));
         assertThat(searchLocation.getState(), is("NSW"));
         assertThat(searchLocation.getPostcode(), is(2067));
+
+        await().until(() -> $("#pf-saved-searches-item-0").present());
     }
 }

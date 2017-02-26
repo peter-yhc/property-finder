@@ -42,7 +42,7 @@ public class SettingsController {
     @RequestMapping(value = "/settings/locations", method = RequestMethod.POST)
     public String addSavedLocation(@ModelAttribute("searchLocationForm") SearchLocationForm searchLocationForm) {
         settingsPort.addSavedLocation(searchLocationForm.parseData());
-        return "settings/settings";
+        return "redirect:/settings";
     }
 
     @RequestMapping(value = "/settings/locations", method = RequestMethod.DELETE)
