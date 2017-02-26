@@ -21,11 +21,7 @@ $(".pf-saved-searches-delete-button").click(function (event) {
     $.ajax({
         url: "/settings/locations",
         type: "DELETE",
-        data: JSON.stringify({
-            "suburb": searchLocationData.suburb,
-            "state": searchLocationData.state,
-            "postcode": searchLocationData.postcode
-        }),
+        data: JSON.stringify(searchLocationData),
         contentType: "application/json",
         success: function () {
             $("#pf-saved-searches-item-" + index).remove();
@@ -38,8 +34,8 @@ $(".pf-saved-searches-delete-button").click(function (event) {
 
 var parseSearchLocationText = function (locationText) {
     var locationTextSplit = locationText.split(" ");
-    var suburb = locationTextSplit[0];
+    var suburbName = locationTextSplit[0];
     var state = locationTextSplit[1].slice(0, -1);
     var postcode = locationTextSplit[2];
-    return {suburb: suburb, state: state, postcode: postcode};
+    return {suburbName: suburbName, state: state, postcode: postcode};
 };

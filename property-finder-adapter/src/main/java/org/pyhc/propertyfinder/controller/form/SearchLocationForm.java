@@ -15,6 +15,6 @@ public class SearchLocationForm {
         String suburb = contentSplit[0];
         String state = contentSplit[1].replace(",", "");
         String postcode = contentSplit[2];
-        return SearchLocation.builder().suburb(suburb).state(state).postcode(Integer.parseInt(postcode)).build();
+        return SearchLocation.builder().suburbName(suburb).state(state).postcode(Integer.parseInt(postcode)).build();
     }
 }

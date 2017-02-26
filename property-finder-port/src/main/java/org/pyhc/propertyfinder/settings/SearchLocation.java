@@ -12,7 +12,7 @@ import lombok.Getter;
 public class SearchLocation {
 
     @NotNull
-    private String suburb;
+    private String suburbName;
 
     @NotNull
     private String state;
@@ -25,6 +25,6 @@ public class SearchLocation {
 
     @Override
     public String toString() {
-        return String.format("%s %s, %s", suburb, state, postcode);
+        return String.format("%s %s, %s", suburbName, state, postcode);
     }
 }

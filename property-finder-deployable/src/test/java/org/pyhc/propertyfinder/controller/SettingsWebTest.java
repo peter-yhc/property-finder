@@ -34,8 +34,8 @@ public class SettingsWebTest extends AbstractWebTest {
     @Test
     public void canViewSettingsPage() {
         when(settingsPort.getSavedSearches()).thenReturn(asList(
-                SearchLocation.builder().suburb("Homebush").postcode(2140).state("NSW").build(),
-                SearchLocation.builder().suburb("Strathfield").postcode(2135).state("NSW").build()
+                SearchLocation.builder().suburbName("Homebush").postcode(2140).state("NSW").build(),
+                SearchLocation.builder().suburbName("Strathfield").postcode(2135).state("NSW").build()
         ));
 
         goTo("http://localhost:" + serverPort + "/" + "settings");
@@ -56,11 +56,11 @@ public class SettingsWebTest extends AbstractWebTest {
     @Test
     public void autocompleteOnSearchBar_ReturnsCorrectMatches() {
         when(settingsPort.getSearchableLocations()).thenReturn(asList(
-                SearchLocation.builder().suburb("Homebush").postcode(2140).state("NSW").build(),
-                SearchLocation.builder().suburb("Homebush West").postcode(2140).state("NSW").build(),
-                SearchLocation.builder().suburb("Sydney Olympic Park").postcode(2127).state("NSW").build(),
-                SearchLocation.builder().suburb("Auburn").postcode(2144).state("NSW").build(),
-                SearchLocation.builder().suburb("Strathfield").postcode(2135).state("NSW").build()
+                SearchLocation.builder().suburbName("Homebush").postcode(2140).state("NSW").build(),
+                SearchLocation.builder().suburbName("Homebush West").postcode(2140).state("NSW").build(),
+                SearchLocation.builder().suburbName("Sydney Olympic Park").postcode(2127).state("NSW").build(),
+                SearchLocation.builder().suburbName("Auburn").postcode(2144).state("NSW").build(),
+                SearchLocation.builder().suburbName("Strathfield").postcode(2135).state("NSW").build()
         ));
 
         goTo("http://localhost:" + serverPort + "/" + "settings");
@@ -78,11 +78,11 @@ public class SettingsWebTest extends AbstractWebTest {
     @Test
     public void canUseAutocompleteOnSearchBar_ReturnsNothingForNoMatches() {
         when(settingsPort.getSearchableLocations()).thenReturn(asList(
-                SearchLocation.builder().suburb("Homebush").postcode(2140).state("NSW").build(),
-                SearchLocation.builder().suburb("Homebush West").postcode(2140).state("NSW").build(),
-                SearchLocation.builder().suburb("Sydney Olympic Park").postcode(2127).state("NSW").build(),
-                SearchLocation.builder().suburb("Auburn").postcode(2144).state("NSW").build(),
-                SearchLocation.builder().suburb("Strathfield").postcode(2135).state("NSW").build()
+                SearchLocation.builder().suburbName("Homebush").postcode(2140).state("NSW").build(),
+                SearchLocation.builder().suburbName("Homebush West").postcode(2140).state("NSW").build(),
+                SearchLocation.builder().suburbName("Sydney Olympic Park").postcode(2127).state("NSW").build(),
+                SearchLocation.builder().suburbName("Auburn").postcode(2144).state("NSW").build(),
+                SearchLocation.builder().suburbName("Strathfield").postcode(2135).state("NSW").build()
         ));
 
         goTo("http://localhost:" + serverPort + "/" + "settings");
@@ -98,8 +98,8 @@ public class SettingsWebTest extends AbstractWebTest {
     @Test
     public void clickingDeleteButton_ForFirstRow_RemovesSavedSearch() throws Exception {
         when(settingsPort.getSavedSearches()).thenReturn(asList(
-                SearchLocation.builder().suburb("Homebush").postcode(2140).state("NSW").build(),
-                SearchLocation.builder().suburb("Strathfield").postcode(2135).state("NSW").build()
+                SearchLocation.builder().suburbName("Homebush").postcode(2140).state("NSW").build(),
+                SearchLocation.builder().suburbName("Strathfield").postcode(2135).state("NSW").build()
         ));
 
         goTo("http://localhost:" + serverPort + "/" + "settings");
@@ -114,7 +114,7 @@ public class SettingsWebTest extends AbstractWebTest {
         verify(settingsPort).removeSavedLocation(argumentCaptor.capture());
 
         SearchLocation searchLocation = argumentCaptor.getValue();
-        assertThat(searchLocation.getSuburb(), is("Homebush"));
+        assertThat(searchLocation.getSuburbName(), is("Homebush"));
         assertThat(searchLocation.getState(), is("NSW"));
         assertThat(searchLocation.getPostcode(), is(2140));
     }
@@ -122,8 +122,8 @@ public class SettingsWebTest extends AbstractWebTest {
     @Test
     public void clickingDeleteButton_ForSecondRow_RemovesSavedSearch() throws Exception {
         when(settingsPort.getSavedSearches()).thenReturn(asList(
-                SearchLocation.builder().suburb("Homebush").postcode(2140).state("NSW").build(),
-                SearchLocation.builder().suburb("Strathfield").postcode(2135).state("NSW").build()
+                SearchLocation.builder().suburbName("Homebush").postcode(2140).state("NSW").build(),
+                SearchLocation.builder().suburbName("Strathfield").postcode(2135).state("NSW").build()
         ));
         doNothing().when(settingsPort).removeSavedLocation(any());
 
@@ -139,7 +139,7 @@ public class SettingsWebTest extends AbstractWebTest {
         verify(settingsPort).removeSavedLocation(argumentCaptor.capture());
 
         SearchLocation searchLocation = argumentCaptor.getValue();
-        assertThat(searchLocation.getSuburb(), is("Strathfield"));
+        assertThat(searchLocation.getSuburbName(), is("Strathfield"));
         assertThat(searchLocation.getState(), is("NSW"));
         assertThat(searchLocation.getPostcode(), is(2135));
     }
@@ -149,7 +149,7 @@ public class SettingsWebTest extends AbstractWebTest {
         when(settingsPort.getSavedSearches())
                 .thenReturn(emptyList())
                 .thenReturn(singletonList(
-                        SearchLocation.builder().suburb("Chatswood").postcode(2067).state("NSW").build()
+                        SearchLocation.builder().suburbName("Chatswood").postcode(2067).state("NSW").build()
                 ));
         doNothing().when(settingsPort).addSavedLocation(any());
 
@@ -167,7 +167,7 @@ public class SettingsWebTest extends AbstractWebTest {
         verify(settingsPort).addSavedLocation(argumentCaptor.capture());
 
         SearchLocation searchLocation = argumentCaptor.getValue();
-        assertThat(searchLocation.getSuburb(), is("Chatswood"));
+        assertThat(searchLocation.getSuburbName(), is("Chatswood"));
         assertThat(searchLocation.getState(), is("NSW"));
         assertThat(searchLocation.getPostcode(), is(2067));
 
