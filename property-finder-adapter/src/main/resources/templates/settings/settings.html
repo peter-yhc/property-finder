@@ -16,16 +16,18 @@
         </div>
         <div class="row">
             <h4>Add locations</h4>
-            <div class="input-group">
-                <input id="pf-search-location-input" type="text" class="form-control" placeholder="Add a location"/>
-                <div class="input-group-btn">
-                    <button class="btn btn-primary">Search</button>
+            <form action="#" th:action="@{/settings/locations}" th:object="${searchLocationForm}" method="post">
+                <div class="input-group">
+                    <input id="pf-search-location-input" type="text" class="form-control" placeholder="Add a location" th:field="*{content}"/>
+                    <div class="input-group-btn">
+                        <button id="pf-search-location-add" class="btn btn-primary">Add</button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
         <br/>
         <div class="row">
-            <h4>Currently Watching</h4> 
+            <h4>Currently Watching</h4>
             <ul id="pf-saved-searches-list" class="list-group">
                 <li th:each="savedSearch,iter : ${savedSearches}" th:id="${'pf-saved-searches-item-' + iter.index}"
                     class="list-group-item pf-search-location-listing clearfix">

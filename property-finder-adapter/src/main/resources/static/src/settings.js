@@ -17,24 +17,29 @@ $(".pf-saved-searches-delete-button").click(function (event) {
     var index = deleteButtonIdSplit[deleteButtonIdSplit.length - 1];
 
     var locationText = $("#pf-saved-searches-item-" + index).text().trim();
-    var locationTextSplit = locationText.split(" ");
-    var suburb = locationTextSplit[0];
-    var state = locationTextSplit[1].slice(0, -1);
-    var postcode = locationTextSplit[2];
+    var searchLocationData = parseSearchLocationText(locationText);
     $.ajax({
         url: "/settings/locations",
         type: "DELETE",
         data: JSON.stringify({
-            "suburb": suburb,
-            "state": state,
-            "postcode": postcode
+            "suburb": searchLocationData.suburb,
+            "state": searchLocationData.state,
+            "postcode": searchLocationData.postcode
         }),
         contentType: "application/json",
         success: function () {
             $("#pf-saved-searches-item-" + index).remove();
         },
-        error: function(error) {
+        error: function (error) {
             console.log("Failed to delete saved search: " + error);
         }
     });
 });
+
+var parseSearchLocationText = function (locationText) {
+    var locationTextSplit = locationText.split(" ");
+    var suburb = locationTextSplit[0];
+    var state = locationTextSplit[1].slice(0, -1);
+    var postcode = locationTextSplit[2];
+    return {suburb: suburb, state: state, postcode: postcode};
+};

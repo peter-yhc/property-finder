@@ -143,4 +143,24 @@ public class SettingsWebTest extends AbstractWebTest {
         assertThat(searchLocation.getState(), is("NSW"));
         assertThat(searchLocation.getPostcode(), is(2135));
     }
+
+    @Test
+    public void canAddNewSavedLocation() throws Exception {
+        doNothing().when(settingsPort).addSavedLocation(any());
+        goTo("http://localhost:" + serverPort + "/" + "settings");
+
+        WebElement searchInput = getDriver().findElement(By.id("pf-search-location-input"));
+        searchInput.click();
+        searchInput.sendKeys("Chatswood NSW, 2067");
+
+        $("#pf-search-location-add").click();
+
+        ArgumentCaptor<SearchLocation> argumentCaptor = ArgumentCaptor.forClass(SearchLocation.class);
+        verify(settingsPort).addSavedLocation(argumentCaptor.capture());
+
+        SearchLocation searchLocation = argumentCaptor.getValue();
+        assertThat(searchLocation.getSuburb(), is("Chatswood"));
+        assertThat(searchLocation.getState(), is("NSW"));
+        assertThat(searchLocation.getPostcode(), is(2067));
+    }
 }

@@ -18,6 +18,11 @@ public class SettingsService implements SettingsPort {
     }
 
     @Override
+    public void addSavedLocation(SearchLocation searchLocation) {
+
+    }
+
+    @Override
     public void removeSavedLocation(SearchLocation searchLocation) {
 
     }
