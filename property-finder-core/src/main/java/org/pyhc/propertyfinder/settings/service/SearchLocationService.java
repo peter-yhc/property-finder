@@ -2,9 +2,10 @@ package org.pyhc.propertyfinder.settings.service;
 
 import org.pyhc.propertyfinder.settings.DataObjectConverter;
 import org.pyhc.propertyfinder.settings.SearchLocation;
-import org.pyhc.propertyfinder.settings.SettingsPort;
+import org.pyhc.propertyfinder.settings.SearchLocationPort;
 import org.pyhc.propertyfinder.settings.model.SavedSearch;
 import org.pyhc.propertyfinder.settings.model.SavedSearchRepository;
+import org.pyhc.propertyfinder.settings.model.SuburbRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +17,13 @@ import static java.util.stream.Collectors.toList;
 import static org.pyhc.propertyfinder.settings.DataObjectConverter.convertToSavedSearch;
 
 @Service
-public class SavedSearchService implements SettingsPort {
+public class SearchLocationService implements SearchLocationPort {
 
     @Autowired
     private SavedSearchRepository savedSearchRepository;
+
+    @Autowired
+    private SuburbRepository suburbRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -32,7 +36,10 @@ public class SavedSearchService implements SettingsPort {
 
     @Override
     public List<SearchLocation> getSearchableLocations() {
-        return null;
+        return suburbRepository.findAll()
+                .stream()
+                .map(DataObjectConverter::convertToSearchLocation)
+                .collect(toList());
     }
 
     @Override

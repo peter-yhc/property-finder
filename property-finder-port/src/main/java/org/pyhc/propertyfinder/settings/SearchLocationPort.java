@@ -2,7 +2,7 @@ package org.pyhc.propertyfinder.settings;
 
 import java.util.List;
 
-public interface SettingsPort {
+public interface SearchLocationPort {
 
     List<SearchLocation> getSavedSearches();
 

@@ -2,7 +2,7 @@ package org.pyhc.propertyfinder.controller;
 
 import org.pyhc.propertyfinder.controller.form.SearchLocationForm;
 import org.pyhc.propertyfinder.settings.SearchLocation;
-import org.pyhc.propertyfinder.settings.SettingsPort;
+import org.pyhc.propertyfinder.settings.SearchLocationPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,11 +18,11 @@ import java.util.stream.Collectors;
 public class SettingsController {
 
     @Autowired
-    private SettingsPort settingsPort;
+    private SearchLocationPort searchLocationPort;
 
     @RequestMapping("/settings")
     public String settingHome(Model model) {
-        List<SearchLocation> searchLocations = settingsPort.getSavedSearches();
+        List<SearchLocation> searchLocations = searchLocationPort.getSavedSearches();
 
         model.addAttribute("savedSearches", searchLocations);
         model.addAttribute("searchLocationForm", new SearchLocationForm());
@@ -32,7 +32,7 @@ public class SettingsController {
     @RequestMapping(value = "/settings/locations", method = RequestMethod.GET)
     @ResponseBody
     public List<String> getSearchableLocations() {
-        List<SearchLocation> searchableLocations = settingsPort.getSearchableLocations();
+        List<SearchLocation> searchableLocations = searchLocationPort.getSearchableLocations();
         return searchableLocations
                 .stream()
                 .map(SearchLocation::toString)
@@ -41,14 +41,14 @@ public class SettingsController {
 
     @RequestMapping(value = "/settings/locations", method = RequestMethod.POST)
     public String addSavedLocation(@ModelAttribute("searchLocationForm") SearchLocationForm searchLocationForm) {
-        settingsPort.addSavedLocation(searchLocationForm.parseData());
+        searchLocationPort.addSavedLocation(searchLocationForm.parseData());
         return "redirect:/settings";
     }
 
     @RequestMapping(value = "/settings/locations", method = RequestMethod.DELETE)
     @ResponseBody
     public ResponseEntity<Void> removeSavedLocation(@RequestBody @NotNull @Valid SearchLocation searchLocation) {
-        settingsPort.removeSavedLocation(searchLocation);
+        searchLocationPort.removeSavedLocation(searchLocation);
         return ResponseEntity.ok().build();
     }
 

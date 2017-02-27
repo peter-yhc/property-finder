@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.pyhc.propertyfinder.configuration.AdapterConfiguration;
-import org.pyhc.propertyfinder.settings.SettingsPort;
+import org.pyhc.propertyfinder.settings.SearchLocationPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
@@ -64,8 +64,8 @@ public abstract class HttpWebScraper_Base_Test {
         }
 
         @Bean
-        public SettingsPort settingsPort() {
-            return Mockito.mock(SettingsPort.class);
+        public SearchLocationPort searchLocationPort() {
+            return Mockito.mock(SearchLocationPort.class);
         }
     }
 }

@@ -8,7 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.pyhc.propertyfinder.settings.SearchLocation;
-import org.pyhc.propertyfinder.settings.SettingsPort;
+import org.pyhc.propertyfinder.settings.SearchLocationPort;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.concurrent.TimeUnit;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 public class SettingsWebTest extends AbstractWebTest {
 
     @MockBean
-    private SettingsPort settingsPort;
+    private SearchLocationPort searchLocationPort;
 
     @Override
     public String getWebDriver() {
@@ -33,7 +33,7 @@ public class SettingsWebTest extends AbstractWebTest {
 
     @Test
     public void canViewSettingsPage() {
-        when(settingsPort.getSavedSearches()).thenReturn(asList(
+        when(searchLocationPort.getSavedSearches()).thenReturn(asList(
                 SearchLocation.builder().suburbName("Homebush").postcode(2140).state("NSW").build(),
                 SearchLocation.builder().suburbName("Strathfield").postcode(2135).state("NSW").build()
         ));
@@ -50,12 +50,12 @@ public class SettingsWebTest extends AbstractWebTest {
         assertThat($("#pf-saved-searches-delete-0").present(), is(true));
         assertThat($("#pf-saved-searches-delete-1").present(), is(true));
 
-        verify(settingsPort).getSavedSearches();
+        verify(searchLocationPort).getSavedSearches();
     }
 
     @Test
     public void autocompleteOnSearchBar_ReturnsCorrectMatches() {
-        when(settingsPort.getSearchableLocations()).thenReturn(asList(
+        when(searchLocationPort.getSearchableLocations()).thenReturn(asList(
                 SearchLocation.builder().suburbName("Homebush").postcode(2140).state("NSW").build(),
                 SearchLocation.builder().suburbName("Homebush West").postcode(2140).state("NSW").build(),
                 SearchLocation.builder().suburbName("Sydney Olympic Park").postcode(2127).state("NSW").build(),
@@ -77,7 +77,7 @@ public class SettingsWebTest extends AbstractWebTest {
 
     @Test
     public void canUseAutocompleteOnSearchBar_ReturnsNothingForNoMatches() {
-        when(settingsPort.getSearchableLocations()).thenReturn(asList(
+        when(searchLocationPort.getSearchableLocations()).thenReturn(asList(
                 SearchLocation.builder().suburbName("Homebush").postcode(2140).state("NSW").build(),
                 SearchLocation.builder().suburbName("Homebush West").postcode(2140).state("NSW").build(),
                 SearchLocation.builder().suburbName("Sydney Olympic Park").postcode(2127).state("NSW").build(),
@@ -97,7 +97,7 @@ public class SettingsWebTest extends AbstractWebTest {
 
     @Test
     public void clickingDeleteButton_ForFirstRow_RemovesSavedSearch() throws Exception {
-        when(settingsPort.getSavedSearches()).thenReturn(asList(
+        when(searchLocationPort.getSavedSearches()).thenReturn(asList(
                 SearchLocation.builder().suburbName("Homebush").postcode(2140).state("NSW").build(),
                 SearchLocation.builder().suburbName("Strathfield").postcode(2135).state("NSW").build()
         ));
@@ -111,7 +111,7 @@ public class SettingsWebTest extends AbstractWebTest {
         await().until(() -> !$("#pf-saved-searches-item-0").present());
 
         ArgumentCaptor<SearchLocation> argumentCaptor = ArgumentCaptor.forClass(SearchLocation.class);
-        verify(settingsPort).removeSavedLocation(argumentCaptor.capture());
+        verify(searchLocationPort).removeSavedLocation(argumentCaptor.capture());
 
         SearchLocation searchLocation = argumentCaptor.getValue();
         assertThat(searchLocation.getSuburbName(), is("Homebush"));
@@ -121,11 +121,11 @@ public class SettingsWebTest extends AbstractWebTest {
 
     @Test
     public void clickingDeleteButton_ForSecondRow_RemovesSavedSearch() throws Exception {
-        when(settingsPort.getSavedSearches()).thenReturn(asList(
+        when(searchLocationPort.getSavedSearches()).thenReturn(asList(
                 SearchLocation.builder().suburbName("Homebush").postcode(2140).state("NSW").build(),
                 SearchLocation.builder().suburbName("Strathfield").postcode(2135).state("NSW").build()
         ));
-        doNothing().when(settingsPort).removeSavedLocation(any());
+        doNothing().when(searchLocationPort).removeSavedLocation(any());
 
         goTo("http://localhost:" + serverPort + "/" + "settings");
 
@@ -136,7 +136,7 @@ public class SettingsWebTest extends AbstractWebTest {
         await().until(() -> !$("#pf-saved-searches-item-1").present());
 
         ArgumentCaptor<SearchLocation> argumentCaptor = ArgumentCaptor.forClass(SearchLocation.class);
-        verify(settingsPort).removeSavedLocation(argumentCaptor.capture());
+        verify(searchLocationPort).removeSavedLocation(argumentCaptor.capture());
 
         SearchLocation searchLocation = argumentCaptor.getValue();
         assertThat(searchLocation.getSuburbName(), is("Strathfield"));
@@ -146,12 +146,12 @@ public class SettingsWebTest extends AbstractWebTest {
 
     @Test
     public void canAddNewSavedLocation_AndReloadPage() throws Exception {
-        when(settingsPort.getSavedSearches())
+        when(searchLocationPort.getSavedSearches())
                 .thenReturn(emptyList())
                 .thenReturn(singletonList(
                         SearchLocation.builder().suburbName("Chatswood").postcode(2067).state("NSW").build()
                 ));
-        doNothing().when(settingsPort).addSavedLocation(any());
+        doNothing().when(searchLocationPort).addSavedLocation(any());
 
         goTo("http://localhost:" + serverPort + "/" + "settings");
 
@@ -164,7 +164,7 @@ public class SettingsWebTest extends AbstractWebTest {
         $("#pf-search-location-add").click();
 
         ArgumentCaptor<SearchLocation> argumentCaptor = ArgumentCaptor.forClass(SearchLocation.class);
-        verify(settingsPort).addSavedLocation(argumentCaptor.capture());
+        verify(searchLocationPort).addSavedLocation(argumentCaptor.capture());
 
         SearchLocation searchLocation = argumentCaptor.getValue();
         assertThat(searchLocation.getSuburbName(), is("Chatswood"));

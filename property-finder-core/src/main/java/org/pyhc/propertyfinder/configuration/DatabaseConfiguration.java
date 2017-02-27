@@ -7,7 +7,10 @@ import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @Configuration
-@EnableMongoRepositories(basePackages = "org.pyhc.propertyfinder.persistence")
+@EnableMongoRepositories(basePackages = {
+        "org.pyhc.propertyfinder.settings.model",
+        "org.pyhc.propertyfinder.persistence"
+})
 public class DatabaseConfiguration extends AbstractMongoConfiguration {
 
     @Override
