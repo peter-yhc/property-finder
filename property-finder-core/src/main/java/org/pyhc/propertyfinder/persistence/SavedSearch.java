@@ -9,6 +9,9 @@ public class SavedSearch {
 
     @Getter(AccessLevel.NONE)
     private String _id;
+    private String name;
+    private String state;
+    private Integer postcode;
 
     @Builder
     private SavedSearch(String name, String state, Integer postcode) {
@@ -19,8 +22,4 @@ public class SavedSearch {
 
     private SavedSearch() {
     }
-
-    private String name;
-    private String state;
-    private Integer postcode;
 }
