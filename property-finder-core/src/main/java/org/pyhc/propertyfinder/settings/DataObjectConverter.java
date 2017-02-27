@@ -1,8 +1,8 @@
 package org.pyhc.propertyfinder.settings;
 
-import org.pyhc.propertyfinder.persistence.SavedSearch;
+import org.pyhc.propertyfinder.settings.model.SavedSearch;
 
-public interface SettingsDataObjectConverter {
+public interface DataObjectConverter {
     static SearchLocation convertToSearchLocation(SavedSearch savedSearch) {
         return SearchLocation.builder()
                 .suburbName(savedSearch.getName())

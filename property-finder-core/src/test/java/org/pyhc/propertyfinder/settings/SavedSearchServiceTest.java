@@ -4,8 +4,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.pyhc.propertyfinder.configuration.DatabaseConfiguration;
 import org.pyhc.propertyfinder.configuration.MongoExecutionListener;
-import org.pyhc.propertyfinder.persistence.SavedSearch;
-import org.pyhc.propertyfinder.persistence.SavedSearchRepository;
+import org.pyhc.propertyfinder.settings.model.SavedSearch;
+import org.pyhc.propertyfinder.settings.model.SavedSearchRepository;
+import org.pyhc.propertyfinder.settings.service.SavedSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
@@ -20,19 +21,19 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {DatabaseConfiguration.class, SettingsServiceTest.ContextConfiguration.class})
+@SpringBootTest(classes = {DatabaseConfiguration.class, SavedSearchServiceTest.ContextConfiguration.class})
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class, MongoExecutionListener.class})
-public class SettingsServiceTest {
+public class SavedSearchServiceTest {
 
     @Autowired
     private SavedSearchRepository savedSearchRepository;
 
     @Autowired
-    private SettingsService settingsService;
+    private SavedSearchService savedSearchService;
 
     @Test
     public void canSaveSearchLocations() throws Exception {
-        settingsService.addSavedLocation(SearchLocation.builder().suburbName("Some suburb").state("some state").postcode(1111).build());
+        savedSearchService.addSavedLocation(SearchLocation.builder().suburbName("Some suburb").state("some state").postcode(1111).build());
 
         assertThat(savedSearchRepository.findAll().size(), is(1));
     }
@@ -40,10 +41,10 @@ public class SettingsServiceTest {
     @Test
     public void shouldNotSaveSameSearchLocationMoreThanOnce() throws Exception {
         SearchLocation searchLocation = SearchLocation.builder().suburbName("Some suburb").state("some state").postcode(1111).build();
-        settingsService.addSavedLocation(searchLocation);
-        settingsService.addSavedLocation(searchLocation);
-        settingsService.addSavedLocation(searchLocation);
-        settingsService.addSavedLocation(searchLocation);
+        savedSearchService.addSavedLocation(searchLocation);
+        savedSearchService.addSavedLocation(searchLocation);
+        savedSearchService.addSavedLocation(searchLocation);
+        savedSearchService.addSavedLocation(searchLocation);
 
         assertThat(savedSearchRepository.findAll().size(), is(1));
     }
@@ -52,7 +53,7 @@ public class SettingsServiceTest {
     public void canRetrieveSearchLocations() throws Exception {
         savedSearchRepository.save(SavedSearch.builder().name("A++ Suburb").state("Best State").postcode(1234).build());
 
-        List<SearchLocation> savedSearches = settingsService.getSavedSearches();
+        List<SearchLocation> savedSearches = savedSearchService.getSavedSearches();
 
         assertThat(savedSearches.size(), is(1));
 
@@ -67,7 +68,7 @@ public class SettingsServiceTest {
         savedSearchRepository.save(SavedSearch.builder().name("A++ Suburb").state("Best State").postcode(1234).build());
         assertThat(savedSearchRepository.findAll().size(), is(1));
 
-        settingsService.removeSavedLocation(
+        savedSearchService.removeSavedLocation(
                 SearchLocation.builder().suburbName("A++ Suburb").state("Best State").postcode(1234).build()
         );
 
@@ -78,8 +79,8 @@ public class SettingsServiceTest {
     static class ContextConfiguration {
 
         @Bean
-        public SettingsService settingsService() {
-            return new SettingsService();
+        public SavedSearchService settingsService() {
+            return new SavedSearchService();
         }
     }
 }

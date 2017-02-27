@@ -1,7 +1,10 @@
-package org.pyhc.propertyfinder.settings;
+package org.pyhc.propertyfinder.settings.service;
 
-import org.pyhc.propertyfinder.persistence.SavedSearch;
-import org.pyhc.propertyfinder.persistence.SavedSearchRepository;
+import org.pyhc.propertyfinder.settings.DataObjectConverter;
+import org.pyhc.propertyfinder.settings.SearchLocation;
+import org.pyhc.propertyfinder.settings.SettingsPort;
+import org.pyhc.propertyfinder.settings.model.SavedSearch;
+import org.pyhc.propertyfinder.settings.model.SavedSearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,10 +13,10 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
-import static org.pyhc.propertyfinder.settings.SettingsDataObjectConverter.convertToSavedSearch;
+import static org.pyhc.propertyfinder.settings.DataObjectConverter.convertToSavedSearch;
 
 @Service
-public class SettingsService implements SettingsPort {
+public class SavedSearchService implements SettingsPort {
 
     @Autowired
     private SavedSearchRepository savedSearchRepository;
@@ -23,7 +26,7 @@ public class SettingsService implements SettingsPort {
     public List<SearchLocation> getSavedSearches() {
         return savedSearchRepository.findAll()
                 .stream()
-                .map(SettingsDataObjectConverter::convertToSearchLocation)
+                .map(DataObjectConverter::convertToSearchLocation)
                 .collect(toList());
     }
 
