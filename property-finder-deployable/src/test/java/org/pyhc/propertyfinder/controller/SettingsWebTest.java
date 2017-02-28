@@ -149,7 +149,7 @@ public class SettingsWebTest extends AbstractWebTest {
         when(searchLocationPort.getSavedSearches())
                 .thenReturn(emptyList())
                 .thenReturn(singletonList(
-                        SearchLocation.builder().suburbName("Chatswood").postcode(2067).state("NSW").build()
+                        SearchLocation.builder().suburbName("North Strathfield").postcode(2067).state("NSW").build()
                 ));
         doNothing().when(searchLocationPort).addSavedLocation(any());
 
@@ -159,7 +159,7 @@ public class SettingsWebTest extends AbstractWebTest {
 
         WebElement searchInput = getDriver().findElement(By.id("pf-search-location-input"));
         searchInput.click();
-        searchInput.sendKeys("Chatswood NSW, 2067");
+        searchInput.sendKeys("North Strathfield NSW, 2067");
 
         $("#pf-search-location-add").click();
 
@@ -167,7 +167,7 @@ public class SettingsWebTest extends AbstractWebTest {
         verify(searchLocationPort).addSavedLocation(argumentCaptor.capture());
 
         SearchLocation searchLocation = argumentCaptor.getValue();
-        assertThat(searchLocation.getSuburbName(), is("Chatswood"));
+        assertThat(searchLocation.getSuburbName(), is("North Strathfield"));
         assertThat(searchLocation.getState(), is("NSW"));
         assertThat(searchLocation.getPostcode(), is(2067));
 

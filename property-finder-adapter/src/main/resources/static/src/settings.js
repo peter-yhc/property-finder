@@ -33,9 +33,10 @@ $(".pf-saved-searches-delete-button").click(function (event) {
 });
 
 var parseSearchLocationText = function (locationText) {
-    var locationTextSplit = locationText.split(" ");
-    var suburbName = locationTextSplit[0];
-    var state = locationTextSplit[1].slice(0, -1);
-    var postcode = locationTextSplit[2];
-    return {suburbName: suburbName, state: state, postcode: postcode};
+    var parsedText = locationText.match(/([A-Za-z ]+) (NSW|WA|NT|QLD|SA|TA|VIC), ([0-9]{4})/);
+    return {
+        suburbName: parsedText[1],
+        state: parsedText[2],
+        postcode: parsedText[3]
+    };
 };
