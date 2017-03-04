@@ -33,10 +33,17 @@ $(".pf-saved-searches-delete-button").click(function (event) {
 });
 
 var parseSearchLocationText = function (locationText) {
-    var parsedText = locationText.match(/([A-Za-z ]+) (NSW|WA|NT|QLD|SA|TA|VIC), ([0-9]{4})/);
-    return {
-        suburbName: parsedText[1],
-        state: parsedText[2],
-        postcode: parsedText[3]
-    };
+    try {
+        var parsedText = locationText.match(/([A-Za-z ]+) (NSW|WA|NT|QLD|SA|TA|VIC), ([0-9]{4})/);
+        if (parsedText.length <= 3) {
+            throw "Unable to parse: " + locationText;
+        }
+        return {
+            suburbName: parsedText[1],
+            state: parsedText[2],
+            postcode: parsedText[3]
+        };
+    } catch (err) {
+        console.log(err);
+    }
 };
