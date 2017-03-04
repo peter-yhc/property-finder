@@ -13,7 +13,7 @@ import static org.springframework.test.web.client.ExpectedCount.once;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-public class HttpWebScraper_PropertyPage_Test extends HttpWebScraper_Base_Test {
+public class WebScraper_PropertyPage_Test extends WebScraper_Base_Test {
 
     @Test
     public void canQueryRealEstatePropertyProfile1() throws Exception {
@@ -24,7 +24,7 @@ public class HttpWebScraper_PropertyPage_Test extends HttpWebScraper_Base_Test {
         Query realEstateQuery = RealEstateLink.builder()
                 .propertyLink("/property-apartment-nsw-hornsby-124578062")
                 .build();
-        PropertyProfile propertyProfile = httpWebScraper.queryProfilePage(realEstateQuery).get();
+        PropertyProfile propertyProfile = webScraper.queryProfilePage(realEstateQuery).get();
 
         assertThat(propertyProfile.getPropertyLink(), is("http://www.realestate.com.au/property-apartment-nsw-hornsby-124578062"));
         assertThat(propertyProfile.getAddress(), is("4/10 Albert Street"));
@@ -47,7 +47,7 @@ public class HttpWebScraper_PropertyPage_Test extends HttpWebScraper_Base_Test {
         Query realEstateQuery = RealEstateLink.builder()
                 .propertyLink("/property-unit-nsw-strathfield-124523042")
                 .build();
-        PropertyProfile propertyProfile = httpWebScraper.queryProfilePage(realEstateQuery).get();
+        PropertyProfile propertyProfile = webScraper.queryProfilePage(realEstateQuery).get();
 
         assertThat(propertyProfile.getPropertyLink(), is("http://www.realestate.com.au/property-unit-nsw-strathfield-124523042"));
         assertThat(propertyProfile.getAddress(), is("102/5-7 Beresford Road"));
@@ -70,7 +70,7 @@ public class HttpWebScraper_PropertyPage_Test extends HttpWebScraper_Base_Test {
         Query realEstateQuery = RealEstateLink.builder()
                 .propertyLink("/property-apartment-nsw-naremburn-124506658")
                 .build();
-        PropertyProfile propertyProfile = httpWebScraper.queryProfilePage(realEstateQuery).get();
+        PropertyProfile propertyProfile = webScraper.queryProfilePage(realEstateQuery).get();
 
         assertThat(propertyProfile.getPropertyLink(), is("http://www.realestate.com.au/property-apartment-nsw-naremburn-124506658"));
         assertThat(propertyProfile.getAddress(), is("9/34 Station Street"));
@@ -93,7 +93,7 @@ public class HttpWebScraper_PropertyPage_Test extends HttpWebScraper_Base_Test {
         Query realEstateQuery = RealEstateLink.builder()
                 .propertyLink("/property-studio-nsw-st+leonards-124640542")
                 .build();
-        PropertyProfile propertyProfile = httpWebScraper.queryProfilePage(realEstateQuery).get();
+        PropertyProfile propertyProfile = webScraper.queryProfilePage(realEstateQuery).get();
 
         assertThat(propertyProfile.getPropertyLink(), is("http://www.realestate.com.au/property-studio-nsw-st+leonards-124640542"));
         assertThat(propertyProfile.getAddress(), is("102/38 Atchison Street"));

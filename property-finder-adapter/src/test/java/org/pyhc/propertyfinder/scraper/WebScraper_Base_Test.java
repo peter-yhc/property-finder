@@ -21,8 +21,8 @@ import java.nio.file.Paths;
 
 @SuppressWarnings("ALL")
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {AdapterConfiguration.class, HttpWebScraper_Base_Test.ContextConfiguration.class}, webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-public abstract class HttpWebScraper_Base_Test {
+@SpringBootTest(classes = {AdapterConfiguration.class, WebScraper_Base_Test.ContextConfiguration.class}, webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+public abstract class WebScraper_Base_Test {
 
     protected static final String REALESTATE_DOMAIN = "http://www.realestate.com.au";
 
@@ -30,7 +30,7 @@ public abstract class HttpWebScraper_Base_Test {
     protected RestTemplate restTemplate;
 
     @Autowired
-    protected HttpWebScraper httpWebScraper;
+    protected WebScraper webScraper;
 
     protected MockRestServiceServer mockServer;
 
@@ -59,8 +59,8 @@ public abstract class HttpWebScraper_Base_Test {
         }
 
         @Bean
-        public HttpWebScraper httpWebScraper() {
-            return new HttpWebScraper();
+        public WebScraper ebScraper() {
+            return new WebScraper();
         }
 
         @Bean

@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Service
-public class HttpWebScraper implements WebScraper {
+public class WebScraper implements Scraper {
 
     @Autowired
     private CompletableRestTemplate completableRestTemplate;

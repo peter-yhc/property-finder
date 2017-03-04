@@ -3,7 +3,7 @@ package org.pyhc.propertyfinder.archive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.pyhc.propertyfinder.configuration.CoreConfiguration;
-import org.pyhc.propertyfinder.scraper.WebScraper;
+import org.pyhc.propertyfinder.scraper.Scraper;
 import org.pyhc.propertyfinder.scraper.realestate.query.RealEstateQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.verify;
 public class PropertyArchiverTest {
 
     @MockBean
-    private WebScraper webScraper;
+    private Scraper scraper;
 
     @Autowired
     private PropertyArchiver propertyArchiver;
@@ -27,6 +27,6 @@ public class PropertyArchiverTest {
         propertyArchiver.archive();
 
         RealEstateQuery homebushQuery = RealEstateQuery.builder().suburb("Homebush").build();
-        verify(webScraper).search(homebushQuery);
+        verify(scraper).search(homebushQuery);
     }
 }

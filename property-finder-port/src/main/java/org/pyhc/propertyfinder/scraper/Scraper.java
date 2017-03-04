@@ -6,7 +6,7 @@ import org.pyhc.propertyfinder.scraper.realestate.query.Query;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public interface WebScraper {
+public interface Scraper {
 
     CompletableFuture<List<Query>> search(Query query);
 
