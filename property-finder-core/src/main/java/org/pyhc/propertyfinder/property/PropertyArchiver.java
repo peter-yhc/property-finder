@@ -1,7 +1,7 @@
 package org.pyhc.propertyfinder.property;
 
 import org.pyhc.propertyfinder.scraper.Scraper;
-import org.pyhc.propertyfinder.scraper.realestate.query.RealEstateQuery;
+import org.pyhc.propertyfinder.scraper.realestate.result.PropertyProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +11,8 @@ public class PropertyArchiver {
     @Autowired
     private Scraper scraper;
 
-    public void archive() {
-//        scraper.search(RealEstateQuery.builder().suburb("Homebush").build());
+    public void archive(PropertyProfile propertyProfile) {
+        throw new UnsupportedOperationException();
     }
 
 }
