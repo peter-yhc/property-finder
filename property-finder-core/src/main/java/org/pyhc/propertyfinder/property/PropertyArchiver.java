@@ -1,4 +1,4 @@
-package org.pyhc.propertyfinder.archive;
+package org.pyhc.propertyfinder.property;
 
 import org.pyhc.propertyfinder.scraper.Scraper;
 import org.pyhc.propertyfinder.scraper.realestate.query.RealEstateQuery;

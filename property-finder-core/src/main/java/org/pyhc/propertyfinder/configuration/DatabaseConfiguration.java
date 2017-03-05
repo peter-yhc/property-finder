@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @Configuration
 @EnableMongoRepositories(basePackages = {
         "org.pyhc.propertyfinder.settings.model",
-        "org.pyhc.propertyfinder.persistence"
+        "org.pyhc.propertyfinder.property.model"
 })
 public class DatabaseConfiguration extends AbstractMongoConfiguration {
 
@@ -25,6 +25,6 @@ public class DatabaseConfiguration extends AbstractMongoConfiguration {
 
     @Override
     protected String getMappingBasePackage() {
-        return "org.pyhc.propertyfinder.persistence";
+        return "org.pyhc.propertyfinder.property.model";
     }
 }

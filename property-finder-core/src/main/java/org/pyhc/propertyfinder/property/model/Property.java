@@ -1,4 +1,4 @@
-package org.pyhc.propertyfinder.persistence;
+package org.pyhc.propertyfinder.property.model;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

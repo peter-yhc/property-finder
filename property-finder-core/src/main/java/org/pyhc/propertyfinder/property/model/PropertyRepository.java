@@ -1,4 +1,4 @@
-package org.pyhc.propertyfinder.persistence;
+package org.pyhc.propertyfinder.property.model;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;

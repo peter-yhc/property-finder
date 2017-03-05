@@ -1,4 +1,4 @@
-package org.pyhc.propertyfinder.archive;
+package org.pyhc.propertyfinder.property;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
