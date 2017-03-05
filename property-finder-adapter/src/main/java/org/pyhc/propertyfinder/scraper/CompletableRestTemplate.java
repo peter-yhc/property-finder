@@ -21,4 +21,10 @@ public class CompletableRestTemplate {
                 .supplyAsync(() -> restTemplate.getForObject(URI.create(query.toString()), String.class))
                 .thenApply(Jsoup::parse);
     }
+
+    public CompletableFuture<Document> performGet(String link) {
+        return CompletableFuture
+                .supplyAsync(() -> restTemplate.getForObject(URI.create(link), String.class))
+                .thenApply(Jsoup::parse);
+    }
 }

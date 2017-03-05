@@ -1,16 +1,18 @@
 package org.pyhc.propertyfinder.scraper;
 
-import org.pyhc.propertyfinder.scraper.realestate.query.RealEstateQuery;
-import org.pyhc.propertyfinder.scraper.realestate.result.PropertyProfile;
-import org.pyhc.propertyfinder.scraper.realestate.query.Query;
 import org.pyhc.propertyfinder.scraper.realestate.RealEstateProfileParser;
 import org.pyhc.propertyfinder.scraper.realestate.RealEstateSearchParser;
+import org.pyhc.propertyfinder.scraper.realestate.query.Query;
+import org.pyhc.propertyfinder.scraper.realestate.query.RealEstateQuery;
+import org.pyhc.propertyfinder.scraper.realestate.result.PropertyLink;
+import org.pyhc.propertyfinder.scraper.realestate.result.PropertyProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class WebScraper implements Scraper {
@@ -19,16 +21,21 @@ public class WebScraper implements Scraper {
     private CompletableRestTemplate completableRestTemplate;
 
     @Override
-    public CompletableFuture<List<Query>> search(SearchOptions searchOptions) {
+    public CompletableFuture<List<PropertyLink>> search(SearchOptions searchOptions) {
         RealEstateQuery realEstateQuery = RealEstateQuery.fromSearchOptions(searchOptions);
-        return search(realEstateQuery);
+        return search(realEstateQuery)
+                .thenApply(results -> results
+                        .stream()
+                        .map(query -> new PropertyLink(query.toString()))
+                        .collect(toList())
+                );
     }
 
     private CompletableFuture<List<Query>> search(Query query) {
         return completableRestTemplate.performGet(query)
                 .thenApply(RealEstateSearchParser::parse)
                 .thenApply(searchResult -> {
-                    List<Query> queries = searchResult.getProfileLinks().stream().collect(Collectors.toList());
+                    List<Query> queries = searchResult.getProfileLinks().stream().collect(toList());
                     if (searchResult.hasNextPageLink()) {
                         search(searchResult.getNextPageLink()).thenAccept(queries::addAll).join();
                     }
@@ -37,9 +44,9 @@ public class WebScraper implements Scraper {
     }
 
     @Override
-    public CompletableFuture<PropertyProfile> queryProfilePage(Query query) {
-        return completableRestTemplate.performGet(query)
-                .thenApply(document -> RealEstateProfileParser.parse(document, query.toString()));
+    public CompletableFuture<PropertyProfile> queryProfilePage(PropertyLink propertyLink) {
+        return completableRestTemplate.performGet(propertyLink.getLink())
+                .thenApply(document -> RealEstateProfileParser.parse(document, propertyLink.getLink()));
     }
 
 }

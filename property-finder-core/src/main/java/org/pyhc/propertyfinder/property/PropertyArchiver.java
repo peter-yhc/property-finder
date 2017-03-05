@@ -12,7 +12,7 @@ public class PropertyArchiver {
     private Scraper scraper;
 
     public void archive() {
-        scraper.search(RealEstateQuery.builder().suburb("Homebush").build());
+//        scraper.search(RealEstateQuery.builder().suburb("Homebush").build());
     }
 
 }
