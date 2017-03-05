@@ -8,7 +8,7 @@ import java.util.concurrent.CompletableFuture;
 
 public interface Scraper {
 
-    CompletableFuture<List<Query>> search(Query query);
+    CompletableFuture<List<Query>> search(SearchOptions query);
 
     CompletableFuture<PropertyProfile> queryProfilePage(Query query);
 

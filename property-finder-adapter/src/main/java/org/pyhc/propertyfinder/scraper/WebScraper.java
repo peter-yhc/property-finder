@@ -1,5 +1,6 @@
 package org.pyhc.propertyfinder.scraper;
 
+import org.pyhc.propertyfinder.scraper.realestate.query.RealEstateQuery;
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyProfile;
 import org.pyhc.propertyfinder.scraper.realestate.query.Query;
 import org.pyhc.propertyfinder.scraper.realestate.RealEstateProfileParser;
@@ -18,7 +19,12 @@ public class WebScraper implements Scraper {
     private CompletableRestTemplate completableRestTemplate;
 
     @Override
-    public CompletableFuture<List<Query>> search(Query query) {
+    public CompletableFuture<List<Query>> search(SearchOptions searchOptions) {
+        RealEstateQuery realEstateQuery = RealEstateQuery.fromSearchOptions(searchOptions);
+        return search(realEstateQuery);
+    }
+
+    private CompletableFuture<List<Query>> search(Query query) {
         return completableRestTemplate.performGet(query)
                 .thenApply(RealEstateSearchParser::parse)
                 .thenApply(searchResult -> {

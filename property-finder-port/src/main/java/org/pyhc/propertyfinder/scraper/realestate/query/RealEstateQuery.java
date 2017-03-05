@@ -4,12 +4,12 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import org.pyhc.propertyfinder.scraper.SearchOptions;
 
 import java.util.Objects;
 
 import static java.lang.String.format;
 
-@Builder
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class RealEstateQuery extends Query {
@@ -24,6 +24,19 @@ public class RealEstateQuery extends Query {
     private Integer carSpaces;
     private Integer minPrice;
     private Integer maxPrice;
+
+    public static RealEstateQuery fromSearchOptions(SearchOptions searchOptions) {
+        return new RealEstateQuery(
+                searchOptions.getSuburb(),
+                searchOptions.getPostalCode(),
+                searchOptions.getMinBeds(),
+                searchOptions.getMaxBeds(),
+                searchOptions.getBathrooms(),
+                searchOptions.getCarSpaces(),
+                searchOptions.getMinPrice(),
+                searchOptions.getMaxPrice()
+        );
+    }
 
     @Override
     public String toString() {
