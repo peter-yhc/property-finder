@@ -2,6 +2,8 @@ package org.pyhc.propertyfinder.controller;
 
 import org.fluentlenium.core.domain.FluentList;
 import org.fluentlenium.core.domain.FluentWebElement;
+import org.hamcrest.Description;
+import org.hamcrest.TypeSafeMatcher;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.openqa.selenium.By;
@@ -11,15 +13,20 @@ import org.pyhc.propertyfinder.settings.SearchLocation;
 import org.pyhc.propertyfinder.settings.SearchLocationPort;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
+import static org.pyhc.propertyfinder.controller.SettingsWebTest.SelectorOptionsMatcher.hasSelectorOptions;
 
 public class SettingsWebTest extends AbstractWebTest {
 
@@ -172,5 +179,55 @@ public class SettingsWebTest extends AbstractWebTest {
         assertThat(searchLocation.getPostcode(), is(2067));
 
         await().until(() -> $("#pf-saved-searches-item-0").present());
+    }
+
+    @Test
+    public void hasConfigurationOptions() {
+        goTo("http://localhost:" + serverPort + "/" + "settings");
+
+        assertThat($("#pf-min-beds-selector").find(By.tagName("option")).toElements(), hasSelectorOptions("Studio", "1", "2", "3", "4", "5"));
+        assertThat($("#pf-max-beds-selector").find(By.tagName("option")).toElements(), hasSelectorOptions("Studio", "1", "2", "3", "4", "5"));
+        assertThat($("#pf-bathrooms-selector").find(By.tagName("option")).toElements(), hasSelectorOptions("Any", "1+", "2+", "3+", "4+", "5+"));
+        assertThat($("#pf-cars-selector").find(By.tagName("option")).toElements(), hasSelectorOptions("Any", "1+", "2+", "3+", "4+", "5+"));
+        assertThat($("#pf-min-price-selector").find(By.tagName("option")).toElements(), hasSelectorOptions(
+                "Any", "200,000", "300,000", "400,000", "500,000", "600,000", "700,000", "800,000", "900,000",
+                "1,000,000", "1,250,000", "1,500,000", "2,000,000", "2,500,000", "3,000,000", "4,000,000", "5,000,000",
+                "10,000,000"
+        ));
+        assertThat($("#pf-max-price-selector").find(By.tagName("option")).toElements(), hasSelectorOptions(
+                "Any", "200,000", "300,000", "400,000", "500,000", "600,000", "700,000", "800,000", "900,000",
+                "1,000,000", "1,250,000", "1,500,000", "2,000,000", "2,500,000", "3,000,000", "4,000,000", "5,000,000",
+                "10,000,000"
+        ));
+    }
+
+    static class SelectorOptionsMatcher extends TypeSafeMatcher<List<WebElement>> {
+
+        private List<String> options;
+
+        private SelectorOptionsMatcher(String... options) {
+            this.options = new ArrayList<>(asList(options));
+        }
+
+        @Override
+        protected boolean matchesSafely(List<WebElement> elements) {
+            List<String> elementTextValues = elements.stream().map(WebElement::getText).collect(toList());
+            options.removeAll(elementTextValues);
+            return options.size() == 0;
+        }
+
+        @Override
+        public void describeTo(Description description) {
+            description.appendText("should include option: " + options.stream().collect(joining(",")));
+        }
+
+        @Override
+        protected void describeMismatchSafely(List<WebElement> items, Description mismatchDescription) {
+            mismatchDescription.appendText("selector contained options: " + items.stream().map(WebElement::getText).collect(joining(",")));
+        }
+
+        static SelectorOptionsMatcher hasSelectorOptions(String... options) {
+            return new SelectorOptionsMatcher(options);
+        }
     }
 }
