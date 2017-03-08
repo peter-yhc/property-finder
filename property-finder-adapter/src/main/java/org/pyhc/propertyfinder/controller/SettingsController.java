@@ -26,7 +26,7 @@ public class SettingsController {
 
         model.addAttribute("savedSearches", searchLocations);
         model.addAttribute("searchLocationForm", new SearchLocationForm());
-        return "settings/settings";
+        return "settings";
     }
 
     @RequestMapping(value = "/settings/locations", method = RequestMethod.GET)
