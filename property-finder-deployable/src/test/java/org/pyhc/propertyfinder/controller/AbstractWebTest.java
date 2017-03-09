@@ -17,4 +17,10 @@ public abstract class AbstractWebTest extends FluentTest {
 
     @LocalServerPort
     protected String serverPort;
+
+    @Override
+    public String getWebDriver() {
+        return "chrome";
+    }
+
 }

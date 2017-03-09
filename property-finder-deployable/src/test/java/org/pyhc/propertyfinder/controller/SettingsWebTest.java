@@ -26,17 +26,11 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
-import static org.pyhc.propertyfinder.controller.SettingsWebTest.SelectorOptionsMatcher.hasSelectorOptions;
 
 public class SettingsWebTest extends AbstractWebTest {
 
     @MockBean
     private SearchLocationPort searchLocationPort;
-
-    @Override
-    public String getWebDriver() {
-        return "chrome";
-    }
 
     @Test
     public void canViewSettingsPage() {
