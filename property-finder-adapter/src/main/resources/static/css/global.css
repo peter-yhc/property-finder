@@ -4,7 +4,7 @@ body {
 #proper-finder-navbar {
     margin-bottom: 0;
 }
-#pf-content-container {
+.pf-content-container {
     margin-top: 4em;
 }
 .pf-option-row {
