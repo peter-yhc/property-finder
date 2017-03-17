@@ -21,9 +21,9 @@ public class WebScraper implements Scraper {
     private CompletableRestTemplate completableRestTemplate;
 
     @Override
-    public CompletableFuture<List<PropertyLink>> search(SearchOptions searchOptions) {
+    public CompletableFuture<List<PropertyLink>> searchCurrentlyListed(SearchOptions searchOptions) {
         RealEstateQuery realEstateQuery = RealEstateQuery.fromSearchOptions(searchOptions);
-        return search(realEstateQuery)
+        return searchCurrentlyListed(realEstateQuery)
                 .thenApply(results -> results
                         .stream()
                         .map(query -> new PropertyLink(query.toString()))
@@ -31,13 +31,13 @@ public class WebScraper implements Scraper {
                 );
     }
 
-    private CompletableFuture<List<Query>> search(Query query) {
+    private CompletableFuture<List<Query>> searchCurrentlyListed(Query query) {
         return completableRestTemplate.performGet(query)
                 .thenApply(RealEstateSearchParser::parse)
                 .thenApply(searchResult -> {
                     List<Query> queries = searchResult.getProfileLinks().stream().collect(toList());
                     if (searchResult.hasNextPageLink()) {
-                        search(searchResult.getNextPageLink()).thenAccept(queries::addAll).join();
+                        searchCurrentlyListed(searchResult.getNextPageLink()).thenAccept(queries::addAll).join();
                     }
                     return queries;
                 });

@@ -18,13 +18,13 @@ public class PropertyProcessor {
     @Autowired
     private PropertyArchiver propertyArchiver;
 
-    public void searchSavedLocations() throws ExecutionException, InterruptedException {
+    public void searchCurrentlyListedProperties() throws ExecutionException, InterruptedException {
         SearchOptions searchOptions = SearchOptions.builder().suburb("Homebush").postalCode(2140).minBeds(2).build();
-        List<PropertyLink> propertyLinks = scraper.search(searchOptions).get();
+        List<PropertyLink> propertyLinks = scraper.searchCurrentlyListed(searchOptions).get();
 
         propertyLinks.parallelStream().forEach(propertyLink ->
                 scraper.queryProfilePage(propertyLink)
-                        .thenAccept(propertyProfile -> propertyArchiver.archive(propertyProfile)));
+                        .thenAccept(propertyProfile -> propertyArchiver.archiveCurrentlyListed(propertyProfile)));
     }
 
 }

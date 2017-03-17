@@ -11,7 +11,11 @@ public class PropertyArchiver {
     @Autowired
     private Scraper scraper;
 
-    public void archive(PropertyProfile propertyProfile) {
+    public void archiveCurrentlyListed(PropertyProfile propertyProfile) {
+        throw new UnsupportedOperationException();
+    }
+
+    public void archiveSoldProperty(PropertyProfile propertyProfile) {
         throw new UnsupportedOperationException();
     }
 

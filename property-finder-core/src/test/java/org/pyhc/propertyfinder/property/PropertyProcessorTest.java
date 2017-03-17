@@ -31,17 +31,17 @@ public class PropertyProcessorTest {
     @Test
     public void canSearchSavedLocations_AndArchiveResults() throws Exception {
         SearchOptions searchOptions = SearchOptions.builder().minBeds(2).suburb("Homebush").postalCode(2140).build();
-        when(scraper.search(searchOptions)).thenReturn(CompletableFuture.completedFuture(asList(
+        when(scraper.searchCurrentlyListed(searchOptions)).thenReturn(CompletableFuture.completedFuture(asList(
                 new PropertyLink("some link 1"),
                 new PropertyLink("some link 2")
         )));
         when(scraper.queryProfilePage(any())).thenReturn(CompletableFuture.completedFuture(TestPropertyProfile.randomProfile()));
 
-        propertyProcessor.searchSavedLocations();
+        propertyProcessor.searchCurrentlyListedProperties();
 
-        verify(scraper).search(searchOptions);
+        verify(scraper).searchCurrentlyListed(searchOptions);
         verify(scraper, times(2)).queryProfilePage(any(PropertyLink.class));
-        verify(propertyArchiver, times(2)).archive(any(PropertyProfile.class));
+        verify(propertyArchiver, times(2)).archiveCurrentlyListed(any(PropertyProfile.class));
     }
 
 

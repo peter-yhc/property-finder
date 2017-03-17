@@ -44,7 +44,7 @@ public class SettingsWebTest extends AbstractWebTest {
         assertThat(window().title(), is("Property Finder - Settings"));
         assertThat($("#property-finder-brand").text(), is("Property Finder"));
 
-        assertThat($("#pf-search-location-input").present(), is(true));
+        assertThat($("#pf-searchCurrentlyListed-location-input").present(), is(true));
         assertThat($("#pf-saved-searches-list").present(), is(true));
         assertThat($("#pf-saved-searches-item-0").text(), is("Homebush NSW, 2140"));
         assertThat($("#pf-saved-searches-item-1").text(), is("Strathfield NSW, 2135"));
@@ -66,7 +66,7 @@ public class SettingsWebTest extends AbstractWebTest {
 
         goTo("http://localhost:" + serverPort + "/" + "settings");
 
-        WebElement searchInput = getDriver().findElement(By.id("pf-search-location-input"));
+        WebElement searchInput = getDriver().findElement(By.id("pf-searchCurrentlyListed-location-input"));
         searchInput.click();
         searchInput.sendKeys("home");
         await().atMost(1000).until(() -> $("#ui-id-1").find(".ui-menu-item").size() == 2);
@@ -88,7 +88,7 @@ public class SettingsWebTest extends AbstractWebTest {
 
         goTo("http://localhost:" + serverPort + "/" + "settings");
 
-        WebElement searchInput = getDriver().findElement(By.id("pf-search-location-input"));
+        WebElement searchInput = getDriver().findElement(By.id("pf-searchCurrentlyListed-location-input"));
         searchInput.click();
         searchInput.sendKeys("nothing matches me");
         await().explicitlyFor(1, TimeUnit.SECONDS);
@@ -158,11 +158,11 @@ public class SettingsWebTest extends AbstractWebTest {
 
         assertThat($("#pf-saved-searches-item-0").present(), is(false));
 
-        WebElement searchInput = getDriver().findElement(By.id("pf-search-location-input"));
+        WebElement searchInput = getDriver().findElement(By.id("pf-searchCurrentlyListed-location-input"));
         searchInput.click();
         searchInput.sendKeys("North Strathfield NSW, 2067");
 
-        $("#pf-search-location-add").click();
+        $("#pf-searchCurrentlyListed-location-add").click();
 
         ArgumentCaptor<SearchLocation> argumentCaptor = ArgumentCaptor.forClass(SearchLocation.class);
         verify(searchLocationPort).addSavedLocation(argumentCaptor.capture());
