@@ -9,7 +9,6 @@ import org.pyhc.propertyfinder.scraper.realestate.query.RealEstateQuery;
 import org.pyhc.propertyfinder.scraper.realestate.query.RealEstateSoldQuery;
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyLink;
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyProfile;
-import org.pyhc.propertyfinder.scraper.realestate.result.SoldPropertyProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,10 +45,11 @@ public class WebScraper implements Scraper {
     }
 
     @Override
-    public CompletableFuture<List<SoldPropertyProfile>> findSoldProperties(SearchOptions searchOptions, Integer batchNumber) {
+    public CompletableFuture<Void> findSoldProperties(SearchOptions searchOptions, Integer batchNumber) {
         RealEstateSoldQuery realEstateSoldQuery = RealEstateSoldQuery.fromSearchOptions(searchOptions, batchNumber);
         return completableRestTemplate.performGet(realEstateSoldQuery)
-                .thenApply(document -> RealEstateSoldPropertiesParser.parseSoldProperties(document, searchOptions.getPostcode()));
+                .thenApply(document -> RealEstateSoldPropertiesParser.parseSoldProperties(document, searchOptions.getPostcode()))
+                .thenAccept(profiles -> profiles.forEach(profile -> propertyArchiverPort.archiveSoldProperty(profile)));
     }
 
     private CompletableFuture<List<Query>> searchCurrentlyListed(Query query) {

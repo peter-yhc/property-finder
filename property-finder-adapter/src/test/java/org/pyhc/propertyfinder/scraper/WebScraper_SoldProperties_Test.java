@@ -2,18 +2,15 @@ package org.pyhc.propertyfinder.scraper;
 
 
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.pyhc.propertyfinder.property.PropertyArchiverPort;
 import org.pyhc.propertyfinder.scraper.realestate.result.SoldPropertyProfile;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.http.MediaType.TEXT_HTML;
@@ -42,7 +39,7 @@ public class WebScraper_SoldProperties_Test  extends WebScraper_Base_Test {
     }
 
     @Test
-    public void canGetSoldPropertiesResultCount_WithBatchNumber() throws Exception {
+    public void canGetSoldPropertiesProfiles_AndArchive() throws Exception {
         String htmlPage = loadPageFromTestResources("src/test/resources/stub/realestate/sold-properties-page.html");
         mockServer.expect(once(), requestTo("https://www.realestate.com.au/sold/in-homebush%2c+2140/list-2?includeSurrounding=false&misc=ex-no-sale-price&activeSort=solddate"))
                 .andRespond(withSuccess(htmlPage, TEXT_HTML));
@@ -51,10 +48,13 @@ public class WebScraper_SoldProperties_Test  extends WebScraper_Base_Test {
                 .suburb("homebush")
                 .postcode(2140)
                 .build();
-        List<SoldPropertyProfile> soldPropertyProfiles = webScraper.findSoldProperties(searchOptions, 2).get();
-        assertThat(soldPropertyProfiles.size(), is(20));
+        webScraper.findSoldProperties(searchOptions, 2).get();
 
-        SoldPropertyProfile soldPropertyProfile = soldPropertyProfiles.get(19);
+        ArgumentCaptor<SoldPropertyProfile> soldPropertyProfileArgumentCaptor = ArgumentCaptor.forClass(SoldPropertyProfile.class);
+        verify(propertyArchiverPort, times(20)).archiveSoldProperty(soldPropertyProfileArgumentCaptor.capture());
+
+        List<SoldPropertyProfile> capturedProfiles = soldPropertyProfileArgumentCaptor.getAllValues();
+        SoldPropertyProfile soldPropertyProfile = capturedProfiles.get(19);
 
         assertThat(soldPropertyProfile.getPrice(), is(3850000));
         assertThat(soldPropertyProfile.getAddress(), is("14 The Crescent"));
@@ -68,20 +68,4 @@ public class WebScraper_SoldProperties_Test  extends WebScraper_Base_Test {
         mockServer.verify();
     }
 
-    @Test
-    public void archiveIsTriggered() throws Exception {
-        String htmlPage = loadPageFromTestResources("src/test/resources/stub/realestate/sold-properties-page.html");
-        mockServer.expect(once(), requestTo("https://www.realestate.com.au/sold/in-homebush%2c+2140/list-1?includeSurrounding=false&misc=ex-no-sale-price&activeSort=solddate"))
-                .andRespond(withSuccess(htmlPage, TEXT_HTML));
-
-        SearchOptions searchOptions = SearchOptions.builder()
-                .suburb("homebush")
-                .postcode(2140)
-                .build();
-        List<SoldPropertyProfile> soldPropertyProfiles = webScraper.findSoldProperties(searchOptions, 1).get();
-
-
-        verify(propertyArchiverPort, times(20)).archiveSoldProperty(any());
-        mockServer.verify();
-    }
 }

@@ -2,7 +2,6 @@ package org.pyhc.propertyfinder.scraper;
 
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyLink;
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyProfile;
-import org.pyhc.propertyfinder.scraper.realestate.result.SoldPropertyProfile;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -17,5 +16,5 @@ public interface Scraper {
 
     CompletableFuture<Integer> getSoldPropertiesCount(SearchOptions searchOptions);
 
-    CompletableFuture<List<SoldPropertyProfile>> findSoldProperties(SearchOptions searchOptions, Integer batchNumber);
+    CompletableFuture<Void> findSoldProperties(SearchOptions searchOptions, Integer batchNumber);
 }
