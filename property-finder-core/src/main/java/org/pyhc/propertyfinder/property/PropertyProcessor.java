@@ -19,7 +19,7 @@ public class PropertyProcessor {
     private PropertyArchiver propertyArchiver;
 
     public void searchCurrentlyListedProperties() throws ExecutionException, InterruptedException {
-        SearchOptions searchOptions = SearchOptions.builder().suburb("Homebush").postalCode(2140).minBeds(2).build();
+        SearchOptions searchOptions = SearchOptions.builder().suburb("Homebush").postcode(2140).minBeds(2).build();
         List<PropertyLink> propertyLinks = scraper.searchCurrentlyListed(searchOptions).get();
 
         propertyLinks.parallelStream().forEach(propertyLink ->

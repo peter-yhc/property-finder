@@ -2,10 +2,13 @@ package org.pyhc.propertyfinder.scraper;
 
 import org.pyhc.propertyfinder.scraper.realestate.RealEstateProfileParser;
 import org.pyhc.propertyfinder.scraper.realestate.RealEstateSearchParser;
+import org.pyhc.propertyfinder.scraper.realestate.RealEstateSoldPropertiesParser;
 import org.pyhc.propertyfinder.scraper.realestate.query.Query;
 import org.pyhc.propertyfinder.scraper.realestate.query.RealEstateQuery;
+import org.pyhc.propertyfinder.scraper.realestate.query.RealEstateSoldQuery;
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyLink;
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyProfile;
+import org.pyhc.propertyfinder.scraper.realestate.result.SoldPropertyProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +32,20 @@ public class WebScraper implements Scraper {
                         .map(query -> new PropertyLink(query.toString()))
                         .collect(toList())
                 );
+    }
+
+    @Override
+    public CompletableFuture<Integer> getSoldPropertiesCount(SearchOptions searchOptions) {
+        RealEstateSoldQuery realEstateSoldQuery = RealEstateSoldQuery.fromSearchOptions(searchOptions);
+        return completableRestTemplate.performGet(realEstateSoldQuery)
+                .thenApply(RealEstateSoldPropertiesParser::getSoldPropertiesCount);
+    }
+
+    @Override
+    public CompletableFuture<List<SoldPropertyProfile>> findSoldProperties(SearchOptions searchOptions, Integer batchNumber) {
+        RealEstateSoldQuery realEstateSoldQuery = RealEstateSoldQuery.fromSearchOptions(searchOptions, batchNumber);
+        return completableRestTemplate.performGet(realEstateSoldQuery)
+                .thenApply(document -> RealEstateSoldPropertiesParser.parseSoldProperties(document, searchOptions.getPostcode()));
     }
 
     private CompletableFuture<List<Query>> searchCurrentlyListed(Query query) {

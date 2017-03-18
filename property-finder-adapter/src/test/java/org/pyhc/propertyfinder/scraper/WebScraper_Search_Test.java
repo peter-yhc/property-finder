@@ -22,7 +22,7 @@ public class WebScraper_Search_Test extends WebScraper_Base_Test {
 
         SearchOptions searchOptions = SearchOptions.builder()
                 .suburb("parramatta")
-                .postalCode(2150)
+                .postcode(2150)
                 .build();
         List<PropertyLink> propertyLinks = webScraper.searchCurrentlyListed(searchOptions).get();
         assertThat(propertyLinks.size(), is(12));
@@ -37,7 +37,7 @@ public class WebScraper_Search_Test extends WebScraper_Base_Test {
 
         SearchOptions searchOptions = SearchOptions.builder()
                 .suburb("homebush west")
-                .postalCode(2140)
+                .postcode(2140)
                 .minBeds(2)
                 .carSpaces(1)
                 .build();
@@ -54,7 +54,7 @@ public class WebScraper_Search_Test extends WebScraper_Base_Test {
 
         SearchOptions searchOptions = SearchOptions.builder()
                 .suburb("homebush west")
-                .postalCode(2140)
+                .postcode(2140)
                 .maxBeds(2)
                 .carSpaces(2)
                 .build();
@@ -71,7 +71,7 @@ public class WebScraper_Search_Test extends WebScraper_Base_Test {
 
         SearchOptions searchOptions = SearchOptions.builder()
                 .suburb("homebush west")
-                .postalCode(2140)
+                .postcode(2140)
                 .minBeds(1)
                 .maxBeds(3)
                 .carSpaces(2)
@@ -89,7 +89,7 @@ public class WebScraper_Search_Test extends WebScraper_Base_Test {
 
         SearchOptions searchOptions = SearchOptions.builder()
                 .suburb("parramatta")
-                .postalCode(2150)
+                .postcode(2150)
                 .minPrice(700000)
                 .build();
         List<PropertyLink> propertyLinks = webScraper.searchCurrentlyListed(searchOptions).get();
@@ -105,7 +105,7 @@ public class WebScraper_Search_Test extends WebScraper_Base_Test {
 
         SearchOptions searchOptions = SearchOptions.builder()
                 .suburb("parramatta")
-                .postalCode(2150)
+                .postcode(2150)
                 .maxPrice(650000)
                 .build();
         List<PropertyLink> propertyLinks = webScraper.searchCurrentlyListed(searchOptions).get();
@@ -121,7 +121,7 @@ public class WebScraper_Search_Test extends WebScraper_Base_Test {
 
         SearchOptions searchOptions = SearchOptions.builder()
                 .suburb("parramatta")
-                .postalCode(2150)
+                .postcode(2150)
                 .minPrice(500000)
                 .maxPrice(650000)
                 .build();
@@ -138,7 +138,7 @@ public class WebScraper_Search_Test extends WebScraper_Base_Test {
 
         SearchOptions searchOptions = SearchOptions.builder()
                 .suburb("homebush")
-                .postalCode(2140)
+                .postcode(2140)
                 .bathrooms(1)
                 .build();
         List<PropertyLink> propertyLinks = webScraper.searchCurrentlyListed(searchOptions).get();
@@ -154,7 +154,7 @@ public class WebScraper_Search_Test extends WebScraper_Base_Test {
 
         SearchOptions searchOptions = SearchOptions.builder()
                 .suburb("parramatta")
-                .postalCode(2150)
+                .postcode(2150)
                 .minBeds(2)
                 .maxBeds(3)
                 .bathrooms(2)
@@ -177,7 +177,7 @@ public class WebScraper_Search_Test extends WebScraper_Base_Test {
 
         SearchOptions searchOptions = SearchOptions.builder()
                 .suburb("parramatta")
-                .postalCode(2150)
+                .postcode(2150)
                 .build();
         List<PropertyLink> propertyLinks = webScraper.searchCurrentlyListed(searchOptions).get();
         assertThat(propertyLinks.size(), is(32));

@@ -2,7 +2,6 @@ package org.pyhc.propertyfinder.scraper.realestate.query;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import org.pyhc.propertyfinder.scraper.SearchOptions;
 
@@ -28,7 +27,7 @@ public class RealEstateQuery extends Query {
     public static RealEstateQuery fromSearchOptions(SearchOptions searchOptions) {
         return new RealEstateQuery(
                 searchOptions.getSuburb(),
-                searchOptions.getPostalCode(),
+                searchOptions.getPostcode(),
                 searchOptions.getMinBeds(),
                 searchOptions.getMaxBeds(),
                 searchOptions.getBathrooms(),

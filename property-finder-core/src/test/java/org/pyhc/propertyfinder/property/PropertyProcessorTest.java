@@ -30,7 +30,7 @@ public class PropertyProcessorTest {
 
     @Test
     public void canSearchSavedLocations_AndArchiveResults() throws Exception {
-        SearchOptions searchOptions = SearchOptions.builder().minBeds(2).suburb("Homebush").postalCode(2140).build();
+        SearchOptions searchOptions = SearchOptions.builder().minBeds(2).suburb("Homebush").postcode(2140).build();
         when(scraper.searchCurrentlyListed(searchOptions)).thenReturn(CompletableFuture.completedFuture(asList(
                 new PropertyLink("some link 1"),
                 new PropertyLink("some link 2")

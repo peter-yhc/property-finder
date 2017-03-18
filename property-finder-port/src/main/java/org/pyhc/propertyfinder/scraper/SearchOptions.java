@@ -9,7 +9,7 @@ import lombok.*;
 public class SearchOptions {
 
     private String suburb;
-    private Integer postalCode;
+    private Integer postcode;
     private Integer minBeds;
     private Integer maxBeds;
     private Integer bathrooms;
