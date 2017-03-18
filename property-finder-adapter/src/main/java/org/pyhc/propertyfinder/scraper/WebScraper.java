@@ -1,5 +1,6 @@
 package org.pyhc.propertyfinder.scraper;
 
+import org.pyhc.propertyfinder.property.PropertyArchiverPort;
 import org.pyhc.propertyfinder.scraper.realestate.RealEstateProfileParser;
 import org.pyhc.propertyfinder.scraper.realestate.RealEstateSearchParser;
 import org.pyhc.propertyfinder.scraper.realestate.RealEstateSoldPropertiesParser;
@@ -22,6 +23,9 @@ public class WebScraper implements Scraper {
 
     @Autowired
     private CompletableRestTemplate completableRestTemplate;
+
+    @Autowired
+    private PropertyArchiverPort propertyArchiverPort;
 
     @Override
     public CompletableFuture<List<PropertyLink>> searchCurrentlyListed(SearchOptions searchOptions) {
