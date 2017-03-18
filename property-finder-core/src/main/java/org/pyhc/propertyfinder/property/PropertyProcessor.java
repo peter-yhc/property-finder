@@ -24,7 +24,7 @@ public class PropertyProcessor {
 
         propertyLinks.parallelStream().forEach(propertyLink ->
                 scraper.queryProfilePage(propertyLink)
-                        .thenAccept(propertyProfile -> propertyArchiver.archiveCurrentlyListed(propertyProfile)));
+                        .thenAccept(propertyProfile -> propertyArchiver.archiveListedProperty(propertyProfile)));
     }
 
 }

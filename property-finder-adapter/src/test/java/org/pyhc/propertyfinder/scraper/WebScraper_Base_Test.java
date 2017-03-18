@@ -4,8 +4,8 @@ package org.pyhc.propertyfinder.scraper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.pyhc.propertyfinder.configuration.AdapterConfiguration;
+import org.pyhc.propertyfinder.property.PropertyArchiverPort;
 import org.pyhc.propertyfinder.settings.SearchLocationPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +18,8 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import static org.mockito.Mockito.mock;
 
 @SuppressWarnings("ALL")
 @RunWith(SpringRunner.class)
@@ -65,7 +67,12 @@ public abstract class WebScraper_Base_Test {
 
         @Bean
         public SearchLocationPort searchLocationPort() {
-            return Mockito.mock(SearchLocationPort.class);
+            return mock(SearchLocationPort.class);
+        }
+
+        @Bean
+        public PropertyArchiverPort propertyArchiverPort() {
+            return mock(PropertyArchiverPort.class);
         }
     }
 }

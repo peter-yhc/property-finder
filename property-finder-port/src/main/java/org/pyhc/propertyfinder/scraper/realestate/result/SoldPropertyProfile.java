@@ -23,5 +23,8 @@ public class SoldPropertyProfile {
     private String propertyLink;
     private Integer propertyCode;
 
+    private SoldPropertyProfile() {
+    }
+
 }
 

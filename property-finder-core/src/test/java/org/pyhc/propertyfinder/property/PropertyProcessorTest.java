@@ -41,7 +41,7 @@ public class PropertyProcessorTest {
 
         verify(scraper).searchCurrentlyListed(searchOptions);
         verify(scraper, times(2)).queryProfilePage(any(PropertyLink.class));
-        verify(propertyArchiver, times(2)).archiveCurrentlyListed(any(PropertyProfile.class));
+        verify(propertyArchiver, times(2)).archiveListedProperty(any(PropertyProfile.class));
     }
 
 
