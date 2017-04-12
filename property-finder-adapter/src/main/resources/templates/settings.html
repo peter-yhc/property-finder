@@ -16,12 +16,15 @@
         </div>
         <div class="row">
             <h4>Add locations</h4>
-            <form action="#" th:action="@{/settings/locations}" th:object="${searchLocationForm}" method="post">
+            <div id="pf-saved-searches-error" class="alert alert-danger" role="alert">
+                <span></span>
+            </div>
+            <form id="pf-search-location-form" action="#" th:action="@{/settings/locations}" th:object="${searchLocationForm}" method="post">
                 <div class="input-group">
                     <input id="pf-search-location-input" type="text" class="form-control" placeholder="Add a location"
                            th:field="*{content}"/>
                     <div class="input-group-btn">
-                        <button id="pf-search-location-add" class="btn btn-primary">Add</button>
+                        <button id="pf-search-location-add" class="btn btn-primary" type="button">Add</button>
                     </div>
                 </div>
             </form>

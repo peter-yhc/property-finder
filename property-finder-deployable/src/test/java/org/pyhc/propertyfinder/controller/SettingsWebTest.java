@@ -175,6 +175,21 @@ public class SettingsWebTest extends AbstractWebTest {
         await().until(() -> $("#pf-saved-searches-item-0").present());
     }
 
+    @Test
+    public void showError_WhenAddingInvalidSearchLocation() throws Exception {
+        goTo("http://localhost:" + serverPort + "/" + "settings");
+        assertThat(getDriver().findElement(By.id("pf-saved-searches-error")).getCssValue("display"), is("none"));
+
+        WebElement searchInput = getDriver().findElement(By.id("pf-search-location-input"));
+        searchInput.click();
+        searchInput.sendKeys("blah blah wrong format");
+
+        $("#pf-search-location-add").click();
+        assertThat(getDriver().findElement(By.id("pf-saved-searches-error")).getCssValue("display"), is("block"));
+        assertThat($("#pf-saved-searches-error").text(), is("Format should be 'Suburb State, PostCode' (ex. Sydney NSW, 2000)"));
+        verify(searchLocationPort, times(0)).addSavedLocation(any());
+    }
+
     static class SelectorOptionsMatcher extends TypeSafeMatcher<List<WebElement>> {
 
         private List<String> options;

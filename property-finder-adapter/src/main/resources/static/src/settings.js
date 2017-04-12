@@ -32,18 +32,26 @@ $(".pf-saved-searches-delete-button").click(function (event) {
     });
 });
 
-var parseSearchLocationText = function (locationText) {
+$("#pf-search-location-add").click(function (event) {
+    event.preventDefault();
+    var saveSearchInput = $("#pf-search-location-input").val();
     try {
-        var parsedText = locationText.match(/([A-Za-z ]+) (NSW|WA|NT|QLD|SA|TA|VIC), ([0-9]{4})/);
-        if (parsedText.length <= 3) {
-            throw "Unable to parse: " + locationText;
-        }
-        return {
-            suburbName: parsedText[1],
-            state: parsedText[2],
-            postcode: parsedText[3]
-        };
+        parseSearchLocationText(saveSearchInput);
+        $("#pf-search-location-form").submit();
     } catch (err) {
-        console.log(err);
+        $("#pf-saved-searches-error span").text("Format should be 'Suburb State, PostCode' (ex. Sydney NSW, 2000)");
+        $("#pf-saved-searches-error").show();
     }
+});
+
+var parseSearchLocationText = function (locationText) {
+    var parsedText = locationText.match(/([A-Za-z ]+) (NSW|WA|NT|QLD|SA|TA|VIC), ([0-9]{4})/);
+    if (parsedText.length <= 3) {
+        throw "Unable to parse: " + locationText;
+    }
+    return {
+        suburbName: parsedText[1],
+        state: parsedText[2],
+        postcode: parsedText[3]
+    };
 };
