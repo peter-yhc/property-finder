@@ -9,8 +9,8 @@ import org.pyhc.propertyfinder.scraper.Scraper;
 import org.pyhc.propertyfinder.scraper.SearchOptions;
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyLink;
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyProfile;
-import org.pyhc.propertyfinder.settings.model.SavedSearch;
-import org.pyhc.propertyfinder.settings.model.SavedSearchRepository;
+import org.pyhc.propertyfinder.settings.SearchLocation;
+import org.pyhc.propertyfinder.settings.service.SearchLocationService;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -31,7 +31,7 @@ public class PropertyProcessorTest {
     private PropertyArchiver propertyArchiver;
 
     @Mock
-    private SavedSearchRepository savedSearchRepository;
+    private SearchLocationService searchLocationService;
 
     @Test
     public void canSearchSavedLocations_AndArchiveResults() throws Exception {
@@ -52,14 +52,14 @@ public class PropertyProcessorTest {
     @Test
     public void canSearchSoldProperties() throws Exception {
         SearchOptions searchOptions = SearchOptions.builder().suburb("Homebush").postcode(2140).build();
-        SavedSearch savedSearch = SavedSearch.builder().name("Homebush").postcode(2140).build();
+        SearchLocation searchLocation = SearchLocation.builder().suburbName("Homebush").postcode(2140).build();
 
-        when(savedSearchRepository.findAll()).thenReturn(singletonList(savedSearch));
+        when(searchLocationService.getSearchableLocations()).thenReturn(singletonList(searchLocation));
         when(scraper.getSoldPropertiesCount(searchOptions)).thenReturn(completedFuture(3));
 
         propertyProcessor.searchSoldProperties();
 
-        verify(savedSearchRepository).findAll();
+        verify(searchLocationService).getSearchableLocations();
         verify(scraper).getSoldPropertiesCount(searchOptions);
         verify(scraper).searchSoldProperties(any(), any());
     }

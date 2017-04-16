@@ -3,8 +3,8 @@ package org.pyhc.propertyfinder.property;
 import org.pyhc.propertyfinder.scraper.Scraper;
 import org.pyhc.propertyfinder.scraper.SearchOptions;
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyLink;
-import org.pyhc.propertyfinder.settings.model.SavedSearch;
-import org.pyhc.propertyfinder.settings.model.SavedSearchRepository;
+import org.pyhc.propertyfinder.settings.SearchLocation;
+import org.pyhc.propertyfinder.settings.service.SearchLocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +23,7 @@ public class PropertyProcessor implements PropertyProcessorPort {
     private PropertyArchiver propertyArchiver;
 
     @Autowired
-    private SavedSearchRepository savedSearchRepository;
+    private SearchLocationService searchLocationService;
 
     public void searchCurrentlyListedProperties() throws ExecutionException, InterruptedException {
         SearchOptions searchOptions = SearchOptions.builder().suburb("Homebush").postcode(2140).minBeds(2).build();
@@ -36,7 +36,7 @@ public class PropertyProcessor implements PropertyProcessorPort {
 
     @Override
     public void searchSoldProperties() {
-        List<SavedSearch> searchLocations = savedSearchRepository.findAll();
+        List<SearchLocation> searchLocations = searchLocationService.getSearchableLocations();
         searchLocations.forEach(searchLocation -> {
             SearchOptions searchOptions = convertToSearchParameters(searchLocation);
             scraper.getSoldPropertiesCount(searchOptions).thenAccept(count -> {
@@ -46,8 +46,8 @@ public class PropertyProcessor implements PropertyProcessorPort {
         });
     }
 
-    private static SearchOptions convertToSearchParameters(SavedSearch searchLocation) {
-        return SearchOptions.builder().suburb(searchLocation.getName()).postcode(searchLocation.getPostcode()).build();
+    private static SearchOptions convertToSearchParameters(SearchLocation searchLocation) {
+        return SearchOptions.builder().suburb(searchLocation.getSuburbName()).postcode(searchLocation.getPostcode()).build();
     }
 
     private IntConsumer scrapePropertiesForPage(SearchOptions searchOptions) {
