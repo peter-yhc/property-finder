@@ -58,7 +58,7 @@ public class SearchLocationServiceTest {
     public void canRetrieveSearchLocations() throws Exception {
         savedSearchRepository.save(SavedSearch.builder().name("A++ Suburb").state("Best State").postcode(1234).build());
 
-        List<SearchLocation> savedSearches = searchLocationService.getSavedSearches();
+        List<SearchLocation> savedSearches = searchLocationService.getSavedSearchLocations();
 
         assertThat(savedSearches.size(), is(1));
 

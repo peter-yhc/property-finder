@@ -27,8 +27,8 @@ public class WebScraper implements Scraper {
     private PropertyArchiverPort propertyArchiverPort;
 
     @Override
-    public CompletableFuture<List<PropertyLink>> searchCurrentlyListed(SearchOptions searchOptions) {
-        RealEstateQuery realEstateQuery = RealEstateQuery.fromSearchOptions(searchOptions);
+    public CompletableFuture<List<PropertyLink>> searchCurrentlyListed(SearchParameters searchParameters) {
+        RealEstateQuery realEstateQuery = RealEstateQuery.fromSearchOptions(searchParameters);
         return searchCurrentlyListed(realEstateQuery)
                 .thenApply(results -> results
                         .stream()
@@ -38,17 +38,17 @@ public class WebScraper implements Scraper {
     }
 
     @Override
-    public CompletableFuture<Integer> getSoldPropertiesCount(SearchOptions searchOptions) {
-        RealEstateSoldQuery realEstateSoldQuery = RealEstateSoldQuery.fromSearchOptions(searchOptions);
+    public CompletableFuture<Integer> getSoldPropertiesCount(SearchParameters searchParameters) {
+        RealEstateSoldQuery realEstateSoldQuery = RealEstateSoldQuery.fromSearchOptions(searchParameters);
         return completableRestTemplate.performGet(realEstateSoldQuery)
                 .thenApply(RealEstateSoldPropertiesParser::getSoldPropertiesCount);
     }
 
     @Override
-    public CompletableFuture<Void> searchSoldProperties(SearchOptions searchOptions, Integer page) {
-        RealEstateSoldQuery realEstateSoldQuery = RealEstateSoldQuery.fromSearchOptions(searchOptions, page);
+    public CompletableFuture<Void> searchSoldProperties(SearchParameters searchParameters, Integer page) {
+        RealEstateSoldQuery realEstateSoldQuery = RealEstateSoldQuery.fromSearchOptions(searchParameters, page);
         return completableRestTemplate.performGet(realEstateSoldQuery)
-                .thenApply(document -> RealEstateSoldPropertiesParser.parseSoldProperties(document, searchOptions.getPostcode()))
+                .thenApply(document -> RealEstateSoldPropertiesParser.parseSoldProperties(document, searchParameters.getPostcode()))
                 .thenAccept(profiles -> profiles.forEach(profile -> propertyArchiverPort.archiveSoldProperty(profile)));
     }
 

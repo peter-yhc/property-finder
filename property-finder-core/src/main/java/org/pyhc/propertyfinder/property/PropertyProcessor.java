@@ -1,7 +1,7 @@
 package org.pyhc.propertyfinder.property;
 
 import org.pyhc.propertyfinder.scraper.Scraper;
-import org.pyhc.propertyfinder.scraper.SearchOptions;
+import org.pyhc.propertyfinder.scraper.SearchParameters;
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyLink;
 import org.pyhc.propertyfinder.settings.SearchLocation;
 import org.pyhc.propertyfinder.settings.service.SearchLocationService;
@@ -26,8 +26,8 @@ public class PropertyProcessor implements PropertyProcessorPort {
     private SearchLocationService searchLocationService;
 
     public void searchCurrentlyListedProperties() throws ExecutionException, InterruptedException {
-        SearchOptions searchOptions = SearchOptions.builder().suburb("Homebush").postcode(2140).minBeds(2).build();
-        List<PropertyLink> propertyLinks = scraper.searchCurrentlyListed(searchOptions).get();
+        SearchParameters searchParameters = SearchParameters.builder().suburb("Homebush").postcode(2140).minBeds(2).build();
+        List<PropertyLink> propertyLinks = scraper.searchCurrentlyListed(searchParameters).get();
 
         propertyLinks.parallelStream().forEach(propertyLink ->
                 scraper.queryProfilePage(propertyLink)
@@ -38,19 +38,19 @@ public class PropertyProcessor implements PropertyProcessorPort {
     public void searchSoldProperties() {
         List<SearchLocation> searchLocations = searchLocationService.getSearchableLocations();
         searchLocations.forEach(searchLocation -> {
-            SearchOptions searchOptions = convertToSearchParameters(searchLocation);
-            scraper.getSoldPropertiesCount(searchOptions).thenAccept(count -> {
+            SearchParameters searchParameters = convertToSearchParameters(searchLocation);
+            scraper.getSoldPropertiesCount(searchParameters).thenAccept(count -> {
                 int totalPages = count / 20 + 1;
-                IntStream.range(1, totalPages + 1).forEach(scrapePropertiesForPage(searchOptions));
+                IntStream.range(1, totalPages + 1).forEach(scrapePropertiesForPage(searchParameters));
             });
         });
     }
 
-    private static SearchOptions convertToSearchParameters(SearchLocation searchLocation) {
-        return SearchOptions.builder().suburb(searchLocation.getSuburbName()).postcode(searchLocation.getPostcode()).build();
+    private static SearchParameters convertToSearchParameters(SearchLocation searchLocation) {
+        return SearchParameters.builder().suburb(searchLocation.getSuburbName()).postcode(searchLocation.getPostcode()).build();
     }
 
-    private IntConsumer scrapePropertiesForPage(SearchOptions searchOptions) {
-        return pageNumber -> scraper.searchSoldProperties(searchOptions, pageNumber);
+    private IntConsumer scrapePropertiesForPage(SearchParameters searchParameters) {
+        return pageNumber -> scraper.searchSoldProperties(searchParameters, pageNumber);
     }
 }

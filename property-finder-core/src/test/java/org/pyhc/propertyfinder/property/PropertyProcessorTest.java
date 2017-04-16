@@ -6,7 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.pyhc.propertyfinder.scraper.Scraper;
-import org.pyhc.propertyfinder.scraper.SearchOptions;
+import org.pyhc.propertyfinder.scraper.SearchParameters;
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyLink;
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyProfile;
 import org.pyhc.propertyfinder.settings.SearchLocation;
@@ -35,8 +35,8 @@ public class PropertyProcessorTest {
 
     @Test
     public void canSearchSavedLocations_AndArchiveResults() throws Exception {
-        SearchOptions searchOptions = SearchOptions.builder().minBeds(2).suburb("Homebush").postcode(2140).build();
-        when(scraper.searchCurrentlyListed(searchOptions)).thenReturn(completedFuture(asList(
+        SearchParameters searchParameters = SearchParameters.builder().minBeds(2).suburb("Homebush").postcode(2140).build();
+        when(scraper.searchCurrentlyListed(searchParameters)).thenReturn(completedFuture(asList(
                 new PropertyLink("some link 1"),
                 new PropertyLink("some link 2")
         )));
@@ -44,23 +44,23 @@ public class PropertyProcessorTest {
 
         propertyProcessor.searchCurrentlyListedProperties();
 
-        verify(scraper).searchCurrentlyListed(searchOptions);
+        verify(scraper).searchCurrentlyListed(searchParameters);
         verify(scraper, times(2)).queryProfilePage(any(PropertyLink.class));
         verify(propertyArchiver, times(2)).archiveListedProperty(any(PropertyProfile.class));
     }
 
     @Test
     public void canSearchSoldProperties() throws Exception {
-        SearchOptions searchOptions = SearchOptions.builder().suburb("Homebush").postcode(2140).build();
+        SearchParameters searchParameters = SearchParameters.builder().suburb("Homebush").postcode(2140).build();
         SearchLocation searchLocation = SearchLocation.builder().suburbName("Homebush").postcode(2140).build();
 
         when(searchLocationService.getSearchableLocations()).thenReturn(singletonList(searchLocation));
-        when(scraper.getSoldPropertiesCount(searchOptions)).thenReturn(completedFuture(3));
+        when(scraper.getSoldPropertiesCount(searchParameters)).thenReturn(completedFuture(3));
 
         propertyProcessor.searchSoldProperties();
 
         verify(searchLocationService).getSearchableLocations();
-        verify(scraper).getSoldPropertiesCount(searchOptions);
+        verify(scraper).getSoldPropertiesCount(searchParameters);
         verify(scraper).searchSoldProperties(any(), any());
     }
 

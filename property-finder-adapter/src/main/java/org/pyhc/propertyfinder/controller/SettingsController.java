@@ -22,7 +22,7 @@ public class SettingsController {
 
     @RequestMapping("/settings")
     public String settingHome(Model model) {
-        List<SearchLocation> searchLocations = searchLocationPort.getSavedSearches();
+        List<SearchLocation> searchLocations = searchLocationPort.getSavedSearchLocations();
 
         model.addAttribute("savedSearches", searchLocations);
         model.addAttribute("searchLocationForm", new SearchLocationForm());

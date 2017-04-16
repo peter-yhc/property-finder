@@ -3,7 +3,7 @@ package org.pyhc.propertyfinder.scraper.realestate.query;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.pyhc.propertyfinder.scraper.SearchOptions;
+import org.pyhc.propertyfinder.scraper.SearchParameters;
 
 import static java.lang.String.format;
 
@@ -27,14 +27,14 @@ public class RealEstateSoldQuery extends Query {
         );
     }
 
-    public static RealEstateSoldQuery fromSearchOptions(SearchOptions searchOptions) {
-        return fromSearchOptions(searchOptions, 1);
+    public static RealEstateSoldQuery fromSearchOptions(SearchParameters searchParameters) {
+        return fromSearchOptions(searchParameters, 1);
     }
 
-    public static RealEstateSoldQuery fromSearchOptions(SearchOptions searchOptions, Integer page) {
+    public static RealEstateSoldQuery fromSearchOptions(SearchParameters searchParameters, Integer page) {
         return new RealEstateSoldQuery(
-                searchOptions.getSuburb(),
-                searchOptions.getPostcode(),
+                searchParameters.getSuburb(),
+                searchParameters.getPostcode(),
                 page
         );
     }

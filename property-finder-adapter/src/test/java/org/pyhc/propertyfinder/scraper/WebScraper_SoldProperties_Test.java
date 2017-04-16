@@ -29,11 +29,11 @@ public class WebScraper_SoldProperties_Test  extends WebScraper_Base_Test {
         mockServer.expect(once(), requestTo("https://www.realestate.com.au/sold/in-homebush%2c+2140/list-1?includeSurrounding=false&misc=ex-no-sale-price&activeSort=solddate"))
                 .andRespond(withSuccess(htmlPage, TEXT_HTML));
 
-        SearchOptions searchOptions = SearchOptions.builder()
+        SearchParameters searchParameters = SearchParameters.builder()
                 .suburb("homebush")
                 .postcode(2140)
                 .build();
-        Integer count = webScraper.getSoldPropertiesCount(searchOptions).get();
+        Integer count = webScraper.getSoldPropertiesCount(searchParameters).get();
         assertThat(count, is(943));
         mockServer.verify();
     }
@@ -44,11 +44,11 @@ public class WebScraper_SoldProperties_Test  extends WebScraper_Base_Test {
         mockServer.expect(once(), requestTo("https://www.realestate.com.au/sold/in-homebush%2c+2140/list-2?includeSurrounding=false&misc=ex-no-sale-price&activeSort=solddate"))
                 .andRespond(withSuccess(htmlPage, TEXT_HTML));
 
-        SearchOptions searchOptions = SearchOptions.builder()
+        SearchParameters searchParameters = SearchParameters.builder()
                 .suburb("homebush")
                 .postcode(2140)
                 .build();
-        webScraper.searchSoldProperties(searchOptions, 2).get();
+        webScraper.searchSoldProperties(searchParameters, 2).get();
 
         ArgumentCaptor<SoldPropertyProfile> soldPropertyProfileArgumentCaptor = ArgumentCaptor.forClass(SoldPropertyProfile.class);
         verify(propertyArchiverPort, times(20)).archiveSoldProperty(soldPropertyProfileArgumentCaptor.capture());

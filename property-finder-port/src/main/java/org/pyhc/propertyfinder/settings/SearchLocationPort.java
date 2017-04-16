@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface SearchLocationPort {
 
-    List<SearchLocation> getSavedSearches();
+    List<SearchLocation> getSavedSearchLocations();
 
     List<SearchLocation> getSearchableLocations();
 

@@ -6,7 +6,7 @@ import lombok.*;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode
-public class SearchOptions {
+public class SearchParameters {
 
     private String suburb;
     private Integer postcode;

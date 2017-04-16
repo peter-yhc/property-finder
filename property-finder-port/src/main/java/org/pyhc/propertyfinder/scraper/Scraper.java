@@ -10,11 +10,11 @@ public interface Scraper {
 
     static final Integer BATCH_SIZE = 20;
 
-    CompletableFuture<List<PropertyLink>> searchCurrentlyListed(SearchOptions searchOptions);
+    CompletableFuture<List<PropertyLink>> searchCurrentlyListed(SearchParameters searchParameters);
 
     CompletableFuture<PropertyProfile> queryProfilePage(PropertyLink propertyLink);
 
-    CompletableFuture<Integer> getSoldPropertiesCount(SearchOptions searchOptions);
+    CompletableFuture<Integer> getSoldPropertiesCount(SearchParameters searchParameters);
 
-    CompletableFuture<Void> searchSoldProperties(SearchOptions searchOptions, Integer batchNumber);
+    CompletableFuture<Void> searchSoldProperties(SearchParameters searchParameters, Integer batchNumber);
 }

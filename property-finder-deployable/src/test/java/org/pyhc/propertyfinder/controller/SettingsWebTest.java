@@ -34,7 +34,7 @@ public class SettingsWebTest extends AbstractWebTest {
 
     @Test
     public void canViewSettingsPage() {
-        when(searchLocationPort.getSavedSearches()).thenReturn(asList(
+        when(searchLocationPort.getSavedSearchLocations()).thenReturn(asList(
                 SearchLocation.builder().suburbName("Homebush").postcode(2140).state("NSW").build(),
                 SearchLocation.builder().suburbName("Strathfield").postcode(2135).state("NSW").build()
         ));
@@ -51,7 +51,7 @@ public class SettingsWebTest extends AbstractWebTest {
         assertThat($("#pf-saved-searches-delete-0").present(), is(true));
         assertThat($("#pf-saved-searches-delete-1").present(), is(true));
 
-        verify(searchLocationPort).getSavedSearches();
+        verify(searchLocationPort).getSavedSearchLocations();
     }
 
     @Test
@@ -98,7 +98,7 @@ public class SettingsWebTest extends AbstractWebTest {
 
     @Test
     public void clickingDeleteButton_ForFirstRow_RemovesSavedSearch() throws Exception {
-        when(searchLocationPort.getSavedSearches()).thenReturn(asList(
+        when(searchLocationPort.getSavedSearchLocations()).thenReturn(asList(
                 SearchLocation.builder().suburbName("Homebush").postcode(2140).state("NSW").build(),
                 SearchLocation.builder().suburbName("Strathfield").postcode(2135).state("NSW").build()
         ));
@@ -122,7 +122,7 @@ public class SettingsWebTest extends AbstractWebTest {
 
     @Test
     public void clickingDeleteButton_ForSecondRow_RemovesSavedSearch() throws Exception {
-        when(searchLocationPort.getSavedSearches()).thenReturn(asList(
+        when(searchLocationPort.getSavedSearchLocations()).thenReturn(asList(
                 SearchLocation.builder().suburbName("Homebush").postcode(2140).state("NSW").build(),
                 SearchLocation.builder().suburbName("Strathfield").postcode(2135).state("NSW").build()
         ));
@@ -147,7 +147,7 @@ public class SettingsWebTest extends AbstractWebTest {
 
     @Test
     public void canAddNewSavedLocation_AndReloadPage() throws Exception {
-        when(searchLocationPort.getSavedSearches())
+        when(searchLocationPort.getSavedSearchLocations())
                 .thenReturn(emptyList())
                 .thenReturn(singletonList(
                         SearchLocation.builder().suburbName("North Strathfield").postcode(2067).state("NSW").build()
