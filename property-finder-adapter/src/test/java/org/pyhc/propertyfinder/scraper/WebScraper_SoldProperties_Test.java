@@ -48,7 +48,7 @@ public class WebScraper_SoldProperties_Test  extends WebScraper_Base_Test {
                 .suburb("homebush")
                 .postcode(2140)
                 .build();
-        webScraper.findSoldProperties(searchOptions, 2).get();
+        webScraper.searchSoldProperties(searchOptions, 2).get();
 
         ArgumentCaptor<SoldPropertyProfile> soldPropertyProfileArgumentCaptor = ArgumentCaptor.forClass(SoldPropertyProfile.class);
         verify(propertyArchiverPort, times(20)).archiveSoldProperty(soldPropertyProfileArgumentCaptor.capture());

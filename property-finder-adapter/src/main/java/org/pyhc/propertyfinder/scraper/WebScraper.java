@@ -45,8 +45,8 @@ public class WebScraper implements Scraper {
     }
 
     @Override
-    public CompletableFuture<Void> findSoldProperties(SearchOptions searchOptions, Integer batchNumber) {
-        RealEstateSoldQuery realEstateSoldQuery = RealEstateSoldQuery.fromSearchOptions(searchOptions, batchNumber);
+    public CompletableFuture<Void> searchSoldProperties(SearchOptions searchOptions, Integer page) {
+        RealEstateSoldQuery realEstateSoldQuery = RealEstateSoldQuery.fromSearchOptions(searchOptions, page);
         return completableRestTemplate.performGet(realEstateSoldQuery)
                 .thenApply(document -> RealEstateSoldPropertiesParser.parseSoldProperties(document, searchOptions.getPostcode()))
                 .thenAccept(profiles -> profiles.forEach(profile -> propertyArchiverPort.archiveSoldProperty(profile)));

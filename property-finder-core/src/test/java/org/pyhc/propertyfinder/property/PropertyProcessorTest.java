@@ -9,10 +9,12 @@ import org.pyhc.propertyfinder.scraper.Scraper;
 import org.pyhc.propertyfinder.scraper.SearchOptions;
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyLink;
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyProfile;
-
-import java.util.concurrent.CompletableFuture;
+import org.pyhc.propertyfinder.settings.model.SavedSearch;
+import org.pyhc.propertyfinder.settings.model.SavedSearchRepository;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static java.util.concurrent.CompletableFuture.completedFuture;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
@@ -28,14 +30,17 @@ public class PropertyProcessorTest {
     @Mock
     private PropertyArchiver propertyArchiver;
 
+    @Mock
+    private SavedSearchRepository savedSearchRepository;
+
     @Test
     public void canSearchSavedLocations_AndArchiveResults() throws Exception {
         SearchOptions searchOptions = SearchOptions.builder().minBeds(2).suburb("Homebush").postcode(2140).build();
-        when(scraper.searchCurrentlyListed(searchOptions)).thenReturn(CompletableFuture.completedFuture(asList(
+        when(scraper.searchCurrentlyListed(searchOptions)).thenReturn(completedFuture(asList(
                 new PropertyLink("some link 1"),
                 new PropertyLink("some link 2")
         )));
-        when(scraper.queryProfilePage(any())).thenReturn(CompletableFuture.completedFuture(TestPropertyProfile.randomProfile()));
+        when(scraper.queryProfilePage(any())).thenReturn(completedFuture(TestPropertyProfile.randomProfile()));
 
         propertyProcessor.searchCurrentlyListedProperties();
 
@@ -44,5 +49,19 @@ public class PropertyProcessorTest {
         verify(propertyArchiver, times(2)).archiveListedProperty(any(PropertyProfile.class));
     }
 
+    @Test
+    public void canSearchSoldProperties() throws Exception {
+        SearchOptions searchOptions = SearchOptions.builder().suburb("Homebush").postcode(2140).build();
+        SavedSearch savedSearch = SavedSearch.builder().name("Homebush").postcode(2140).build();
+
+        when(savedSearchRepository.findAll()).thenReturn(singletonList(savedSearch));
+        when(scraper.getSoldPropertiesCount(searchOptions)).thenReturn(completedFuture(3));
+
+        propertyProcessor.searchSoldProperties();
+
+        verify(savedSearchRepository).findAll();
+        verify(scraper).getSoldPropertiesCount(searchOptions);
+        verify(scraper).searchSoldProperties(any(), any());
+    }
 
 }

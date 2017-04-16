@@ -31,11 +31,11 @@ public class RealEstateSoldQuery extends Query {
         return fromSearchOptions(searchOptions, 1);
     }
 
-    public static RealEstateSoldQuery fromSearchOptions(SearchOptions searchOptions, Integer batchNumber) {
+    public static RealEstateSoldQuery fromSearchOptions(SearchOptions searchOptions, Integer page) {
         return new RealEstateSoldQuery(
                 searchOptions.getSuburb(),
                 searchOptions.getPostcode(),
-                batchNumber
+                page
         );
     }
 }

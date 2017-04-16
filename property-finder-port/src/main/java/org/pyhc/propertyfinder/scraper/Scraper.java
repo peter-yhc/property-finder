@@ -16,5 +16,5 @@ public interface Scraper {
 
     CompletableFuture<Integer> getSoldPropertiesCount(SearchOptions searchOptions);
 
-    CompletableFuture<Void> findSoldProperties(SearchOptions searchOptions, Integer batchNumber);
+    CompletableFuture<Void> searchSoldProperties(SearchOptions searchOptions, Integer batchNumber);
 }
