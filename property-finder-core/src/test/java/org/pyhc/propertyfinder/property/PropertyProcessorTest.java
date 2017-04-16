@@ -54,12 +54,12 @@ public class PropertyProcessorTest {
         SearchParameters searchParameters = SearchParameters.builder().suburb("Homebush").postcode(2140).build();
         SearchLocation searchLocation = SearchLocation.builder().suburbName("Homebush").postcode(2140).build();
 
-        when(searchLocationService.getSearchableLocations()).thenReturn(singletonList(searchLocation));
+        when(searchLocationService.getSavedSearchLocations()).thenReturn(singletonList(searchLocation));
         when(scraper.getSoldPropertiesCount(searchParameters)).thenReturn(completedFuture(3));
 
         propertyProcessor.searchSoldProperties();
 
-        verify(searchLocationService).getSearchableLocations();
+        verify(searchLocationService).getSavedSearchLocations();
         verify(scraper).getSoldPropertiesCount(searchParameters);
         verify(scraper).searchSoldProperties(any(), any());
     }

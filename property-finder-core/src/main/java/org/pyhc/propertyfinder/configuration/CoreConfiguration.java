@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@ComponentScan("org.pyhc.propertyfinder")
+@ComponentScan(basePackages = "org.pyhc.propertyfinder")
 @Import(value = {
         DatabaseConfiguration.class
 })

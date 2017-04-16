@@ -4,6 +4,7 @@ import org.pyhc.propertyfinder.scraper.Scraper;
 import org.pyhc.propertyfinder.scraper.SearchParameters;
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyLink;
 import org.pyhc.propertyfinder.settings.SearchLocation;
+import org.pyhc.propertyfinder.settings.SearchLocationPort;
 import org.pyhc.propertyfinder.settings.service.SearchLocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,8 +24,9 @@ public class PropertyProcessor implements PropertyProcessorPort {
     private PropertyArchiver propertyArchiver;
 
     @Autowired
-    private SearchLocationService searchLocationService;
+    private SearchLocationPort searchLocationService;
 
+    @Deprecated
     public void searchCurrentlyListedProperties() throws ExecutionException, InterruptedException {
         SearchParameters searchParameters = SearchParameters.builder().suburb("Homebush").postcode(2140).minBeds(2).build();
         List<PropertyLink> propertyLinks = scraper.searchCurrentlyListed(searchParameters).get();
@@ -36,7 +38,7 @@ public class PropertyProcessor implements PropertyProcessorPort {
 
     @Override
     public void searchSoldProperties() {
-        List<SearchLocation> searchLocations = searchLocationService.getSearchableLocations();
+        List<SearchLocation> searchLocations = searchLocationService.getSavedSearchLocations();
         searchLocations.forEach(searchLocation -> {
             SearchParameters searchParameters = convertToSearchParameters(searchLocation);
             scraper.getSoldPropertiesCount(searchParameters).thenAccept(count -> {
@@ -51,6 +53,12 @@ public class PropertyProcessor implements PropertyProcessorPort {
     }
 
     private IntConsumer scrapePropertiesForPage(SearchParameters searchParameters) {
-        return pageNumber -> scraper.searchSoldProperties(searchParameters, pageNumber);
+        return pageNumber -> {
+            try {
+                scraper.searchSoldProperties(searchParameters, pageNumber).get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        };
     }
 }

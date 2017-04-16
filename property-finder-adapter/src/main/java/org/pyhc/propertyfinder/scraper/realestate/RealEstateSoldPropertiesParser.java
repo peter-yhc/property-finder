@@ -1,8 +1,10 @@
 package org.pyhc.propertyfinder.scraper.realestate;
 
+import org.apache.commons.lang3.text.WordUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.pyhc.propertyfinder.scraper.SearchParameters;
 import org.pyhc.propertyfinder.scraper.realestate.result.SoldPropertyProfile;
 
 import java.time.LocalDate;
@@ -33,21 +35,20 @@ public class RealEstateSoldPropertiesParser {
         return 0;
     }
 
-    public static List<SoldPropertyProfile> parseSoldProperties(Document document, Integer postcode) {
+    public static List<SoldPropertyProfile> parseSoldProperties(Document document, SearchParameters searchParameters) {
         return document.getElementsByTag("article")
                 .stream()
-                .map(artileElement -> parseResultSummary(artileElement, postcode))
+                .map(articleElement -> parseResultSummary(articleElement, searchParameters))
                 .collect(toList());
     }
 
-    private static SoldPropertyProfile parseResultSummary(Element summary, Integer postcode) {
+    private static SoldPropertyProfile parseResultSummary(Element summary, SearchParameters searchParameters) {
         Integer price = parsePrice(summary.getElementsByClass("property-price").get(0).text());
-        String address = parseAddress(summary.getElementsByClass("property-card__street-address").get(0).text());
-        String suburb = summary.getElementsByClass("property-card__suburb").get(0).text();
+        String address = parseAddress(summary.getElementsByClass("property-card__info-text").get(0).text());
         Integer beds = parseInt(summary.getElementsByClass("general-features__beds").get(0).text());
         Integer baths = parseInt(summary.getElementsByClass("general-features__baths").get(0).text());
         Integer cars = parseInt(summary.getElementsByClass("general-features__cars").get(0).text());
-        LocalDate soldDate = parseSoldDate(summary.getElementsByClass("property-card__sold-date").get(0).text());
+        LocalDate soldDate = parseSoldDate(summary.getElementsByClass("property-card__with-comma").get(0).text());
 
         String propertyLink = "https://www.realestate.com.au" + summary.getElementsByClass("property-card__link").attr("href");
         Integer propertyCode = parsePropertyCode(propertyLink);
@@ -56,8 +57,8 @@ public class RealEstateSoldPropertiesParser {
                 .builder()
                 .price(price)
                 .address(address)
-                .suburb(suburb)
-                .postcode(postcode)
+                .suburb(WordUtils.capitalize(searchParameters.getSuburb()))
+                .postcode(searchParameters.getPostcode())
                 .soldDate(soldDate)
                 .bed(beds)
                 .bath(baths)

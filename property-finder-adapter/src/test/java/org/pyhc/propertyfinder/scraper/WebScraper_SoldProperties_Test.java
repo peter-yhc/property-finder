@@ -34,7 +34,7 @@ public class WebScraper_SoldProperties_Test  extends WebScraper_Base_Test {
                 .postcode(2140)
                 .build();
         Integer count = webScraper.getSoldPropertiesCount(searchParameters).get();
-        assertThat(count, is(943));
+        assertThat(count, is(14497));
         mockServer.verify();
     }
 
@@ -56,15 +56,15 @@ public class WebScraper_SoldProperties_Test  extends WebScraper_Base_Test {
         List<SoldPropertyProfile> capturedProfiles = soldPropertyProfileArgumentCaptor.getAllValues();
         SoldPropertyProfile soldPropertyProfile = capturedProfiles.get(19);
 
-        assertThat(soldPropertyProfile.getPrice(), is(3850000));
-        assertThat(soldPropertyProfile.getAddress(), is("14 The Crescent"));
+        assertThat(soldPropertyProfile.getPrice(), is(975000));
+        assertThat(soldPropertyProfile.getAddress(), is("10/73 Underwood Road, Homebush"));
         assertThat(soldPropertyProfile.getSuburb(), is("Homebush"));
         assertThat(soldPropertyProfile.getPostcode(), is(2140));
-        assertThat(soldPropertyProfile.getBed(), is(8));
-        assertThat(soldPropertyProfile.getBath(), is(4));
-        assertThat(soldPropertyProfile.getCar(), is(4));
-        assertThat(soldPropertyProfile.getPropertyCode(), is(123736030));
-        assertThat(soldPropertyProfile.getPropertyLink(), is("https://www.realestate.com.au/sold/property-unitblock-nsw-homebush-123736030"));
+        assertThat(soldPropertyProfile.getBed(), is(4));
+        assertThat(soldPropertyProfile.getBath(), is(2));
+        assertThat(soldPropertyProfile.getCar(), is(2));
+        assertThat(soldPropertyProfile.getPropertyCode(), is(122627082));
+        assertThat(soldPropertyProfile.getPropertyLink(), is("https://www.realestate.com.au/sold/property-townhouse-nsw-homebush-122627082"));
         mockServer.verify();
     }
 
