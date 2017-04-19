@@ -1,5 +1,6 @@
 package org.pyhc.propertyfinder.scraper;
 
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.pyhc.propertyfinder.scraper.realestate.query.Query;
@@ -13,10 +14,13 @@ import java.util.concurrent.CompletableFuture;
 @Component
 public class CompletableRestTemplate {
 
+    private static final Logger LOG = Logger.getLogger(CompletableRestTemplate.class);
+
     @Autowired
     private RestTemplate restTemplate;
 
     public CompletableFuture<Document> performGet(Query query) {
+        LOG.info("Querying " + query.toString());
         return CompletableFuture
                 .supplyAsync(() -> restTemplate.getForObject(URI.create(query.toString()), String.class))
                 .thenApply(Jsoup::parse);

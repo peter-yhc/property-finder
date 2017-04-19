@@ -1,11 +1,11 @@
 package org.pyhc.propertyfinder.property;
 
+import org.apache.log4j.Logger;
 import org.pyhc.propertyfinder.scraper.Scraper;
 import org.pyhc.propertyfinder.scraper.SearchParameters;
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyLink;
 import org.pyhc.propertyfinder.settings.SearchLocation;
 import org.pyhc.propertyfinder.settings.SearchLocationPort;
-import org.pyhc.propertyfinder.settings.service.SearchLocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +16,8 @@ import java.util.stream.IntStream;
 
 @Service
 public class PropertyProcessor implements PropertyProcessorPort {
+
+    private static final Logger LOG = Logger.getLogger(PropertyProcessor.class);
 
     @Autowired
     private Scraper scraper;
@@ -55,6 +57,7 @@ public class PropertyProcessor implements PropertyProcessorPort {
     private IntConsumer scrapePropertiesForPage(SearchParameters searchParameters) {
         return pageNumber -> {
             try {
+                LOG.info("Processing page " + pageNumber);
                 scraper.searchSoldProperties(searchParameters, pageNumber).get();
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();

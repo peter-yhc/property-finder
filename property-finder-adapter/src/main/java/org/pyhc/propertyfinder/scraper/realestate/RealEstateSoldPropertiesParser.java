@@ -9,6 +9,7 @@ import org.pyhc.propertyfinder.scraper.realestate.result.SoldPropertyProfile;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,7 +44,7 @@ public class RealEstateSoldPropertiesParser {
     }
 
     private static SoldPropertyProfile parseResultSummary(Element summary, SearchParameters searchParameters) {
-        Integer price = parsePrice(summary.getElementsByClass("property-price").get(0).text());
+        Integer price = parsePrice(summary.getElementsByClass("property-price").get(0));
         String address = parseAddress(summary.getElementsByClass("property-card__info-text").get(0).text());
         Integer beds = parseInt(summary.getElementsByClass("general-features__beds").get(0).text());
         Integer baths = parseInt(summary.getElementsByClass("general-features__baths").get(0).text());
@@ -91,9 +92,25 @@ public class RealEstateSoldPropertiesParser {
         return address;
     }
 
-    private static Integer parsePrice(String priceText) {
+    private static Integer parsePrice(Element priceElement) {
+        String priceText = priceElement.text();
+        if (priceElement.text().equals("")) {
+            priceText = parsePriceImage(priceElement);
+        }
+
         priceText = priceText.replaceAll(",", "");
         priceText = priceText.replaceAll("\\$", "");
         return parseInt(priceText);
+    }
+
+    private static String parsePriceImage(Element priceElement) {
+        String priceImageLink = priceElement.getElementsByClass("property-price__image").attr("src");
+        Matcher matcher = Pattern.compile("convert\\/([A-Za-z0-9]*)=").matcher(priceImageLink);
+        String priceText = null;
+        if (matcher.find()) {
+            priceText = matcher.group(1);
+            priceText = new String(Base64.getDecoder().decode(priceText));
+        }
+        return priceText;
     }
 }

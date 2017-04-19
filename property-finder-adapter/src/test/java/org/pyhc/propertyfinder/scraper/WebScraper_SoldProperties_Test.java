@@ -68,4 +68,23 @@ public class WebScraper_SoldProperties_Test  extends WebScraper_Base_Test {
         mockServer.verify();
     }
 
+    @Test
+    public void canParsePropertyPrice_WhenPriceIsDisplayedAsImage() throws Exception {
+        String htmlPage = loadPageFromTestResources("src/test/resources/stub/realestate/sold-properties-page-with-price-image.html");
+        mockServer.expect(once(), requestTo("https://www.realestate.com.au/sold/in-homebush%2c+2140/list-1?includeSurrounding=false&misc=ex-no-sale-price&activeSort=solddate"))
+                .andRespond(withSuccess(htmlPage, TEXT_HTML));
+
+        SearchParameters searchParameters = SearchParameters.builder()
+                .suburb("homebush")
+                .postcode(2140)
+                .build();
+        webScraper.searchSoldProperties(searchParameters, 1).get();
+
+        ArgumentCaptor<SoldPropertyProfile> soldPropertyProfileArgumentCaptor = ArgumentCaptor.forClass(SoldPropertyProfile.class);
+        verify(propertyArchiverPort, times(1)).archiveSoldProperty(soldPropertyProfileArgumentCaptor.capture());
+
+        List<SoldPropertyProfile> capturedProfiles = soldPropertyProfileArgumentCaptor.getAllValues();
+        SoldPropertyProfile soldPropertyProfile = capturedProfiles.get(0);
+        assertThat(soldPropertyProfile.getPrice(), is(750000));
+    }
 }
