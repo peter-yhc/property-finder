@@ -18,21 +18,8 @@
             <div class="form-group">
                 <div class="col-sm-2">
                     <div class="row">
-                        <label for="pf-min-beds-selector">Min Beds</label>
-                        <select class="form-control" id="pf-min-beds-selector">
-                            <option>Studio</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-sm-2 col-sm-offset-1">
-                    <div class="row">
-                        <label for="pf-max-beds-selector">Max Beds</label>
-                        <select class="form-control" id="pf-max-beds-selector">
+                        <label for="pf-beds-selector">Min Beds</label>
+                        <select class="form-control" id="pf-beds-selector">
                             <option>Studio</option>
                             <option>1</option>
                             <option>2</option>
@@ -70,63 +57,8 @@
                 </div>
             </div>
         </div>
-        <div class="row pf-option-row">
-            <div class="form-group">
-                <div class="col-sm-2">
-                    <div class="row">
-                        <label for="pf-min-price-selector">Min Price</label>
-                        <select class="form-control" id="pf-min-price-selector">
-                            <option>Any</option>
-                            <option>200,000</option>
-                            <option>300,000</option>
-                            <option>400,000</option>
-                            <option>500,000</option>
-                            <option>600,000</option>
-                            <option>700,000</option>
-                            <option>800,000</option>
-                            <option>900,000</option>
-                            <option>1,000,000</option>
-                            <option>1,250,000</option>
-                            <option>1,500,000</option>
-                            <option>2,000,000</option>
-                            <option>2,500,000</option>
-                            <option>3,000,000</option>
-                            <option>4,000,000</option>
-                            <option>5,000,000</option>
-                            <option>10,000,000</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-sm-2 col-sm-offset-1">
-                    <div class="row">
-                        <label for="pf-max-price-selector">Max Price</label>
-                        <select class="form-control" id="pf-max-price-selector">
-                            <option>Any</option>
-                            <option>200,000</option>
-                            <option>300,000</option>
-                            <option>400,000</option>
-                            <option>500,000</option>
-                            <option>600,000</option>
-                            <option>700,000</option>
-                            <option>800,000</option>
-                            <option>900,000</option>
-                            <option>1,000,000</option>
-                            <option>1,250,000</option>
-                            <option>1,500,000</option>
-                            <option>2,000,000</option>
-                            <option>2,500,000</option>
-                            <option>3,000,000</option>
-                            <option>4,000,000</option>
-                            <option>5,000,000</option>
-                            <option>10,000,000</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
     <div class="col-sm-offset-1 col-sm-10">
-
         <form action="#" th:action="@{/analysis/searchSoldProperties}" method="post">
             <div class="input-group">
                 <button id="pf-search-sold-properties-button">Search Sold Properties</button>

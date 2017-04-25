@@ -12,6 +12,7 @@ import org.pyhc.propertyfinder.scraper.realestate.result.PropertyProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -56,7 +57,7 @@ public class WebScraper implements Scraper {
         return completableRestTemplate.performGet(query)
                 .thenApply(RealEstateSearchParser::parse)
                 .thenApply(searchResult -> {
-                    List<Query> queries = searchResult.getProfileLinks().stream().collect(toList());
+                    List<Query> queries = new ArrayList<>(searchResult.getProfileLinks());
                     if (searchResult.hasNextPageLink()) {
                         searchCurrentlyListed(searchResult.getNextPageLink()).thenAccept(queries::addAll).join();
                     }
