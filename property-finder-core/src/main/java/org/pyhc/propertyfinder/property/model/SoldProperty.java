@@ -52,4 +52,7 @@ public class SoldProperty {
         return this._id;
     }
 
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
 }

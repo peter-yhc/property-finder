@@ -7,8 +7,7 @@ import org.pyhc.propertyfinder.scraper.realestate.result.PropertyProfile;
 import org.pyhc.propertyfinder.scraper.realestate.result.SoldPropertyProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PropertyArchiver implements PropertyArchiverPort {
@@ -24,24 +23,24 @@ public class PropertyArchiver implements PropertyArchiverPort {
 
     }
 
-    public void archiveSoldProperty(SoldPropertyProfile soldPropertyProfile) {
+    @Transactional
+    public void archiveSoldProperty(SoldPropertyProfile newPropertyProfile) {
         LOG.info("Archiving sold property");
-        Optional<SoldProperty> savedProfileOptional = soldPropertyRepository.findOneByPropertyCode(soldPropertyProfile.getPropertyCode());
-        if (!savedProfileOptional.isPresent()) {
-            SoldProperty soldProperty = new SoldProperty(
-                    soldPropertyProfile.getPrice(),
-                    soldPropertyProfile.getAddress(),
-                    soldPropertyProfile.getBed(),
-                    soldPropertyProfile.getBath(),
-                    soldPropertyProfile.getCar(),
-                    soldPropertyProfile.getSuburb(),
-                    soldPropertyProfile.getPostcode(),
-                    soldPropertyProfile.getPropertyCode(),
-                    soldPropertyProfile.getPropertyLink(),
-                    soldPropertyProfile.getSoldDate()
-            );
-            soldPropertyRepository.save(soldProperty);
-        }
+        SoldProperty soldProperty = soldPropertyRepository.findOneByPropertyCode(newPropertyProfile.getPropertyCode())
+                .orElse(new SoldProperty(
+                        newPropertyProfile.getPrice(),
+                        newPropertyProfile.getAddress(),
+                        newPropertyProfile.getBed(),
+                        newPropertyProfile.getBath(),
+                        newPropertyProfile.getCar(),
+                        newPropertyProfile.getSuburb(),
+                        newPropertyProfile.getPostcode(),
+                        newPropertyProfile.getPropertyCode(),
+                        newPropertyProfile.getPropertyLink(),
+                        newPropertyProfile.getSoldDate()
+                ));
+        soldProperty.setPrice(newPropertyProfile.getPrice());
+        soldPropertyRepository.save(soldProperty);
     }
 
 }

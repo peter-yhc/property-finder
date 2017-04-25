@@ -1,5 +1,12 @@
 package org.pyhc.propertyfinder.property;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+import static org.apache.commons.lang3.RandomUtils.nextInt;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
+import java.lang.reflect.Field;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.pyhc.propertyfinder.configuration.DatabaseConfiguration;
@@ -14,11 +21,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
-import static org.apache.commons.lang3.RandomUtils.nextInt;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {DatabaseConfiguration.class, PropertyArchiverTest.BeanConfiguration.class})
@@ -58,6 +60,19 @@ public class PropertyArchiverTest {
 
         propertyArchiver.archiveSoldProperty(soldPropertyProfile);
         assertThat(soldPropertyRepository.findAll().size(), is(1));
+    }
+
+    @Test
+    public void shouldUpdateSoldPropertyIfPriceChanges() throws Exception {
+        SoldPropertyProfile soldPropertyProfile = createRandomSoldPropertyProfile();
+        propertyArchiver.archiveSoldProperty(soldPropertyProfile);
+
+        Field f1 = soldPropertyProfile.getClass().getDeclaredField("price");
+        f1.setAccessible(true);
+        f1.set(soldPropertyProfile, 100);
+
+        propertyArchiver.archiveSoldProperty(soldPropertyProfile);
+        assertThat(soldPropertyRepository.findAll().get(0).getPrice(), is(100));
     }
 
     private SoldPropertyProfile createRandomSoldPropertyProfile() {
