@@ -10,7 +10,7 @@
 
 <div th:include="fragment/common :: navbarFragment"></div>
 <div class="container pf-content-container">
-    <div class="col-sm-offset-1 col-sm-10">
+    <div class="col-sm-12">
         <div class="row">
             <h3>Analysis</h3>
         </div>
@@ -18,7 +18,7 @@
             <div class="form-group">
                 <div class="col-sm-2">
                     <div class="row">
-                        <label for="pf-beds-selector">Min Beds</label>
+                        <label for="pf-beds-selector">Beds</label>
                         <select class="form-control" id="pf-beds-selector">
                             <option>Studio</option>
                             <option>1</option>
@@ -29,7 +29,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-sm-2 col-sm-offset-1">
+                <div class="col-sm-2 col-sm-offset-2">
                     <div class="row">
                         <label for="pf-bathrooms-selector">Bathrooms</label>
                         <select class="form-control" id="pf-bathrooms-selector">
@@ -42,7 +42,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-sm-2 col-sm-offset-1">
+                <div class="col-sm-2 col-sm-offset-2">
                     <div class="row">
                         <label for="pf-cars-selector">Cars</label>
                         <select class="form-control" id="pf-cars-selector">
@@ -58,10 +58,12 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-offset-1 col-sm-10">
+    <div class="col-sm-12">
         <form action="#" th:action="@{/analysis/searchSoldProperties}" method="post">
-            <div class="input-group">
-                <button id="pf-search-sold-properties-button">Search Sold Properties</button>
+            <div class="row">
+                <div class="input-group">
+                    <button id="pf-search-sold-properties-button" class="btn btn-default">Search Sold Properties</button>
+                </div>
             </div>
         </form>
     </div>
