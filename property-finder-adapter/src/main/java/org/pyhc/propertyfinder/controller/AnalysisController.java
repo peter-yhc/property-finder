@@ -22,11 +22,17 @@ public class AnalysisController {
         return "analysis";
     }
 
+    @Deprecated
     @RequestMapping(path = "/searchSoldProperties", method = RequestMethod.POST)
     public String triggerSoldPropertiesSearch() {
         LOG.info("Search sold properties triggered");
         propertyProcessorPort.searchSoldProperties();
         return "analysis";
+    }
+
+    @RequestMapping(path = "/averagePrice")
+    public String averagePriceOverTime() {
+        return "analysis-charts :: averagePriceOverTime";
     }
 
 }

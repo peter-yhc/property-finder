@@ -2,8 +2,11 @@ package org.pyhc.propertyfinder.controller;
 
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.pyhc.propertyfinder.property.AnalysisToolPort;
 import org.pyhc.propertyfinder.property.PropertyProcessorPort;
 import org.springframework.boot.test.mock.mockito.MockBean;
+
+import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.verify;
@@ -13,6 +16,9 @@ public class AnalysisWebTest extends AbstractWebTest {
 
     @MockBean
     private PropertyProcessorPort propertyProcessorPort;
+
+    @MockBean
+    private AnalysisToolPort analysisToolPort;
 
     @Test
     public void hasConfigurationOptions() {
@@ -32,4 +38,12 @@ public class AnalysisWebTest extends AbstractWebTest {
         verify(propertyProcessorPort).searchSoldProperties();
     }
 
+    @Test
+    public void shouldDisplayAveragedPriceOverTime() {
+        goTo("http://localhost:" + serverPort + "/analysis");
+
+        await().atMost(5, TimeUnit.SECONDS).until($("#chartchartchart")).present();
+
+//        verify(analysisToolPort).averagePriceOverTime(suburb, beds, bathrooms, cars);
+    }
 }
