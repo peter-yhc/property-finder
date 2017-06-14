@@ -1,4 +1,4 @@
-package org.pyhc.propertyfinder.controller;
+package org.pyhc.propertyfinder.web;
 
 import org.fluentlenium.core.domain.FluentList;
 import org.fluentlenium.core.domain.FluentWebElement;
@@ -28,9 +28,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 public class SettingsWebTest extends AbstractWebTest {
-
-    @MockBean
-    private SearchLocationPort searchLocationPort;
 
     @Test
     public void canViewSettingsPage() {
