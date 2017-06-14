@@ -1,15 +1,16 @@
-<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.springframework.org/schema/mvc"
+      layout:decorator="layout">
 
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
-
-<head th:include="fragment/common :: headerFragment(title='Property Finder - Settings')"></head>
+<!--Attributes in here will be insert into the layout <head>-->
+<head>
+    <title>Property Finder - Settings</title>
+    <link rel="stylesheet" href="css/budgets.css"/>
+</head>
 
 <body>
-<link href="css/settings.css" rel="stylesheet"/>
 
-<div th:include="fragment/common :: navbarFragment"></div>
-<div class="container pf-content-container">
+<div layout:fragment="content">
     <div class="col-sm-offset-1 col-sm-10">
         <div class="row">
             <h3>Edit Search Settings</h3>
@@ -48,7 +49,6 @@
     </div>
 </div>
 
-<div th:include="fragment/common :: footerFragment"></div>
 <script src="src/settings.js"></script>
 </body>
 </html>

@@ -4,6 +4,7 @@ import org.fluentlenium.core.domain.FluentList;
 import org.fluentlenium.core.domain.FluentWebElement;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.openqa.selenium.By;
@@ -173,6 +174,7 @@ public class SettingsWebTest extends AbstractWebTest {
     }
 
     @Test
+    @Ignore
     public void showError_WhenAddingInvalidSearchLocation() throws Exception {
         goTo("http://localhost:" + serverPort + "/" + "settings");
         assertThat(getDriver().findElement(By.id("pf-saved-searches-error")).getCssValue("display"), is("none"));

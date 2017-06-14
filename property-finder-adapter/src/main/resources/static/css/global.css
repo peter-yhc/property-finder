@@ -1,12 +1,4 @@
-body {
-    padding-top: 50px;
-}
-#proper-finder-navbar {
-    margin-bottom: 0;
-}
-.pf-content-container {
-    margin-top: 4em;
-}
-.pf-option-row {
-    margin-top: 1em;
+#property-finder-brand {
+    font-size: 1.5rem;
+    padding-left: 1.2rem;
 }

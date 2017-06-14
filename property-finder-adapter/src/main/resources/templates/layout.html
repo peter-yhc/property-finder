@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Materialize -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css"/>
+    <link rel="stylesheet" href="css/global.css"/>
+</head>
+
+<body>
+<nav>
+    <div class="nav-wrapper">
+        <a id="property-finder-brand" href="#" class="brand-logo">Property Finder</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="#">Analysis</a></li>
+            <li><a href="#">Settings</a></li>
+        </ul>
+    </div>
+</nav>
+
+<section layout:fragment="content" class="container">
+    <p>Page content goes here</p>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+        integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+<script src="src/settings.js"></script>
+</body>
+</html>
