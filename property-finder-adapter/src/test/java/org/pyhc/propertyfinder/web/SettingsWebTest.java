@@ -11,8 +11,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.pyhc.propertyfinder.settings.SearchLocation;
-import org.pyhc.propertyfinder.settings.SearchLocationPort;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +21,7 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
@@ -44,8 +43,8 @@ public class SettingsWebTest extends AbstractWebTest {
 
         assertThat($("#pf-search-location-input").present(), is(true));
         assertThat($("#pf-saved-searches-list").present(), is(true));
-        assertThat($("#pf-saved-searches-item-0").text(), is("Homebush NSW, 2140"));
-        assertThat($("#pf-saved-searches-item-1").text(), is("Strathfield NSW, 2135"));
+        assertThat($("#pf-saved-searches-item-0").text(), containsString("Homebush NSW, 2140"));
+        assertThat($("#pf-saved-searches-item-1").text(), containsString("Strathfield NSW, 2135"));
         assertThat($("#pf-saved-searches-delete-0").present(), is(true));
         assertThat($("#pf-saved-searches-delete-1").present(), is(true));
 

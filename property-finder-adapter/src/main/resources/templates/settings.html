@@ -11,7 +11,7 @@
 <body>
 
 <div layout:fragment="content">
-    <div class="col-sm-offset-1 col-sm-10">
+    <div class="col s10 offset-s1">
         <div class="row">
             <h3>Edit Search Settings</h3>
         </div>
@@ -33,16 +33,11 @@
         <br/>
         <div class="row">
             <h4>Currently Watching</h4>
-            <ul id="pf-saved-searches-list" class="list-group">
+            <ul id="pf-saved-searches-list" class="collection">
                 <li th:each="savedSearch,iter : ${savedSearches}" th:id="${'pf-saved-searches-item-' + iter.index}"
-                    class="list-group-item pf-search-location-listing clearfix">
+                    class="collection-item">
                     <span th:text="${savedSearch.suburbName + ' ' + savedSearch.state + ', ' + savedSearch.postcode}"></span>
-                    <span class="pull-right">
-                        <button th:id="${'pf-saved-searches-delete-' + iter.index}" type="button"
-                                class="btn btn-default pf-saved-searches-delete-button">
-                            <i class="fa fa-times" aria-hidden="true"></i>
-                        </button>
-                    </span>
+                    <a th:id="${'pf-saved-searches-delete-' + iter.index}" class="waves-effect waves-light btn right"><i class="material-icons">clear</i></a>
                 </li>
             </ul>
         </div>
