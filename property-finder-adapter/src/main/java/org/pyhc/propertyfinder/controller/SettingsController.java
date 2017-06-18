@@ -21,15 +21,6 @@ public class SettingsController {
     @Autowired
     private SearchLocationPort searchLocationPort;
 
-    private static final List<SearchLocation> manualList = Arrays.asList(
-            SearchLocation.builder().suburbName("Strathfield").state("NSW").postcode(2000).build(),
-            SearchLocation.builder().suburbName("Gladesville").state("NSW").postcode(2111).build(),
-            SearchLocation.builder().suburbName("Richmond").state("NSW").postcode(2753).build(),
-            SearchLocation.builder().suburbName("Peakhurst").state("NSW").postcode(2210).build(),
-            SearchLocation.builder().suburbName("Caringbah South").state("NSW").postcode(2229).build(),
-            SearchLocation.builder().suburbName("Cecil Hills").state("NSW").postcode(2171).build()
-    );
-
     @RequestMapping("/settings")
     public String settingHome(Model model) {
         List<SearchLocation> searchLocations = searchLocationPort.getSavedSearchLocations();
@@ -43,7 +34,6 @@ public class SettingsController {
     @ResponseBody
     public List<String> getSearchableLocations() {
         List<SearchLocation> searchableLocations = searchLocationPort.getSearchableLocations();
-        searchableLocations.addAll(manualList);
         return searchableLocations
                 .stream()
                 .map(SearchLocation::toString)

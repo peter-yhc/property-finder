@@ -103,9 +103,9 @@ public class SettingsWebTest extends AbstractWebTest {
         goTo("http://localhost:" + serverPort + "/" + "settings");
 
         await().until(() -> $("#pf-saved-searches-delete-0").present());
-        getDriver().findElement(By.id("pf-saved-searches-delete-0")).sendKeys(Keys.RETURN);
+        clickElement("pf-saved-searches-delete-0");
 
-        assertThat($("#pf-saved-searches-item-1").text(), is("Strathfield NSW, 2135"));
+        assertThat($("#pf-saved-searches-item-1").text(), containsString("Strathfield NSW, 2135"));
         await().until(() -> !$("#pf-saved-searches-item-0").present());
 
         ArgumentCaptor<SearchLocation> argumentCaptor = ArgumentCaptor.forClass(SearchLocation.class);
@@ -128,9 +128,9 @@ public class SettingsWebTest extends AbstractWebTest {
         goTo("http://localhost:" + serverPort + "/" + "settings");
 
         await().until(() -> $("#pf-saved-searches-delete-1").present());
-        getDriver().findElement(By.id("pf-saved-searches-delete-1")).sendKeys(Keys.RETURN);
+        clickElement("pf-saved-searches-delete-1");
 
-        assertThat($("#pf-saved-searches-item-0").text(), is("Homebush NSW, 2140"));
+        assertThat($("#pf-saved-searches-item-0").text(), containsString("Homebush NSW, 2140"));
         await().until(() -> !$("#pf-saved-searches-item-1").present());
 
         ArgumentCaptor<SearchLocation> argumentCaptor = ArgumentCaptor.forClass(SearchLocation.class);
