@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Controller
@@ -46,10 +46,10 @@ public class SettingsController {
         return "redirect:/settings";
     }
 
-    @RequestMapping(value = "/settings/locations", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/settings/locations/{savedSearchId}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<Void> removeSavedLocation(@RequestBody @NotNull @Valid SearchLocation searchLocation) {
-        searchLocationPort.removeSavedLocation(searchLocation);
+    public ResponseEntity<Void> removeSavedLocation(@RequestParam @NotNull @Valid UUID savedSearchId) {
+//        searchLocationPort.removeSavedLocation(searchLocation);
         return ResponseEntity.ok().build();
     }
 

@@ -19,6 +19,8 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -37,51 +39,39 @@ public class SearchLocationServiceTest {
     private SearchLocationService searchLocationService;
 
     @Test
-    public void canSaveSearchLocations() throws Exception {
-        searchLocationService.addSavedLocation(SearchLocation.builder().suburbName("Some suburb").state("some state").postcode(1111).build());
+    public void canSave_andRetreive_Location() throws Exception {
+        searchLocationService.addSavedLocation(SearchLocation.builder().suburbName("Toowoomba").state("QLD").postcode(4350).build());
 
-        assertThat(savedSearchRepository.findAll().size(), is(1));
+        SavedSearch savedSearch = savedSearchRepository.findAll().get(0);
+        assertThat(savedSearch.getName(), is("Toowoomba"));
+        assertThat(savedSearch.getState(), is("QLD"));
+        assertThat(savedSearch.getPostcode(), is(4350));
+        assertThat(savedSearch.getUuid(), is(not(nullValue())));
     }
 
     @Test
     public void shouldNotSaveSameSearchLocationMoreThanOnce() throws Exception {
-        SearchLocation searchLocation = SearchLocation.builder().suburbName("Some suburb").state("some state").postcode(1111).build();
+        SearchLocation searchLocation = SearchLocation.builder().suburbName("Toowoomba").state("QLD").postcode(4350).build();
         searchLocationService.addSavedLocation(searchLocation);
         searchLocationService.addSavedLocation(searchLocation);
         searchLocationService.addSavedLocation(searchLocation);
         searchLocationService.addSavedLocation(searchLocation);
 
         assertThat(savedSearchRepository.findAll().size(), is(1));
-    }
-
-    @Test
-    public void canRetrieveSearchLocations() throws Exception {
-        savedSearchRepository.save(SavedSearch.builder().name("A++ Suburb").state("Best State").postcode(1234).build());
-
-        List<SearchLocation> savedSearches = searchLocationService.getSavedSearchLocations();
-
-        assertThat(savedSearches.size(), is(1));
-
-        SearchLocation searchLocation = savedSearches.get(0);
-        assertThat(searchLocation.getSuburbName(), is("A++ Suburb"));
-        assertThat(searchLocation.getState(), is("Best State"));
-        assertThat(searchLocation.getPostcode(), is(1234));
     }
 
     @Test
     public void canRemoveSavedSearchLocation() throws Exception {
-        savedSearchRepository.save(SavedSearch.builder().name("A++ Suburb").state("Best State").postcode(1234).build());
-        assertThat(savedSearchRepository.findAll().size(), is(1));
+        SavedSearch savedSearch = SavedSearch.builder().name("Toowoomba").state("QLD").postcode(4350).build();
+        savedSearch = savedSearchRepository.save(savedSearch);
 
-        searchLocationService.removeSavedLocation(
-                SearchLocation.builder().suburbName("A++ Suburb").state("Best State").postcode(1234).build()
-        );
+        searchLocationService.removeSavedLocation(savedSearch.getUuid());
 
         assertThat(savedSearchRepository.findAll().size(), is(0));
     }
 
     @Test
-    public void getSearchableLocations() throws Exception {
+    public void canGetSearchableLocations() throws Exception {
         suburbRepository.save(Suburb.builder().name("A1").state("B1").postcode(1).build());
         suburbRepository.save(Suburb.builder().name("A2").state("B2").postcode(2).build());
         suburbRepository.save(Suburb.builder().name("A3").state("B3").postcode(3).build());

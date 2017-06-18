@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
 import static org.pyhc.propertyfinder.settings.DataObjectConverter.convertToSavedSearch;
@@ -57,11 +58,8 @@ public class SearchLocationService implements SearchLocationPort {
 
     @Override
     @Transactional
-    public void removeSavedLocation(SearchLocation searchLocation) {
-        savedSearchRepository.findByNameAndStateAndPostcode(
-                searchLocation.getSuburbName(),
-                searchLocation.getState(),
-                searchLocation.getPostcode()
-        ).ifPresent((savedSearch) -> savedSearchRepository.delete(savedSearch));
+    public void removeSavedLocation(UUID savedLocationId) {
+        savedSearchRepository.findByUuid(savedLocationId)
+                .ifPresent((savedSearch) -> savedSearchRepository.delete(savedSearch));
     }
 }

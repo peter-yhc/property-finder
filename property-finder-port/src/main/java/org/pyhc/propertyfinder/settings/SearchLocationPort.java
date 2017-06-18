@@ -1,6 +1,7 @@
 package org.pyhc.propertyfinder.settings;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface SearchLocationPort {
 
@@ -10,5 +11,5 @@ public interface SearchLocationPort {
 
     void addSavedLocation(SearchLocation searchLocation);
 
-    void removeSavedLocation(SearchLocation searchLocation);
+    void removeSavedLocation(UUID savedLocationId);
 }
