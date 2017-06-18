@@ -13,11 +13,11 @@ function getSearchableLocationsForAutocomplete() {
 }
 
 $(".pf-saved-searches-delete-button").click(function (event) {
-    var deleteButtonIdSplit = event.target.id.split("-");
-    var index = deleteButtonIdSplit[deleteButtonIdSplit.length - 1];
+    let deleteButtonIdSplit = event.target.id.split("-");
+    let index = deleteButtonIdSplit[deleteButtonIdSplit.length - 1];
 
-    var locationText = $("#pf-saved-searches-item-" + index).text().trim();
-    var searchLocationData = parseSearchLocationText(locationText);
+    let locationText = $("#pf-saved-searches-item-" + index).text().trim();
+    let searchLocationData = parseSearchLocationText(locationText);
     $.ajax({
         url: "/settings/locations",
         type: "DELETE",
@@ -34,7 +34,7 @@ $(".pf-saved-searches-delete-button").click(function (event) {
 
 $("#pf-search-location-add").click(function (event) {
     event.preventDefault();
-    var saveSearchInput = $("#pf-search-location-input").val();
+    let saveSearchInput = $("#pf-search-location-input").val();
     try {
         parseSearchLocationText(saveSearchInput);
         $("#pf-search-location-form").submit();
@@ -44,8 +44,8 @@ $("#pf-search-location-add").click(function (event) {
     }
 });
 
-var parseSearchLocationText = function (locationText) {
-    var parsedText = locationText.match(/([A-Za-z ]+) (NSW|WA|NT|QLD|SA|TA|VIC), ([0-9]{4})/);
+let parseSearchLocationText = function (locationText) {
+    let parsedText = locationText.match(/([A-Za-z ]+) (NSW|WA|NT|QLD|SA|TA|VIC), ([0-9]{4})/);
     if (parsedText.length <= 3) {
         throw "Unable to parse: " + locationText;
     }
