@@ -34,22 +34,6 @@ public class PropertyProcessorTest {
     private SearchLocationService searchLocationService;
 
     @Test
-    public void canSearchSavedLocations_AndArchiveResults() throws Exception {
-        SearchParameters searchParameters = SearchParameters.builder().minBeds(2).suburb("Homebush").postcode(2140).build();
-        when(scraper.searchCurrentlyListed(searchParameters)).thenReturn(completedFuture(asList(
-                new PropertyLink("some link 1"),
-                new PropertyLink("some link 2")
-        )));
-        when(scraper.queryProfilePage(any())).thenReturn(completedFuture(TestPropertyProfile.randomProfile()));
-
-        propertyProcessor.searchCurrentlyListedProperties();
-
-        verify(scraper).searchCurrentlyListed(searchParameters);
-        verify(scraper, times(2)).queryProfilePage(any(PropertyLink.class));
-        verify(propertyArchiver, times(2)).archiveListedProperty(any(PropertyProfile.class));
-    }
-
-    @Test
     public void canSearchSoldProperties() throws Exception {
         SearchParameters searchParameters = SearchParameters.builder().suburb("Homebush").postcode(2140).build();
         SearchLocation searchLocation = SearchLocation.builder().suburbName("Homebush").postcode(2140).build();

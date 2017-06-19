@@ -28,16 +28,6 @@ public class PropertyProcessor implements PropertyProcessorPort {
     @Autowired
     private SearchLocationPort searchLocationService;
 
-    @Deprecated
-    public void searchCurrentlyListedProperties() throws ExecutionException, InterruptedException {
-        SearchParameters searchParameters = SearchParameters.builder().suburb("Homebush").postcode(2140).minBeds(2).build();
-        List<PropertyLink> propertyLinks = scraper.searchCurrentlyListed(searchParameters).get();
-
-        propertyLinks.parallelStream().forEach(propertyLink ->
-                scraper.queryProfilePage(propertyLink)
-                        .thenAccept(propertyProfile -> propertyArchiver.archiveListedProperty(propertyProfile)));
-    }
-
     @Override
     public void searchSoldProperties() {
         List<SearchLocation> searchLocations = searchLocationService.getSavedSearchLocations();
