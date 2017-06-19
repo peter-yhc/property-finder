@@ -3,6 +3,7 @@ package org.pyhc.propertyfinder.scraper;
 
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.pyhc.propertyfinder.scraper.publisher.ScraperResultPublisher;
 import org.pyhc.propertyfinder.scraper.realestate.result.SoldPropertyProfile;
 import org.springframework.boot.test.mock.mockito.MockBean;
 

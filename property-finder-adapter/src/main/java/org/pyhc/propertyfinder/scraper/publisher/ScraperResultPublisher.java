@@ -1,4 +1,4 @@
-package org.pyhc.propertyfinder.scraper;
+package org.pyhc.propertyfinder.scraper.publisher;
 
 import org.pyhc.propertyfinder.scraper.realestate.result.SoldPropertyProfile;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,6 @@ public class ScraperResultPublisher {
     private ApplicationEventPublisher applicationEventPublisher;
 
     public void publishProfileResult(SoldPropertyProfile soldPropertyProfile) {
-
+        applicationEventPublisher.publishEvent(new ProfileResultEvent(soldPropertyProfile));
     }
 }

@@ -1,5 +1,6 @@
 package org.pyhc.propertyfinder.scraper;
 
+import org.pyhc.propertyfinder.scraper.publisher.ScraperResultPublisher;
 import org.pyhc.propertyfinder.scraper.realestate.RealEstateProfileParser;
 import org.pyhc.propertyfinder.scraper.realestate.RealEstateSearchParser;
 import org.pyhc.propertyfinder.scraper.realestate.RealEstateSoldPropertiesParser;
