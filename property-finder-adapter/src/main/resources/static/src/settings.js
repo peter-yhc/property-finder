@@ -1,6 +1,6 @@
-$(document).ready(
-    getSearchableLocationsForAutocomplete()
-);
+$(document).ready(function () {
+    getSearchableLocationsForAutocomplete();
+});
 
 function getSearchableLocationsForAutocomplete() {
     $.get("/settings/locations",
@@ -13,15 +13,11 @@ function getSearchableLocationsForAutocomplete() {
 }
 
 $(".pf-saved-searches-delete-button").click(function (event) {
-    let deleteButtonIdSplit = event.target.id.split("-");
-    let index = deleteButtonIdSplit[deleteButtonIdSplit.length - 1];
-
-    let locationText = $("#pf-saved-searches-item-" + index).text().trim();
-    let searchLocationData = parseSearchLocationText(locationText);
+    let savedSearchUuid = event.target.closest('a').getAttribute('pf-uuid');
+    let index = event.target.closest('a').getAttribute('pf-index');
     $.ajax({
-        url: "/settings/locations",
+        url: "/settings/locations/" + savedSearchUuid,
         type: "DELETE",
-        data: JSON.stringify(searchLocationData),
         contentType: "application/json",
         success: function () {
             $("#pf-saved-searches-item-" + index).remove();

@@ -48,8 +48,8 @@ public class SettingsController {
 
     @RequestMapping(value = "/settings/locations/{savedSearchId}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<Void> removeSavedLocation(@RequestParam @NotNull @Valid UUID savedSearchId) {
-//        searchLocationPort.removeSavedLocation(searchLocation);
+    public ResponseEntity<Void> removeSavedLocation(@PathVariable("savedSearchId") @NotNull @Valid UUID savedSearchId) {
+        searchLocationPort.removeSavedLocation(savedSearchId);
         return ResponseEntity.ok().build();
     }
 

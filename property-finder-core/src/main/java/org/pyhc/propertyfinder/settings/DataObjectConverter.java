@@ -9,6 +9,7 @@ public interface DataObjectConverter {
                 .suburbName(savedSearch.getName())
                 .state(savedSearch.getState())
                 .postcode(savedSearch.getPostcode())
+                .uuid(savedSearch.getUuid())
                 .build();
     }
     static SearchLocation convertToSearchLocation(Suburb suburb) {

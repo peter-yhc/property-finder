@@ -14,11 +14,13 @@ import org.pyhc.propertyfinder.settings.SearchLocation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
+import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -95,51 +97,47 @@ public class SettingsWebTest extends AbstractWebTest {
 
     @Test
     public void clickingDeleteButton_ForFirstRow_RemovesSavedSearch() throws Exception {
+        UUID homebushUuid = randomUUID();
         when(searchLocationPort.getSavedSearchLocations()).thenReturn(asList(
-                SearchLocation.builder().suburbName("Homebush").postcode(2140).state("NSW").build(),
-                SearchLocation.builder().suburbName("Strathfield").postcode(2135).state("NSW").build()
+                SearchLocation.builder().suburbName("Homebush").postcode(2140).state("NSW").uuid(homebushUuid).build(),
+                SearchLocation.builder().suburbName("Strathfield").postcode(2135).state("NSW").uuid(randomUUID()).build()
         ));
 
         goTo("http://localhost:" + serverPort + "/" + "settings");
 
         await().until(() -> $("#pf-saved-searches-delete-0").present());
-        clickElement("pf-saved-searches-delete-0");
+        $("#pf-saved-searches-delete-0").click();
 
         assertThat($("#pf-saved-searches-item-1").text(), containsString("Strathfield NSW, 2135"));
         await().until(() -> !$("#pf-saved-searches-item-0").present());
 
-        ArgumentCaptor<SearchLocation> argumentCaptor = ArgumentCaptor.forClass(SearchLocation.class);
+        ArgumentCaptor<UUID> argumentCaptor = ArgumentCaptor.forClass(UUID.class);
         verify(searchLocationPort).removeSavedLocation(argumentCaptor.capture());
 
-        SearchLocation searchLocation = argumentCaptor.getValue();
-        assertThat(searchLocation.getSuburbName(), is("Homebush"));
-        assertThat(searchLocation.getState(), is("NSW"));
-        assertThat(searchLocation.getPostcode(), is(2140));
+        assertThat(argumentCaptor.getValue(), is(homebushUuid));
     }
 
     @Test
     public void clickingDeleteButton_ForSecondRow_RemovesSavedSearch() throws Exception {
+        UUID strathfieldUuid = UUID.randomUUID();
         when(searchLocationPort.getSavedSearchLocations()).thenReturn(asList(
-                SearchLocation.builder().suburbName("Homebush").postcode(2140).state("NSW").build(),
-                SearchLocation.builder().suburbName("Strathfield").postcode(2135).state("NSW").build()
+                SearchLocation.builder().suburbName("Homebush").postcode(2140).state("NSW").uuid(randomUUID()).build(),
+                SearchLocation.builder().suburbName("Strathfield").postcode(2135).state("NSW").uuid(strathfieldUuid).build()
         ));
         doNothing().when(searchLocationPort).removeSavedLocation(any());
 
         goTo("http://localhost:" + serverPort + "/" + "settings");
 
         await().until(() -> $("#pf-saved-searches-delete-1").present());
-        clickElement("pf-saved-searches-delete-1");
+        $("#pf-saved-searches-delete-1").click();
 
         assertThat($("#pf-saved-searches-item-0").text(), containsString("Homebush NSW, 2140"));
         await().until(() -> !$("#pf-saved-searches-item-1").present());
 
-        ArgumentCaptor<SearchLocation> argumentCaptor = ArgumentCaptor.forClass(SearchLocation.class);
+        ArgumentCaptor<UUID> argumentCaptor = ArgumentCaptor.forClass(UUID.class);
         verify(searchLocationPort).removeSavedLocation(argumentCaptor.capture());
 
-        SearchLocation searchLocation = argumentCaptor.getValue();
-        assertThat(searchLocation.getSuburbName(), is("Strathfield"));
-        assertThat(searchLocation.getState(), is("NSW"));
-        assertThat(searchLocation.getPostcode(), is(2135));
+        assertThat(argumentCaptor.getValue(), is(strathfieldUuid));
     }
 
     @Test

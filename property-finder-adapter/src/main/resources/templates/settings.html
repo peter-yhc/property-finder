@@ -23,7 +23,8 @@
             <form id="pf-search-location-form" action="#" th:action="@{/settings/locations}"
                   th:object="${searchLocationForm}" method="post">
                 <div class="input-field">
-                    <input id="pf-search-location-input" type="text" class="form-control" placeholder="Ex. Sydney NSW, 2000"
+                    <input id="pf-search-location-input" type="text" class="form-control"
+                           placeholder="Ex. Sydney NSW, 2000"
                            th:field="*{content}"/>
                     <button id="pf-search-location-add" class="btn" type="button">Add</button>
                 </div>
@@ -41,6 +42,7 @@
                     </div>
                     <div class="col s6">
                         <a th:id="${'pf-saved-searches-delete-' + iter.index}"
+                           th:attr="pf-uuid=${savedSearch.uuid}, pf-index=${iter.index}"
                            class="waves-effect waves-light btn right pf-saved-searches-delete-button">
                             <i class="material-icons">clear</i>
                         </a>
