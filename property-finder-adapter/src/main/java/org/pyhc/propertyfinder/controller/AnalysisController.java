@@ -26,7 +26,7 @@ public class AnalysisController {
     @RequestMapping(path = "/searchSoldProperties", method = RequestMethod.POST)
     public String triggerSoldPropertiesSearch() {
         LOG.info("Search sold properties triggered");
-        propertyProcessorPort.searchSoldProperties();
+        propertyProcessorPort.searchForSoldProperties();
         return "analysis";
     }
 

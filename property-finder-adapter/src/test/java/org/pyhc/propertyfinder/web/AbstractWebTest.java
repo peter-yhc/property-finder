@@ -2,11 +2,7 @@ package org.pyhc.propertyfinder.web;
 
 import org.fluentlenium.adapter.junit.FluentTest;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.interactions.Actions;
 import org.pyhc.propertyfinder.configuration.AdapterConfiguration;
-import org.pyhc.propertyfinder.property.PropertyArchiverPort;
 import org.pyhc.propertyfinder.property.PropertyProcessorPort;
 import org.pyhc.propertyfinder.scraper.CompletableRestTemplate;
 import org.pyhc.propertyfinder.settings.SearchLocationPort;
@@ -34,9 +30,6 @@ public abstract class AbstractWebTest extends FluentTest {
     protected CompletableRestTemplate completableRestTemplate;
 
     @MockBean
-    protected PropertyArchiverPort propertyArchiverPort;
-
-    @MockBean
     protected SearchLocationPort searchLocationPort;
 
     @MockBean
@@ -48,14 +41,6 @@ public abstract class AbstractWebTest extends FluentTest {
     @Override
     public String getWebDriver() {
         return "chrome";
-    }
-
-    void clickElement(String element) {
-        Actions action = new Actions(getDriver());
-        action.moveToElement(getDriver().findElement(By.id(element)));
-        action.click();
-        action.sendKeys(Keys.RETURN);
-        action.build().perform();
     }
 
     @SpringBootApplication

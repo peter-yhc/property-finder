@@ -3,25 +3,18 @@ package org.pyhc.propertyfinder.property;
 import org.apache.log4j.Logger;
 import org.pyhc.propertyfinder.property.model.SoldProperty;
 import org.pyhc.propertyfinder.property.model.SoldPropertyRepository;
-import org.pyhc.propertyfinder.scraper.realestate.result.PropertyProfile;
 import org.pyhc.propertyfinder.scraper.realestate.result.SoldPropertyProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class PropertyArchiver implements PropertyArchiverPort {
+public class PropertyArchiver {
 
     private static final Logger LOG = Logger.getLogger(PropertyArchiver.class);
 
     @Autowired
     private SoldPropertyRepository soldPropertyRepository;
-
-    @Override
-    public void archiveListedProperty(PropertyProfile propertyProfile) {
-        throw new UnsupportedOperationException();
-
-    }
 
     @Transactional
     public void archiveSoldProperty(SoldPropertyProfile newPropertyProfile) {

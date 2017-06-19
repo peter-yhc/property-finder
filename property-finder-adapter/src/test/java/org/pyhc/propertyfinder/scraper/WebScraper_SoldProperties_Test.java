@@ -3,7 +3,6 @@ package org.pyhc.propertyfinder.scraper;
 
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.pyhc.propertyfinder.property.PropertyArchiverPort;
 import org.pyhc.propertyfinder.scraper.realestate.result.SoldPropertyProfile;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -21,7 +20,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 public class WebScraper_SoldProperties_Test  extends WebScraper_Base_Test {
 
     @MockBean
-    private PropertyArchiverPort propertyArchiverPort;
+    private ScraperResultPublisher scraperResultPublisher;
 
     @Test
     public void canGetSoldPropertiesResultCount() throws Exception {
@@ -51,7 +50,7 @@ public class WebScraper_SoldProperties_Test  extends WebScraper_Base_Test {
         webScraper.searchSoldProperties(searchParameters, 2).get();
 
         ArgumentCaptor<SoldPropertyProfile> soldPropertyProfileArgumentCaptor = ArgumentCaptor.forClass(SoldPropertyProfile.class);
-        verify(propertyArchiverPort, times(20)).archiveSoldProperty(soldPropertyProfileArgumentCaptor.capture());
+        verify(scraperResultPublisher, times(20)).publishProfileResult(soldPropertyProfileArgumentCaptor.capture());
 
         List<SoldPropertyProfile> capturedProfiles = soldPropertyProfileArgumentCaptor.getAllValues();
         SoldPropertyProfile soldPropertyProfile = capturedProfiles.get(19);
@@ -81,7 +80,7 @@ public class WebScraper_SoldProperties_Test  extends WebScraper_Base_Test {
         webScraper.searchSoldProperties(searchParameters, 1).get();
 
         ArgumentCaptor<SoldPropertyProfile> soldPropertyProfileArgumentCaptor = ArgumentCaptor.forClass(SoldPropertyProfile.class);
-        verify(propertyArchiverPort, times(1)).archiveSoldProperty(soldPropertyProfileArgumentCaptor.capture());
+        verify(scraperResultPublisher).publishProfileResult(soldPropertyProfileArgumentCaptor.capture());
 
         List<SoldPropertyProfile> capturedProfiles = soldPropertyProfileArgumentCaptor.getAllValues();
         SoldPropertyProfile soldPropertyProfile = capturedProfiles.get(0);

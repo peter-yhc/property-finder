@@ -1,6 +1,5 @@
 package org.pyhc.propertyfinder.scraper;
 
-import org.pyhc.propertyfinder.property.PropertyArchiverPort;
 import org.pyhc.propertyfinder.scraper.realestate.RealEstateProfileParser;
 import org.pyhc.propertyfinder.scraper.realestate.RealEstateSearchParser;
 import org.pyhc.propertyfinder.scraper.realestate.RealEstateSoldPropertiesParser;
@@ -25,7 +24,7 @@ public class WebScraper implements Scraper {
     private CompletableRestTemplate completableRestTemplate;
 
     @Autowired
-    private PropertyArchiverPort propertyArchiverPort;
+    private ScraperResultPublisher scraperResultPublisher;
 
     @Override
     public CompletableFuture<List<PropertyLink>> searchCurrentlyListed(SearchParameters searchParameters) {
@@ -50,7 +49,7 @@ public class WebScraper implements Scraper {
         RealEstateSoldQuery realEstateSoldQuery = RealEstateSoldQuery.fromSearchOptions(searchParameters, page);
         return completableRestTemplate.performGet(realEstateSoldQuery)
                 .thenApply(document -> RealEstateSoldPropertiesParser.parseSoldProperties(document, searchParameters))
-                .thenAccept(profiles -> profiles.forEach(profile -> propertyArchiverPort.archiveSoldProperty(profile)));
+                .thenAccept(profiles -> profiles.forEach(profile -> scraperResultPublisher.publishProfileResult(profile)));
     }
 
     private CompletableFuture<List<Query>> searchCurrentlyListed(Query query) {

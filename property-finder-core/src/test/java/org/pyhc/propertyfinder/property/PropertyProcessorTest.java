@@ -7,12 +7,9 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.pyhc.propertyfinder.scraper.Scraper;
 import org.pyhc.propertyfinder.scraper.SearchParameters;
-import org.pyhc.propertyfinder.scraper.realestate.result.PropertyLink;
-import org.pyhc.propertyfinder.scraper.realestate.result.PropertyProfile;
 import org.pyhc.propertyfinder.settings.SearchLocation;
 import org.pyhc.propertyfinder.settings.service.SearchLocationService;
 
-import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.concurrent.CompletableFuture.completedFuture;
 import static org.mockito.Matchers.any;
@@ -41,7 +38,7 @@ public class PropertyProcessorTest {
         when(searchLocationService.getSavedSearchLocations()).thenReturn(singletonList(searchLocation));
         when(scraper.getSoldPropertiesCount(searchParameters)).thenReturn(completedFuture(3));
 
-        propertyProcessor.searchSoldProperties();
+        propertyProcessor.searchForSoldProperties();
 
         verify(searchLocationService).getSavedSearchLocations();
         verify(scraper).getSoldPropertiesCount(searchParameters);

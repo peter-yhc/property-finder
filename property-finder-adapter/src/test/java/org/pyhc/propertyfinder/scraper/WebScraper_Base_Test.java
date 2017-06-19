@@ -5,7 +5,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.pyhc.propertyfinder.configuration.AdapterConfiguration;
-import org.pyhc.propertyfinder.property.PropertyArchiverPort;
 import org.pyhc.propertyfinder.property.PropertyProcessorPort;
 import org.pyhc.propertyfinder.settings.SearchLocationPort;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,18 +61,13 @@ public abstract class WebScraper_Base_Test {
         }
 
         @Bean
-        public WebScraper ebScraper() {
+        public WebScraper webScraper() {
             return new WebScraper();
         }
 
         @Bean
         public SearchLocationPort searchLocationPort() {
             return mock(SearchLocationPort.class);
-        }
-
-        @Bean
-        public PropertyArchiverPort propertyArchiverPort() {
-            return mock(PropertyArchiverPort.class);
         }
 
         @Bean

@@ -3,7 +3,6 @@ package org.pyhc.propertyfinder.property;
 import org.apache.log4j.Logger;
 import org.pyhc.propertyfinder.scraper.Scraper;
 import org.pyhc.propertyfinder.scraper.SearchParameters;
-import org.pyhc.propertyfinder.scraper.realestate.result.PropertyLink;
 import org.pyhc.propertyfinder.settings.SearchLocation;
 import org.pyhc.propertyfinder.settings.SearchLocationPort;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +22,10 @@ public class PropertyProcessor implements PropertyProcessorPort {
     private Scraper scraper;
 
     @Autowired
-    private PropertyArchiver propertyArchiver;
-
-    @Autowired
     private SearchLocationPort searchLocationService;
 
     @Override
-    public void searchSoldProperties() {
+    public void searchForSoldProperties() {
         List<SearchLocation> searchLocations = searchLocationService.getSavedSearchLocations();
         searchLocations.forEach(searchLocation -> {
             SearchParameters searchParameters = convertToSearchParameters(searchLocation);

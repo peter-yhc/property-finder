@@ -3,9 +3,6 @@ package org.pyhc.propertyfinder.web;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.pyhc.propertyfinder.property.AnalysisToolPort;
-import org.pyhc.propertyfinder.property.PropertyProcessorPort;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.concurrent.TimeUnit;
 
@@ -29,7 +26,7 @@ public class AnalysisWebTest extends AbstractWebTest {
 
         $("#pf-search-sold-properties-button").click();
 
-        verify(propertyProcessorPort).searchSoldProperties();
+        verify(propertyProcessorPort).searchForSoldProperties();
     }
 
     @Test
