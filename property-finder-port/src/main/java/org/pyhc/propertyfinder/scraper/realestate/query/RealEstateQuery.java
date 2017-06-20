@@ -3,7 +3,6 @@ package org.pyhc.propertyfinder.scraper.realestate.query;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.pyhc.propertyfinder.scraper.SearchParameters;
 
 import java.util.Objects;
 
@@ -23,19 +22,6 @@ public class RealEstateQuery extends Query {
     private Integer carSpaces;
     private Integer minPrice;
     private Integer maxPrice;
-
-    public static RealEstateQuery fromSearchOptions(SearchParameters searchParameters) {
-        return new RealEstateQuery(
-                searchParameters.getSuburb(),
-                searchParameters.getPostcode(),
-                searchParameters.getMinBeds(),
-                searchParameters.getMaxBeds(),
-                searchParameters.getBathrooms(),
-                searchParameters.getCarSpaces(),
-                searchParameters.getMinPrice(),
-                searchParameters.getMaxPrice()
-        );
-    }
 
     @Override
     public String toString() {

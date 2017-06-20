@@ -2,7 +2,6 @@ package org.pyhc.propertyfinder.property;
 
 import org.apache.log4j.Logger;
 import org.pyhc.propertyfinder.scraper.Scraper;
-import org.pyhc.propertyfinder.scraper.SearchParameters;
 import org.pyhc.propertyfinder.settings.SearchLocation;
 import org.pyhc.propertyfinder.settings.SearchLocationPort;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,23 +27,19 @@ public class PropertyProcessor implements PropertyProcessorPort {
     public void searchForSoldProperties() {
         List<SearchLocation> searchLocations = searchLocationService.getSavedSearchLocations();
         searchLocations.forEach(searchLocation -> {
-            SearchParameters searchParameters = convertToSearchParameters(searchLocation);
-            scraper.getSoldPropertiesCount(searchParameters).thenAccept(count -> {
+            scraper.getSoldPropertiesCount(searchLocation).thenAccept(count -> {
                 int totalPages = count / 20 + 1;
-                IntStream.range(1, totalPages + 1).forEach(scrapePropertiesForPage(searchParameters));
+                IntStream.range(1, totalPages + 1).forEach(scrapePropertiesForPage(searchLocation));
             });
         });
     }
 
-    private static SearchParameters convertToSearchParameters(SearchLocation searchLocation) {
-        return SearchParameters.builder().suburb(searchLocation.getSuburbName()).postcode(searchLocation.getPostcode()).build();
-    }
 
-    private IntConsumer scrapePropertiesForPage(SearchParameters searchParameters) {
+    private IntConsumer scrapePropertiesForPage(SearchLocation searchLocation) {
         return pageNumber -> {
             try {
                 LOG.info("Processing page " + pageNumber);
-                scraper.searchSoldProperties(searchParameters, pageNumber).get();
+                scraper.searchSoldProperties(searchLocation, pageNumber).get();
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
