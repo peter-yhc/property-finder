@@ -28,17 +28,6 @@ public class WebScraper implements Scraper {
     private ScraperResultPublisher scraperResultPublisher;
 
     @Override
-    public CompletableFuture<List<PropertyLink>> searchCurrentlyListed(SearchParameters searchParameters) {
-        RealEstateQuery realEstateQuery = RealEstateQuery.fromSearchOptions(searchParameters);
-        return searchCurrentlyListed(realEstateQuery)
-                .thenApply(results -> results
-                        .stream()
-                        .map(query -> new PropertyLink(query.toString()))
-                        .collect(toList())
-                );
-    }
-
-    @Override
     public CompletableFuture<Integer> getSoldPropertiesCount(SearchParameters searchParameters) {
         RealEstateSoldQuery realEstateSoldQuery = RealEstateSoldQuery.fromSearchOptions(searchParameters);
         return completableRestTemplate.performGet(realEstateSoldQuery)
@@ -53,19 +42,8 @@ public class WebScraper implements Scraper {
                 .thenAccept(profiles -> profiles.forEach(profile -> scraperResultPublisher.publishProfileResult(profile)));
     }
 
-    private CompletableFuture<List<Query>> searchCurrentlyListed(Query query) {
-        return completableRestTemplate.performGet(query)
-                .thenApply(RealEstateSearchParser::parse)
-                .thenApply(searchResult -> {
-                    List<Query> queries = new ArrayList<>(searchResult.getProfileLinks());
-                    if (searchResult.hasNextPageLink()) {
-                        searchCurrentlyListed(searchResult.getNextPageLink()).thenAccept(queries::addAll).join();
-                    }
-                    return queries;
-                });
-    }
-
     @Override
+    @Deprecated
     public CompletableFuture<PropertyProfile> queryProfilePage(PropertyLink propertyLink) {
         return completableRestTemplate.performGet(propertyLink.getLink())
                 .thenApply(document -> RealEstateProfileParser.parse(document, propertyLink.getLink()));

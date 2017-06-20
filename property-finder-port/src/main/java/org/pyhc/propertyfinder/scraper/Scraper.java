@@ -8,10 +8,7 @@ import java.util.concurrent.CompletableFuture;
 
 public interface Scraper {
 
-    static final Integer BATCH_SIZE = 20;
-
-    CompletableFuture<List<PropertyLink>> searchCurrentlyListed(SearchParameters searchParameters);
-
+    @Deprecated
     CompletableFuture<PropertyProfile> queryProfilePage(PropertyLink propertyLink);
 
     CompletableFuture<Integer> getSoldPropertiesCount(SearchParameters searchParameters);
