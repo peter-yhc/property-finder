@@ -1,4 +1,4 @@
-package org.pyhc.propertyfinder.scraper.publisher;
+package org.pyhc.propertyfinder.events;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

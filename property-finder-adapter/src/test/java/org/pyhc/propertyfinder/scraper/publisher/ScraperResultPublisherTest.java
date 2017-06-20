@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.pyhc.propertyfinder.events.ProfileResultEvent;
 import org.pyhc.propertyfinder.scraper.realestate.result.SoldPropertyProfile;
 import org.springframework.context.ApplicationEventPublisher;
 

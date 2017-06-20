@@ -25,9 +25,6 @@ public class PropertyProcessorTest {
     private Scraper scraper;
 
     @Mock
-    private PropertyArchiver propertyArchiver;
-
-    @Mock
     private SearchLocationService searchLocationService;
 
     @Test

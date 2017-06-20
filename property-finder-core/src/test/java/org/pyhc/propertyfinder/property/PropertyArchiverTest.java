@@ -1,16 +1,10 @@
 package org.pyhc.propertyfinder.property;
 
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
-import static org.apache.commons.lang3.RandomUtils.nextInt;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import java.lang.reflect.Field;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.pyhc.propertyfinder.configuration.DatabaseConfiguration;
 import org.pyhc.propertyfinder.configuration.MongoExecutionListener;
+import org.pyhc.propertyfinder.events.ProfileResultEvent;
 import org.pyhc.propertyfinder.property.model.SoldProperty;
 import org.pyhc.propertyfinder.property.model.SoldPropertyRepository;
 import org.pyhc.propertyfinder.scraper.realestate.result.SoldPropertyProfile;
@@ -21,6 +15,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+
+import java.lang.reflect.Field;
+
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+import static org.apache.commons.lang3.RandomUtils.nextInt;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {DatabaseConfiguration.class, PropertyArchiverTest.BeanConfiguration.class})
@@ -35,11 +36,12 @@ public class PropertyArchiverTest {
 
     @Test
     public void canArchiveSoldProperty() {
-        SoldPropertyProfile soldPropertyProfile = createRandomSoldPropertyProfile();
-        propertyArchiver.archiveSoldProperty(soldPropertyProfile);
+        ProfileResultEvent profileResultEvent = new ProfileResultEvent(createRandomSoldPropertyProfile());
+        propertyArchiver.archiveSoldProperty(profileResultEvent);
 
         assertThat(soldPropertyRepository.findAll().size(), is(1));
 
+        SoldPropertyProfile soldPropertyProfile = profileResultEvent.getSoldPropertyProfile();
         SoldProperty soldProperty = soldPropertyRepository.findAll().get(0);
         assertThat(soldProperty.getAddress(), is(soldPropertyProfile.getAddress()));
         assertThat(soldProperty.getSuburb(), is(soldPropertyProfile.getSuburb()));
@@ -55,23 +57,23 @@ public class PropertyArchiverTest {
 
     @Test
     public void willNotPersistTheSamePropertyTwice() throws Exception {
-        SoldPropertyProfile soldPropertyProfile = createRandomSoldPropertyProfile();
-        propertyArchiver.archiveSoldProperty(soldPropertyProfile);
+        ProfileResultEvent profileResultEvent = new ProfileResultEvent(createRandomSoldPropertyProfile());
+        propertyArchiver.archiveSoldProperty(profileResultEvent);
 
-        propertyArchiver.archiveSoldProperty(soldPropertyProfile);
+        propertyArchiver.archiveSoldProperty(profileResultEvent);
         assertThat(soldPropertyRepository.findAll().size(), is(1));
     }
 
     @Test
     public void shouldUpdateSoldPropertyIfPriceChanges() throws Exception {
         SoldPropertyProfile soldPropertyProfile = createRandomSoldPropertyProfile();
-        propertyArchiver.archiveSoldProperty(soldPropertyProfile);
+        propertyArchiver.archiveSoldProperty(new ProfileResultEvent(soldPropertyProfile));
 
         Field f1 = soldPropertyProfile.getClass().getDeclaredField("price");
         f1.setAccessible(true);
         f1.set(soldPropertyProfile, 100);
 
-        propertyArchiver.archiveSoldProperty(soldPropertyProfile);
+        propertyArchiver.archiveSoldProperty(new ProfileResultEvent(soldPropertyProfile));
         assertThat(soldPropertyRepository.findAll().get(0).getPrice(), is(100));
     }
 
