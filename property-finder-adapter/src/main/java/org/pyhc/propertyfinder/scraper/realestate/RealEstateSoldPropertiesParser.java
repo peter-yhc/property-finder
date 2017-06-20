@@ -44,14 +44,26 @@ public class RealEstateSoldPropertiesParser {
     }
 
     private static SoldPropertyProfile parseResultSummary(Element summary, SearchParameters searchParameters) {
+        String propertyLink = "https://www.realestate.com.au" + summary.getElementsByClass("property-card__link").attr("href");
+
+        Integer beds;
+        Integer baths;
+        Integer cars;
+        if (propertyLink.contains("property-residential+land")) {
+            beds = 0;
+            baths = 0;
+            cars = 0;
+        } else {
+            beds = parseConfiguration(summary, "general-features__beds");
+            baths = parseConfiguration(summary, "general-features__baths");
+            cars = parseConfiguration(summary, "general-features__cars");
+        }
+
         Integer price = parsePrice(summary.getElementsByClass("property-price").get(0));
         String address = parseAddress(summary.getElementsByClass("property-card__info-text").get(0).text());
-        Integer beds = parseInt(summary.getElementsByClass("general-features__beds").get(0).text());
-        Integer baths = parseInt(summary.getElementsByClass("general-features__baths").get(0).text());
-        Integer cars = parseInt(summary.getElementsByClass("general-features__cars").get(0).text());
+
         LocalDate soldDate = parseSoldDate(summary.getElementsByClass("property-card__with-comma").get(0).text());
 
-        String propertyLink = "https://www.realestate.com.au" + summary.getElementsByClass("property-card__link").attr("href");
         Integer propertyCode = parsePropertyCode(propertyLink);
 
         return SoldPropertyProfile
@@ -67,6 +79,15 @@ public class RealEstateSoldPropertiesParser {
                 .propertyLink(propertyLink)
                 .propertyCode(propertyCode)
                 .build();
+    }
+
+    private static Integer parseConfiguration(Element summary, String className) {
+        try {
+            return parseInt(summary.getElementsByClass(className).get(0).text());
+        } catch (NumberFormatException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     private static LocalDate parseSoldDate(String soldDate) {
@@ -94,12 +115,17 @@ public class RealEstateSoldPropertiesParser {
 
     private static Integer parsePrice(Element priceElement) {
         String priceText = priceElement.text();
-        if (priceElement.text().equals("")) {
+        if (priceText == null || priceElement.text().equals("")) {
             priceText = parsePriceImage(priceElement);
         }
 
-        priceText = priceText.replaceAll(",", "");
-        priceText = priceText.replaceAll("\\$", "");
+        try {
+            priceText = priceText.replaceAll(",", "");
+            priceText = priceText.replaceAll("\\$", "");
+        } catch (Exception e) {
+            System.out.println(priceElement.toString());
+            e.printStackTrace();
+        }
         return parseInt(priceText);
     }
 
