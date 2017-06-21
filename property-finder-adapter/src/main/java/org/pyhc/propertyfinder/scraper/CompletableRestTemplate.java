@@ -15,9 +15,12 @@ import java.util.concurrent.CompletableFuture;
 public class CompletableRestTemplate {
 
     private static final Logger LOG = Logger.getLogger(CompletableRestTemplate.class);
+    private RestTemplate restTemplate;
 
     @Autowired
-    private RestTemplate restTemplate;
+    public CompletableRestTemplate(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     public CompletableFuture<Document> performGet(Query query) {
         LOG.info("Querying " + query.toString());

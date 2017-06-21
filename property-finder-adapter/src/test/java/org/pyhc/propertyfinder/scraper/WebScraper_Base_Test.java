@@ -67,8 +67,8 @@ public abstract class WebScraper_Base_Test {
         }
 
         @Bean
-        public CompletableRestTemplate completableRestTemplate() {
-            return new CompletableRestTemplate();
+        public CompletableRestTemplate completableRestTemplate(RestTemplate restTemplate) {
+            return new CompletableRestTemplate(restTemplate);
         }
 
 
