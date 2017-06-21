@@ -15,11 +15,14 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class WebScraper implements Scraper {
 
-    @Autowired
     private CompletableRestTemplate completableRestTemplate;
+    private ScraperResultPublisher scraperResultPublisher;
 
     @Autowired
-    private ScraperResultPublisher scraperResultPublisher;
+    public WebScraper(CompletableRestTemplate completableRestTemplate, ScraperResultPublisher scraperResultPublisher) {
+        this.completableRestTemplate = completableRestTemplate;
+        this.scraperResultPublisher = scraperResultPublisher;
+    }
 
     @Override
     public CompletableFuture<Integer> getSoldPropertiesCount(SearchLocation searchLocation) {

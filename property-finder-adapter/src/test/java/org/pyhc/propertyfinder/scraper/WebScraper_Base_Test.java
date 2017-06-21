@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.pyhc.propertyfinder.configuration.AdapterConfiguration;
 import org.pyhc.propertyfinder.property.PropertyProcessorPort;
+import org.pyhc.propertyfinder.scraper.publisher.ScraperResultPublisher;
 import org.pyhc.propertyfinder.settings.SearchLocationPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -61,8 +62,19 @@ public abstract class WebScraper_Base_Test {
         }
 
         @Bean
-        public WebScraper webScraper() {
-            return new WebScraper();
+        public WebScraper webScraper(CompletableRestTemplate completableRestTemplate, ScraperResultPublisher scraperResultPublisher) {
+            return new WebScraper(completableRestTemplate, scraperResultPublisher);
+        }
+
+        @Bean
+        public CompletableRestTemplate completableRestTemplate() {
+            return new CompletableRestTemplate();
+        }
+
+
+        @Bean
+        public ScraperResultPublisher scraperResultPublisher() {
+            return new ScraperResultPublisher();
         }
 
         @Bean

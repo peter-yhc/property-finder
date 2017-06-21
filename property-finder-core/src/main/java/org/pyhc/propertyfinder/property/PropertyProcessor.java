@@ -17,11 +17,14 @@ public class PropertyProcessor implements PropertyProcessorPort {
 
     private static final Logger LOG = Logger.getLogger(PropertyProcessor.class);
 
-    @Autowired
     private Scraper scraper;
+    private SearchLocationPort searchLocationService;
 
     @Autowired
-    private SearchLocationPort searchLocationService;
+    public PropertyProcessor(Scraper scraper, SearchLocationPort searchLocationService) {
+        this.scraper = scraper;
+        this.searchLocationService = searchLocationService;
+    }
 
     @Override
     public void searchForSoldProperties() {
