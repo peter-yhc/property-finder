@@ -1,6 +1,7 @@
 package org.pyhc.propertyfinder.scraper;
 
 
+import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -10,6 +11,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.pyhc.propertyfinder.scraper.publisher.ScraperResultPublisher;
 import org.pyhc.propertyfinder.scraper.realestate.query.RealEstateQuery;
 import org.pyhc.propertyfinder.scraper.realestate.query.RealEstateSoldQuery;
+import org.pyhc.propertyfinder.scraper.realestate.result.PropertyLink;
+import org.pyhc.propertyfinder.scraper.realestate.result.PropertyProfile;
 import org.pyhc.propertyfinder.scraper.realestate.result.SoldPropertyProfile;
 import org.pyhc.propertyfinder.settings.SearchLocation;
 
@@ -38,6 +41,87 @@ public class WebScraperTest {
 
     @Mock
     private ScraperResultPublisher scraperResultPublisher;
+
+    @Test
+    public void canQueryRealEstatePropertyProfile1() throws Exception {
+        ArgumentCaptor<String> queryCaptor = ArgumentCaptor.forClass(String.class);
+        String htmlPage = loadPageFromTestResources("src/test/resources/stub/realestate/property-profile-page-1.html");
+        when(completableRestTemplate.performGet(queryCaptor.capture())).thenReturn(completedFuture(parse(htmlPage)));
+
+        PropertyProfile propertyProfile = webScraper.queryProfilePage(new PropertyLink("http://www.realestate.com.au/property-apartment-nsw-hornsby-124578062")).get();
+        assertThat(queryCaptor.getValue(), is("http://www.realestate.com.au/property-apartment-nsw-hornsby-124578062"));
+
+        assertThat(propertyProfile.getPropertyLink(), is("http://www.realestate.com.au/property-apartment-nsw-hornsby-124578062"));
+        assertThat(propertyProfile.getAddress(), is("4/10 Albert Street"));
+        assertThat(propertyProfile.getBed(), is(2));
+        assertThat(propertyProfile.getBath(), is(1));
+        assertThat(propertyProfile.getCar(), is(1));
+        assertThat(propertyProfile.getSuburb(), is("Hornsby"));
+        assertThat(propertyProfile.getPostalCode(), is(2077));
+        assertThat(propertyProfile.getPropertyCode(), is("124578062"));
+        assertThat(propertyProfile.getPriceEstimate(), is("640000-680000"));
+        verify(completableRestTemplate).performGet(any(String.class));
+    }
+
+    @Test
+    public void canQueryRealEstatePropertyProfile2() throws Exception {
+        ArgumentCaptor<String> queryCaptor = ArgumentCaptor.forClass(String.class);
+        String htmlPage = loadPageFromTestResources("src/test/resources/stub/realestate/property-profile-page-2.html");
+        when(completableRestTemplate.performGet(queryCaptor.capture())).thenReturn(completedFuture(parse(htmlPage)));
+
+        PropertyProfile propertyProfile = webScraper.queryProfilePage(new PropertyLink("http://www.realestate.com.au/property-unit-nsw-strathfield-124523042")).get();
+        assertThat(queryCaptor.getValue(), is("http://www.realestate.com.au/property-unit-nsw-strathfield-124523042"));
+
+        assertThat(propertyProfile.getPropertyLink(), is("http://www.realestate.com.au/property-unit-nsw-strathfield-124523042"));
+        assertThat(propertyProfile.getAddress(), is("102/5-7 Beresford Road"));
+        assertThat(propertyProfile.getBed(), is(3));
+        assertThat(propertyProfile.getBath(), is(2));
+        assertThat(propertyProfile.getCar(), is(2));
+        assertThat(propertyProfile.getSuburb(), is("Strathfield"));
+        assertThat(propertyProfile.getPostalCode(), is(2135));
+        assertThat(propertyProfile.getPropertyCode(), is("124523042"));
+        assertThat(propertyProfile.getPriceEstimate(), is("Auction"));
+    }
+
+    @Test
+    public void canQueryRealEstatePropertyProfile3() throws Exception {
+        ArgumentCaptor<String> queryCaptor = ArgumentCaptor.forClass(String.class);
+        String htmlPage = loadPageFromTestResources("src/test/resources/stub/realestate/property-profile-page-3.html");
+        when(completableRestTemplate.performGet(queryCaptor.capture())).thenReturn(completedFuture(parse(htmlPage)));
+
+        PropertyProfile propertyProfile = webScraper.queryProfilePage(new PropertyLink("http://www.realestate.com.au/property-apartment-nsw-naremburn-124506658")).get();
+        assertThat(queryCaptor.getValue(), is("http://www.realestate.com.au/property-apartment-nsw-naremburn-124506658"));
+
+        assertThat(propertyProfile.getPropertyLink(), is("http://www.realestate.com.au/property-apartment-nsw-naremburn-124506658"));
+        assertThat(propertyProfile.getAddress(), is("9/34 Station Street"));
+        assertThat(propertyProfile.getBed(), is(3));
+        assertThat(propertyProfile.getBath(), is(2));
+        assertThat(propertyProfile.getCar(), is(2));
+        assertThat(propertyProfile.getSuburb(), is("Naremburn"));
+        assertThat(propertyProfile.getPostalCode(), is(2065));
+        assertThat(propertyProfile.getPropertyCode(), is("124506658"));
+        assertThat(propertyProfile.getPriceEstimate(), is("1250000"));
+    }
+
+    @Test
+    public void canQueryRealEstatePropertyProfile4() throws Exception {
+        ArgumentCaptor<String> queryCaptor = ArgumentCaptor.forClass(String.class);
+        String htmlPage = loadPageFromTestResources("src/test/resources/stub/realestate/property-profile-page-4.html");
+        when(completableRestTemplate.performGet(queryCaptor.capture())).thenReturn(completedFuture(parse(htmlPage)));
+
+        PropertyProfile propertyProfile = webScraper.queryProfilePage(new PropertyLink("http://www.realestate.com.au/property-studio-nsw-st+leonards-124640542")).get();
+        assertThat(queryCaptor.getValue(), is("http://www.realestate.com.au/property-studio-nsw-st+leonards-124640542"));
+
+        MatcherAssert.assertThat(propertyProfile.getPropertyLink(), is("http://www.realestate.com.au/property-studio-nsw-st+leonards-124640542"));
+        MatcherAssert.assertThat(propertyProfile.getAddress(), is("102/38 Atchison Street"));
+        MatcherAssert.assertThat(propertyProfile.getBed(), is(0));
+        MatcherAssert.assertThat(propertyProfile.getBath(), is(1));
+        MatcherAssert.assertThat(propertyProfile.getCar(), is(1));
+        MatcherAssert.assertThat(propertyProfile.getSuburb(), is("St Leonards"));
+        MatcherAssert.assertThat(propertyProfile.getPostalCode(), is(2065));
+        MatcherAssert.assertThat(propertyProfile.getPropertyCode(), is("124640542"));
+        MatcherAssert.assertThat(propertyProfile.getPriceEstimate(), is("Contact"));
+    }
 
     @Test
     public void canGetSoldPropertiesResultCount() throws Exception {
