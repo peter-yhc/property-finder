@@ -37,7 +37,6 @@ public class PropertyProcessor implements PropertyProcessorPort {
         });
     }
 
-
     private IntConsumer scrapePropertiesForPage(SearchLocation searchLocation) {
         return pageNumber -> {
             try {

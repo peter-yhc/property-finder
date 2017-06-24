@@ -1,5 +1,6 @@
 $(document).ready(function () {
     getSearchableLocationsForAutocomplete();
+    $(".button-collapse").sideNav();
 });
 
 function getSearchableLocationsForAutocomplete() {

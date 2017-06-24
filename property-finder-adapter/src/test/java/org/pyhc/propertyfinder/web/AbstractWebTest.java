@@ -27,9 +27,6 @@ public abstract class AbstractWebTest extends FluentTest {
     }
 
     @MockBean
-    protected CompletableRestTemplate completableRestTemplate;
-
-    @MockBean
     protected SearchLocationPort searchLocationPort;
 
     @MockBean
