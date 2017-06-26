@@ -25,6 +25,7 @@ public class AnalysisController {
     public String settingHome(Model model) {
         List<SearchLocation> searchLocations = searchLocationPort.getSavedSearchLocations();
 
+        model.addAttribute("pageHeader", "Analyse");
         model.addAttribute("savedSearches", searchLocations);
         model.addAttribute("searchLocationForm", new SearchLocationForm());
         return "analysis";

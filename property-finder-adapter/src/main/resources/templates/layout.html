@@ -1,5 +1,5 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8"/>
@@ -14,24 +14,31 @@
 </head>
 
 <body>
-<ul id="slide-out" class="side-nav">
-    <li><div class="user-view">
-        <div class="background">
-            <img src="images/office.jpg"/>
-        </div>
-    </div></li>
-    <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
-    <li><a href="#!">Second Link</a></li>
-    <li><div class="divider"></div></li>
-    <li><a class="subheader">Subheader</a></li>
-    <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+<ul id="slide-out" class="side-nav fixed">
+    <div class="background center-align">
+        <img src="img/property.jpg" width="275px" height="201px"/>
+    </div>
+    <li><a href="#!">Analyse</a></li>
+    <li>
+        <div class="divider"></div>
+    </li>
+    <li><a class="subheader">Results</a></li>
+    <li><a class="waves-effect" href="#!">Ashford, SA</a></li>
 </ul>
-<a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+<!--<a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>-->
 
-
-<section layout:fragment="content" class="container">
-    <p>Page content goes here</p>
-</section>
+<main>
+    <nav class="top-nav">
+        <div class="row valign-wrapper">
+            <div class="col s10 offset-s1">
+                <h4 id="pf-page-header" th:text="${pageHeader}">Placeholder</h4>
+            </div>
+        </div>
+    </nav>
+    <section layout:fragment="content" class="container">
+        <p>Page content goes here</p>
+    </section>
+</main>
 
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"
         integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>

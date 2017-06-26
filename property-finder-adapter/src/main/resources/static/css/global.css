@@ -12,3 +12,7 @@ header, main, footer {
         padding-left: 0;
     }
 }
+
+.top-nav {
+    background-color: #79c6f6;
+}
