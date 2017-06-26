@@ -48,13 +48,13 @@ $("#pf-search-location-add").click(function (event) {
         parseSearchLocationText(saveSearchInput);
         $("#pf-search-location-form").submit();
     } catch (err) {
-        $("#pf-saved-searches-error span").text("Format should be 'Suburb State, PostCode' (ex. Sydney NSW, 2000)");
+        $("#pf-saved-searches-error span").text("Format should be 'Suburb, State PostCode' (ex. Sydney, NSW 2000)");
         $("#pf-saved-searches-error").show();
     }
 });
 
 let parseSearchLocationText = function (locationText) {
-    let parsedText = locationText.match(/([A-Za-z ]+) (NSW|WA|NT|QLD|SA|TA|VIC), ([0-9]{4})/);
+    let parsedText = locationText.match(/([A-Za-z ]+), (NSW|WA|NT|QLD|SA|TA|VIC) ([0-9]{4})/);
     if (parsedText.length <= 3) {
         throw "Unable to parse: " + locationText;
     }
