@@ -30,6 +30,6 @@ public class SearchLocation {
 
     @Override
     public String toString() {
-        return String.format("%s %s, %s", suburbName, state, postcode);
+        return String.format("%s, %s %s", suburbName, state, postcode);
     }
 }

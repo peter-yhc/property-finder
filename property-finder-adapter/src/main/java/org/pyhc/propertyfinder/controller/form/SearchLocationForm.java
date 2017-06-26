@@ -14,7 +14,7 @@ public class SearchLocationForm {
     private String content;
 
     public SearchLocation parseData() {
-        Pattern pattern = Pattern.compile("([A-Za-z ]+) (NSW|WA|NT|QLD|SA|TA|VIC), ([0-9]{4})");
+        Pattern pattern = Pattern.compile("([A-Za-z ]+), (NSW|WA|NT|QLD|SA|TA|VIC) ([0-9]{4})");
         Matcher matcher = pattern.matcher(content);
         if (!matcher.matches()) {
             return null;

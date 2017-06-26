@@ -153,7 +153,7 @@ public class AnalysisWebTest extends AbstractWebTest {
 
         WebElement searchInput = getDriver().findElement(By.id("pf-search-location-input"));
         searchInput.click();
-        searchInput.sendKeys("North Strathfield NSW, 2067");
+        searchInput.sendKeys("North Strathfield, NSW 2067");
 
         $("#pf-search-location-add").click();
 

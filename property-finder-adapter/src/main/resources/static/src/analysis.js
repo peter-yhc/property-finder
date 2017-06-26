@@ -7,14 +7,12 @@ function getSearchableLocationsForAutocomplete() {
     $.get("/analysis/locations",
         function (searchableLocations) {
             console.log(JSON.stringify(searchableLocations));
+            let reformedData = {};
+            searchableLocations.forEach(function (x) {
+                reformedData[x] = null;
+            });
             $("#pf-search-location-input").autocomplete({
-                data: {
-                    "Homebush, NSW 2140": null,
-                    "Homebush West, NSW 2140": null,
-                    "Sydney Olympic Park, NSW 2127": null,
-                    "Auburn, NSW 2144": null,
-                    "Strathfield, NSW 2135": null
-                },
+                data: reformedData,
                 limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
                 onAutocomplete: function (val) {
                     // Callback function when value is autcompleted.
