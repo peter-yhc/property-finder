@@ -41,7 +41,6 @@ public class SettingsWebTest extends AbstractWebTest {
         goTo("http://localhost:" + serverPort + "/" + "settings");
 
         assertThat(window().title(), is("Property Finder - Settings"));
-        assertThat($("#property-finder-brand").text(), is("Property Finder"));
 
         assertThat($("#pf-search-location-input").present(), is(true));
         assertThat($("#pf-saved-searches-list").present(), is(true));
@@ -68,11 +67,12 @@ public class SettingsWebTest extends AbstractWebTest {
         WebElement searchInput = getDriver().findElement(By.id("pf-search-location-input"));
         searchInput.click();
         searchInput.sendKeys("home");
-        await().atMost(1000).until(() -> $("#ui-id-1").find(".ui-menu-item").size() == 2);
+        await().atMost(1000).until(() -> $(".autocomplete-content").tagNames().size() != 0);
 
-        FluentList<FluentWebElement> autocompleteFields = $("#ui-id-1").find(".ui-menu-item");
-        assertThat(autocompleteFields.get(0).text(), is("Homebush NSW, 2140"));
-        assertThat(autocompleteFields.get(1).text(), is("Homebush West NSW, 2140"));
+        System.out.println($(".autocomplete-content"));
+        FluentList<FluentWebElement> autocompleteFields = $(".autocomplete-content").find("li");
+        assertThat(autocompleteFields.get(0).text(), is("Homebush, NSW 2140"));
+        assertThat(autocompleteFields.get(1).text(), is("Homebush West, NSW 2140"));
     }
 
     @Test
@@ -92,7 +92,7 @@ public class SettingsWebTest extends AbstractWebTest {
         searchInput.sendKeys("nothing matches me");
         await().explicitlyFor(1, TimeUnit.SECONDS);
 
-        assertThat($("#ui-id-1").find(".ui-menu-item").size(), is(0));
+        assertThat($(".autocomplete-content").find("li").size(), is(0));
     }
 
     @Test

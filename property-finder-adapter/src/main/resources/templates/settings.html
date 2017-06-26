@@ -23,7 +23,7 @@
             <form id="pf-search-location-form" action="#" th:action="@{/settings/locations}"
                   th:object="${searchLocationForm}" method="post">
                 <div class="input-field">
-                    <input id="pf-search-location-input" type="text" class="form-control"
+                    <input id="pf-search-location-input" type="text" class="form-control autocomplete"
                            placeholder="Ex. Sydney NSW, 2000"
                            th:field="*{content}"/>
                     <button id="pf-search-location-add" class="btn" type="button">Add</button>

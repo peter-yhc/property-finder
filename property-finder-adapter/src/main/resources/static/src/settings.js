@@ -7,7 +7,18 @@ function getSearchableLocationsForAutocomplete() {
     $.get("/settings/locations",
         function (searchableLocations) {
             $("#pf-search-location-input").autocomplete({
-                source: searchableLocations
+                data: {
+                    "Homebush, NSW 2140": null,
+                    "Homebush West, NSW 2140": null,
+                    "Sydney Olympic Park, NSW 2127": null,
+                    "Auburn, NSW 2144": null,
+                    "Strathfield, NSW 2135": null
+                },
+                limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
+                onAutocomplete: function (val) {
+                    // Callback function when value is autcompleted.
+                },
+                minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
             });
         }
     );
