@@ -1,38 +1,56 @@
 package org.pyhc.propertyfinder.controller;
 
-import org.apache.log4j.Logger;
-import org.pyhc.propertyfinder.property.PropertyProcessorPort;
+import org.pyhc.propertyfinder.controller.form.SearchLocationForm;
+import org.pyhc.propertyfinder.settings.SearchLocation;
+import org.pyhc.propertyfinder.settings.SearchLocationPort;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/analysis")
 public class AnalysisController {
 
-    private static final Logger LOG = Logger.getLogger(AnalysisController.class);
-
     @Autowired
-    private PropertyProcessorPort propertyProcessorPort;
+    private SearchLocationPort searchLocationPort;
 
-    @RequestMapping
-    public String showAnalysisPage() {
+    @RequestMapping("/analysis")
+    public String settingHome(Model model) {
+        List<SearchLocation> searchLocations = searchLocationPort.getSavedSearchLocations();
 
+        model.addAttribute("savedSearches", searchLocations);
+        model.addAttribute("searchLocationForm", new SearchLocationForm());
         return "analysis";
     }
 
-    @Deprecated
-    @RequestMapping(path = "/searchSoldProperties", method = RequestMethod.POST)
-    public String triggerSoldPropertiesSearch() {
-        LOG.info("Search sold properties triggered");
-        propertyProcessorPort.searchForSoldProperties();
-        return "analysis";
+    @RequestMapping(value = "/analysis/locations", method = RequestMethod.GET)
+    @ResponseBody
+    public List<String> getSearchableLocations() {
+        List<SearchLocation> searchableLocations = searchLocationPort.getSearchableLocations();
+        return searchableLocations
+                .stream()
+                .map(SearchLocation::toString)
+                .collect(Collectors.toList());
     }
 
-    @RequestMapping(path = "/averagePrice")
-    public String averagePriceOverTime() {
-        return "analysis-charts :: averagePriceOverTime";
+    @RequestMapping(value = "/analysis/locations", method = RequestMethod.POST)
+    public String addSavedLocation(@ModelAttribute("searchLocationForm") SearchLocationForm searchLocationForm) {
+        searchLocationPort.addSavedLocation(searchLocationForm.parseData());
+        return "redirect:/analysis";
+    }
+
+    @RequestMapping(value = "/analysis/locations/{savedSearchId}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity<Void> removeSavedLocation(@PathVariable("savedSearchId") @NotNull @Valid UUID savedSearchId) {
+        searchLocationPort.removeSavedLocation(savedSearchId);
+        return ResponseEntity.ok().build();
     }
 
 }
