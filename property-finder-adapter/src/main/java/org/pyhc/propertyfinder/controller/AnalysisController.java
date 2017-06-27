@@ -23,7 +23,7 @@ public class AnalysisController {
 
     @RequestMapping("/analysis")
     public String settingHome(Model model) {
-        List<SuburbDetails> suburbDetails = searchLocationPort.getSavedSearchLocations();
+        List<SuburbDetails> suburbDetails = searchLocationPort.getPreviousSearches();
 
         model.addAttribute("pageHeader", "Analyse");
         model.addAttribute("savedSearches", suburbDetails);

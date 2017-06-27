@@ -31,12 +31,12 @@ public class PropertyProcessorTest {
     public void canSearchSoldProperties() throws Exception {
         SuburbDetails suburbDetails = SuburbDetails.builder().suburbName("Homebush").postcode(2140).build();
 
-        when(searchLocationService.getSavedSearchLocations()).thenReturn(singletonList(suburbDetails));
+        when(searchLocationService.getPreviousSearches()).thenReturn(singletonList(suburbDetails));
         when(scraper.getSoldPropertiesCount(suburbDetails)).thenReturn(completedFuture(3));
 
         propertyProcessor.searchForSoldProperties();
 
-        verify(searchLocationService).getSavedSearchLocations();
+        verify(searchLocationService).getPreviousSearches();
         verify(scraper).getSoldPropertiesCount(suburbDetails);
         verify(scraper).searchSoldProperties(any(), any());
     }

@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public interface SearchLocationPort {
 
-    List<SuburbDetails> getSavedSearchLocations();
+    List<SuburbDetails> getPreviousSearches();
 
     List<SuburbDetails> getSearchableLocations();
 

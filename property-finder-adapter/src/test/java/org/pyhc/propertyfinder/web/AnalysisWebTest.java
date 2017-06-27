@@ -32,7 +32,7 @@ public class AnalysisWebTest extends AbstractWebTest {
 
     @Test
     public void canViewSettingsPage() {
-        when(searchLocationPort.getSavedSearchLocations()).thenReturn(asList(
+        when(searchLocationPort.getPreviousSearches()).thenReturn(asList(
                 SuburbDetails.builder().suburbName("Homebush").postcode(2140).state("NSW").build(),
                 SuburbDetails.builder().suburbName("Strathfield").postcode(2135).state("NSW").build()
         ));
@@ -48,7 +48,7 @@ public class AnalysisWebTest extends AbstractWebTest {
         assertThat($("#pf-saved-searches-delete-0").present(), is(true));
         assertThat($("#pf-saved-searches-delete-1").present(), is(true));
 
-        verify(searchLocationPort).getSavedSearchLocations();
+        verify(searchLocationPort).getPreviousSearches();
     }
 
     @Test
@@ -96,7 +96,7 @@ public class AnalysisWebTest extends AbstractWebTest {
     @Test
     public void clickingDeleteButton_ForFirstRow_RemovesSavedSearch() throws Exception {
         UUID homebushUuid = randomUUID();
-        when(searchLocationPort.getSavedSearchLocations()).thenReturn(asList(
+        when(searchLocationPort.getPreviousSearches()).thenReturn(asList(
                 SuburbDetails.builder().suburbName("Homebush").postcode(2140).state("NSW").uuid(homebushUuid).build(),
                 SuburbDetails.builder().suburbName("Strathfield").postcode(2135).state("NSW").uuid(randomUUID()).build()
         ));
@@ -118,7 +118,7 @@ public class AnalysisWebTest extends AbstractWebTest {
     @Test
     public void clickingDeleteButton_ForSecondRow_RemovesSavedSearch() throws Exception {
         UUID strathfieldUuid = UUID.randomUUID();
-        when(searchLocationPort.getSavedSearchLocations()).thenReturn(asList(
+        when(searchLocationPort.getPreviousSearches()).thenReturn(asList(
                 SuburbDetails.builder().suburbName("Homebush").postcode(2140).state("NSW").uuid(randomUUID()).build(),
                 SuburbDetails.builder().suburbName("Strathfield").postcode(2135).state("NSW").uuid(strathfieldUuid).build()
         ));
@@ -140,7 +140,7 @@ public class AnalysisWebTest extends AbstractWebTest {
 
     @Test
     public void canAddNewSavedLocation_AndReloadPage() throws Exception {
-        when(searchLocationPort.getSavedSearchLocations())
+        when(searchLocationPort.getPreviousSearches())
                 .thenReturn(emptyList())
                 .thenReturn(singletonList(
                         SuburbDetails.builder().suburbName("North Strathfield").postcode(2067).state("NSW").build()

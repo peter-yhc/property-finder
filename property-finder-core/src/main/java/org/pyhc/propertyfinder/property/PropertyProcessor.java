@@ -28,7 +28,7 @@ public class PropertyProcessor implements PropertyProcessorPort {
 
     @Override
     public void searchForSoldProperties() {
-        List<SuburbDetails> suburbDetails = searchLocationService.getSavedSearchLocations();
+        List<SuburbDetails> suburbDetails = searchLocationService.getPreviousSearches();
         suburbDetails.forEach(searchLocation -> {
             scraper.getSoldPropertiesCount(searchLocation).thenAccept(count -> {
                 int totalPages = count / 20 + 1;

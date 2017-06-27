@@ -28,7 +28,7 @@ public class SearchLocationService implements SearchLocationPort {
 
     @Override
     @Transactional(readOnly = true)
-    public List<SuburbDetails> getSavedSearchLocations() {
+    public List<SuburbDetails> getPreviousSearches() {
         return previousSearchRepository.findAll()
                 .stream()
                 .map(DataObjectConverter::convertToSearchLocation)
