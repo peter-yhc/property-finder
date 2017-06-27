@@ -7,7 +7,7 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @EqualsAndHashCode
-public class SavedSearch {
+public class PreviousSearch {
 
     @Getter(AccessLevel.NONE)
     private String _id;
@@ -17,13 +17,13 @@ public class SavedSearch {
     private UUID uuid;
 
     @Builder
-    private SavedSearch(String name, String state, Integer postcode) {
+    private PreviousSearch(String name, String state, Integer postcode) {
         this.name = name;
         this.state = state;
         this.postcode = postcode;
         this.uuid = UUID.randomUUID();
     }
 
-    private SavedSearch() {
+    private PreviousSearch() {
     }
 }

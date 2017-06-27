@@ -4,8 +4,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.pyhc.propertyfinder.configuration.DatabaseConfiguration;
 import org.pyhc.propertyfinder.configuration.MongoExecutionListener;
-import org.pyhc.propertyfinder.model.SavedSearch;
-import org.pyhc.propertyfinder.model.SavedSearchRepository;
+import org.pyhc.propertyfinder.model.PreviousSearch;
+import org.pyhc.propertyfinder.model.PreviousSearchRepository;
 import org.pyhc.propertyfinder.model.Suburb;
 import org.pyhc.propertyfinder.model.SuburbRepository;
 import org.pyhc.propertyfinder.settings.service.SearchLocationService;
@@ -30,7 +30,7 @@ import static org.hamcrest.Matchers.is;
 public class SearchLocationServiceTest {
 
     @Autowired
-    private SavedSearchRepository savedSearchRepository;
+    private PreviousSearchRepository previousSearchRepository;
 
     @Autowired
     private SuburbRepository suburbRepository;
@@ -42,11 +42,11 @@ public class SearchLocationServiceTest {
     public void canSave_andRetreive_Location() throws Exception {
         searchLocationService.addSavedLocation(SearchLocation.builder().suburbName("Toowoomba").state("QLD").postcode(4350).build());
 
-        SavedSearch savedSearch = savedSearchRepository.findAll().get(0);
-        assertThat(savedSearch.getName(), is("Toowoomba"));
-        assertThat(savedSearch.getState(), is("QLD"));
-        assertThat(savedSearch.getPostcode(), is(4350));
-        assertThat(savedSearch.getUuid(), is(not(nullValue())));
+        PreviousSearch previousSearch = previousSearchRepository.findAll().get(0);
+        assertThat(previousSearch.getName(), is("Toowoomba"));
+        assertThat(previousSearch.getState(), is("QLD"));
+        assertThat(previousSearch.getPostcode(), is(4350));
+        assertThat(previousSearch.getUuid(), is(not(nullValue())));
     }
 
     @Test
@@ -57,17 +57,17 @@ public class SearchLocationServiceTest {
         searchLocationService.addSavedLocation(searchLocation);
         searchLocationService.addSavedLocation(searchLocation);
 
-        assertThat(savedSearchRepository.findAll().size(), is(1));
+        assertThat(previousSearchRepository.findAll().size(), is(1));
     }
 
     @Test
     public void canRemoveSavedSearchLocation() throws Exception {
-        SavedSearch savedSearch = SavedSearch.builder().name("Toowoomba").state("QLD").postcode(4350).build();
-        savedSearch = savedSearchRepository.save(savedSearch);
+        PreviousSearch previousSearch = PreviousSearch.builder().name("Toowoomba").state("QLD").postcode(4350).build();
+        previousSearch = previousSearchRepository.save(previousSearch);
 
-        searchLocationService.removeSavedLocation(savedSearch.getUuid());
+        searchLocationService.removeSavedLocation(previousSearch.getUuid());
 
-        assertThat(savedSearchRepository.findAll().size(), is(0));
+        assertThat(previousSearchRepository.findAll().size(), is(0));
     }
 
     @Test

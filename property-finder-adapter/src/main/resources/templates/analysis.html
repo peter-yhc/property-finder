@@ -31,15 +31,15 @@
         <div class="row">
             <h5>Results</h5>
             <ul id="pf-saved-searches-list" class="collection">
-                <li th:each="savedSearch,iter : ${savedSearches}"
+                <li th:each="previousSearch,iter : ${savedSearches}"
                     th:id="${'pf-saved-searches-item-' + iter.index}"
                     class="collection-item pf-saved-search-item">
                     <div class="col s6 valign-wrapper">
-                        <span th:text="${savedSearch.suburbName + ' ' + savedSearch.state + ', ' + savedSearch.postcode}"></span>
+                        <span th:text="${previousSearch.suburbName + ' ' + previousSearch.state + ', ' + previousSearch.postcode}"></span>
                     </div>
                     <div class="col s6">
                         <a th:id="${'pf-saved-searches-delete-' + iter.index}"
-                           th:attr="pf-uuid=${savedSearch.uuid}, pf-index=${iter.index}"
+                           th:attr="pf-uuid=${previousSearch.uuid}, pf-index=${iter.index}"
                            class="waves-effect waves-light btn right pf-saved-searches-delete-button">
                             <i class="material-icons">clear</i>
                         </a>

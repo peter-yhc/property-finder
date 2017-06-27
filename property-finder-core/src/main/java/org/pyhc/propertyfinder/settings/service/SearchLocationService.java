@@ -1,10 +1,10 @@
 package org.pyhc.propertyfinder.settings.service;
 
+import org.pyhc.propertyfinder.model.PreviousSearch;
 import org.pyhc.propertyfinder.settings.DataObjectConverter;
 import org.pyhc.propertyfinder.settings.SearchLocation;
 import org.pyhc.propertyfinder.settings.SearchLocationPort;
-import org.pyhc.propertyfinder.model.SavedSearch;
-import org.pyhc.propertyfinder.model.SavedSearchRepository;
+import org.pyhc.propertyfinder.model.PreviousSearchRepository;
 import org.pyhc.propertyfinder.model.SuburbRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ import static org.pyhc.propertyfinder.settings.DataObjectConverter.convertToSave
 public class SearchLocationService implements SearchLocationPort {
 
     @Autowired
-    private SavedSearchRepository savedSearchRepository;
+    private PreviousSearchRepository previousSearchRepository;
 
     @Autowired
     private SuburbRepository suburbRepository;
@@ -29,7 +29,7 @@ public class SearchLocationService implements SearchLocationPort {
     @Override
     @Transactional(readOnly = true)
     public List<SearchLocation> getSavedSearchLocations() {
-        return savedSearchRepository.findAll()
+        return previousSearchRepository.findAll()
                 .stream()
                 .map(DataObjectConverter::convertToSearchLocation)
                 .collect(toList());
@@ -46,20 +46,20 @@ public class SearchLocationService implements SearchLocationPort {
     @Override
     @Transactional
     public void addSavedLocation(SearchLocation searchLocation) {
-        Optional<SavedSearch> savedSearchOptional = savedSearchRepository.findByNameAndStateAndPostcode(
+        Optional<PreviousSearch> savedSearchOptional = previousSearchRepository.findByNameAndStateAndPostcode(
                 searchLocation.getSuburbName(),
                 searchLocation.getState(),
                 searchLocation.getPostcode()
         );
         if (!savedSearchOptional.isPresent()) {
-            savedSearchRepository.save(convertToSavedSearch(searchLocation));
+            previousSearchRepository.save(convertToSavedSearch(searchLocation));
         }
     }
 
     @Override
     @Transactional
     public void removeSavedLocation(UUID savedLocationId) {
-        savedSearchRepository.findByUuid(savedLocationId)
-                .ifPresent((savedSearch) -> savedSearchRepository.delete(savedSearch));
+        previousSearchRepository.findByUuid(savedLocationId)
+                .ifPresent((previousSearch) -> previousSearchRepository.delete(previousSearch));
     }
 }

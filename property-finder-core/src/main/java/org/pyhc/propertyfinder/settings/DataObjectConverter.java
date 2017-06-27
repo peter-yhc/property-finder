@@ -1,15 +1,15 @@
 package org.pyhc.propertyfinder.settings;
 
-import org.pyhc.propertyfinder.model.SavedSearch;
+import org.pyhc.propertyfinder.model.PreviousSearch;
 import org.pyhc.propertyfinder.model.Suburb;
 
 public interface DataObjectConverter {
-    static SearchLocation convertToSearchLocation(SavedSearch savedSearch) {
+    static SearchLocation convertToSearchLocation(PreviousSearch previousSearch) {
         return SearchLocation.builder()
-                .suburbName(savedSearch.getName())
-                .state(savedSearch.getState())
-                .postcode(savedSearch.getPostcode())
-                .uuid(savedSearch.getUuid())
+                .suburbName(previousSearch.getName())
+                .state(previousSearch.getState())
+                .postcode(previousSearch.getPostcode())
+                .uuid(previousSearch.getUuid())
                 .build();
     }
     static SearchLocation convertToSearchLocation(Suburb suburb) {
@@ -20,8 +20,8 @@ public interface DataObjectConverter {
                 .build();
     }
 
-    static SavedSearch convertToSavedSearch(SearchLocation searchLocation) {
-        return SavedSearch.builder()
+    static PreviousSearch convertToSavedSearch(SearchLocation searchLocation) {
+        return PreviousSearch.builder()
                 .name(searchLocation.getSuburbName())
                 .state(searchLocation.getState())
                 .postcode(searchLocation.getPostcode())
