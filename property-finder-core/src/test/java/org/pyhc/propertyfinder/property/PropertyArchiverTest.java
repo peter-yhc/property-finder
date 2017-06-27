@@ -5,8 +5,8 @@ import org.junit.runner.RunWith;
 import org.pyhc.propertyfinder.configuration.DatabaseConfiguration;
 import org.pyhc.propertyfinder.configuration.MongoExecutionListener;
 import org.pyhc.propertyfinder.events.ProfileResultEvent;
-import org.pyhc.propertyfinder.property.model.SoldProperty;
-import org.pyhc.propertyfinder.property.model.SoldPropertyRepository;
+import org.pyhc.propertyfinder.model.PropertyProfile;
+import org.pyhc.propertyfinder.model.PropertyProfileRepository;
 import org.pyhc.propertyfinder.scraper.realestate.result.SoldPropertyProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,27 +32,27 @@ public class PropertyArchiverTest {
     private PropertyArchiver propertyArchiver;
 
     @Autowired
-    private SoldPropertyRepository soldPropertyRepository;
+    private PropertyProfileRepository propertyProfileRepository;
 
     @Test
     public void canArchiveSoldProperty() {
         ProfileResultEvent profileResultEvent = new ProfileResultEvent(createRandomSoldPropertyProfile());
         propertyArchiver.archiveSoldProperty(profileResultEvent);
 
-        assertThat(soldPropertyRepository.findAll().size(), is(1));
+        assertThat(propertyProfileRepository.findAll().size(), is(1));
 
         SoldPropertyProfile soldPropertyProfile = profileResultEvent.getSoldPropertyProfile();
-        SoldProperty soldProperty = soldPropertyRepository.findAll().get(0);
-        assertThat(soldProperty.getAddress(), is(soldPropertyProfile.getAddress()));
-        assertThat(soldProperty.getSuburb(), is(soldPropertyProfile.getSuburb()));
-        assertThat(soldProperty.getPostcode(), is(soldPropertyProfile.getPostcode()));
-        assertThat(soldProperty.getBeds(), is(soldPropertyProfile.getBed()));
-        assertThat(soldProperty.getBaths(), is(soldPropertyProfile.getBath()));
-        assertThat(soldProperty.getCars(), is(soldPropertyProfile.getCar()));
-        assertThat(soldProperty.getPropertyCode(), is(soldPropertyProfile.getPropertyCode()));
-        assertThat(soldProperty.getPropertyLink(), is(soldPropertyProfile.getPropertyLink()));
-        assertThat(soldProperty.getSoldDate(), is(soldPropertyProfile.getSoldDate()));
-        assertThat(soldProperty.getPrice(), is(soldPropertyProfile.getPrice()));
+        PropertyProfile propertyProfile = propertyProfileRepository.findAll().get(0);
+        assertThat(propertyProfile.getAddress(), is(soldPropertyProfile.getAddress()));
+        assertThat(propertyProfile.getSuburb(), is(soldPropertyProfile.getSuburb()));
+        assertThat(propertyProfile.getPostcode(), is(soldPropertyProfile.getPostcode()));
+        assertThat(propertyProfile.getBeds(), is(soldPropertyProfile.getBed()));
+        assertThat(propertyProfile.getBaths(), is(soldPropertyProfile.getBath()));
+        assertThat(propertyProfile.getCars(), is(soldPropertyProfile.getCar()));
+        assertThat(propertyProfile.getPropertyCode(), is(soldPropertyProfile.getPropertyCode()));
+        assertThat(propertyProfile.getPropertyLink(), is(soldPropertyProfile.getPropertyLink()));
+        assertThat(propertyProfile.getSoldDate(), is(soldPropertyProfile.getSoldDate()));
+        assertThat(propertyProfile.getPrice(), is(soldPropertyProfile.getPrice()));
     }
 
     @Test
@@ -61,7 +61,7 @@ public class PropertyArchiverTest {
         propertyArchiver.archiveSoldProperty(profileResultEvent);
 
         propertyArchiver.archiveSoldProperty(profileResultEvent);
-        assertThat(soldPropertyRepository.findAll().size(), is(1));
+        assertThat(propertyProfileRepository.findAll().size(), is(1));
     }
 
     @Test
@@ -74,7 +74,7 @@ public class PropertyArchiverTest {
         f1.set(soldPropertyProfile, 100);
 
         propertyArchiver.archiveSoldProperty(new ProfileResultEvent(soldPropertyProfile));
-        assertThat(soldPropertyRepository.findAll().get(0).getPrice(), is(100));
+        assertThat(propertyProfileRepository.findAll().get(0).getPrice(), is(100));
     }
 
     private SoldPropertyProfile createRandomSoldPropertyProfile() {

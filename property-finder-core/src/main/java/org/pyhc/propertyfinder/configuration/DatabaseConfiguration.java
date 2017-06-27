@@ -8,8 +8,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 @Configuration
 @EnableMongoRepositories(basePackages = {
-        "org.pyhc.propertyfinder.settings.model",
-        "org.pyhc.propertyfinder.property.model"
+        "org.pyhc.propertyfinder.model"
 })
 public class DatabaseConfiguration extends AbstractMongoConfiguration {
 

@@ -1,4 +1,4 @@
-package org.pyhc.propertyfinder.property.model;
+package org.pyhc.propertyfinder.model;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @Getter
 @EqualsAndHashCode
-public class SoldProperty {
+public class PropertyProfile {
 
     @Getter(AccessLevel.NONE)
     private String _id;
@@ -26,16 +26,16 @@ public class SoldProperty {
     private LocalDate soldDate;
 
     @Builder
-    public SoldProperty(Integer price,
-                        String address,
-                        Integer beds,
-                        Integer baths,
-                        Integer cars,
-                        String suburb,
-                        Integer postcode,
-                        Integer propertyCode,
-                        String propertyLink,
-                        LocalDate soldDate) {
+    public PropertyProfile(Integer price,
+                           String address,
+                           Integer beds,
+                           Integer baths,
+                           Integer cars,
+                           String suburb,
+                           Integer postcode,
+                           Integer propertyCode,
+                           String propertyLink,
+                           LocalDate soldDate) {
         this.price = price;
         this.address = address;
         this.beds = beds;

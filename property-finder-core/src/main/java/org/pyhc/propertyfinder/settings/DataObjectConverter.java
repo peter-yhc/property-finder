@@ -1,7 +1,7 @@
 package org.pyhc.propertyfinder.settings;
 
-import org.pyhc.propertyfinder.settings.model.SavedSearch;
-import org.pyhc.propertyfinder.settings.model.Suburb;
+import org.pyhc.propertyfinder.model.SavedSearch;
+import org.pyhc.propertyfinder.model.Suburb;
 
 public interface DataObjectConverter {
     static SearchLocation convertToSearchLocation(SavedSearch savedSearch) {

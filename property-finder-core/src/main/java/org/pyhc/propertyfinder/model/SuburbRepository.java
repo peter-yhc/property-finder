@@ -1,4 +1,4 @@
-package org.pyhc.propertyfinder.settings.model;
+package org.pyhc.propertyfinder.model;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
