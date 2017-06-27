@@ -2,7 +2,7 @@ package org.pyhc.propertyfinder.settings.service;
 
 import org.pyhc.propertyfinder.model.PreviousSearch;
 import org.pyhc.propertyfinder.settings.DataObjectConverter;
-import org.pyhc.propertyfinder.settings.SearchLocation;
+import org.pyhc.propertyfinder.settings.SuburbDetails;
 import org.pyhc.propertyfinder.settings.SearchLocationPort;
 import org.pyhc.propertyfinder.model.PreviousSearchRepository;
 import org.pyhc.propertyfinder.model.SuburbRepository;
@@ -28,7 +28,7 @@ public class SearchLocationService implements SearchLocationPort {
 
     @Override
     @Transactional(readOnly = true)
-    public List<SearchLocation> getSavedSearchLocations() {
+    public List<SuburbDetails> getSavedSearchLocations() {
         return previousSearchRepository.findAll()
                 .stream()
                 .map(DataObjectConverter::convertToSearchLocation)
@@ -36,7 +36,7 @@ public class SearchLocationService implements SearchLocationPort {
     }
 
     @Override
-    public List<SearchLocation> getSearchableLocations() {
+    public List<SuburbDetails> getSearchableLocations() {
         return suburbRepository.findAll()
                 .stream()
                 .map(DataObjectConverter::convertToSearchLocation)
@@ -45,14 +45,14 @@ public class SearchLocationService implements SearchLocationPort {
 
     @Override
     @Transactional
-    public void addSavedLocation(SearchLocation searchLocation) {
+    public void recordSearch(SuburbDetails suburbDetails) {
         Optional<PreviousSearch> savedSearchOptional = previousSearchRepository.findByNameAndStateAndPostcode(
-                searchLocation.getSuburbName(),
-                searchLocation.getState(),
-                searchLocation.getPostcode()
+                suburbDetails.getSuburbName(),
+                suburbDetails.getState(),
+                suburbDetails.getPostcode()
         );
         if (!savedSearchOptional.isPresent()) {
-            previousSearchRepository.save(convertToSavedSearch(searchLocation));
+            previousSearchRepository.save(convertToSavedSearch(suburbDetails));
         }
     }
 

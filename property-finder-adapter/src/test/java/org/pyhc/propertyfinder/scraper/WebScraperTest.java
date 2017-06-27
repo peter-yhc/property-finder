@@ -14,7 +14,7 @@ import org.pyhc.propertyfinder.scraper.realestate.query.RealEstateSoldQuery;
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyLink;
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyProfile;
 import org.pyhc.propertyfinder.scraper.realestate.result.SoldPropertyProfile;
-import org.pyhc.propertyfinder.settings.SearchLocation;
+import org.pyhc.propertyfinder.settings.SuburbDetails;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,7 +31,7 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class WebScraperTest {
 
-    private static final SearchLocation HOMEBUSH = SearchLocation.builder().suburbName("homebush").postcode(2140).build();
+    private static final SuburbDetails HOMEBUSH = SuburbDetails.builder().suburbName("homebush").postcode(2140).build();
 
     @InjectMocks
     private WebScraper webScraper;

@@ -11,7 +11,7 @@ import java.util.UUID;
 @Getter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class SearchLocation {
+public class SuburbDetails {
 
     @NotNull
     private String suburbName;
@@ -25,7 +25,7 @@ public class SearchLocation {
     @NotNull
     private UUID uuid;
 
-    private SearchLocation() {
+    private SuburbDetails() {
     }
 
     @Override

@@ -1,7 +1,7 @@
 package org.pyhc.propertyfinder.controller;
 
 import org.pyhc.propertyfinder.controller.form.SearchLocationForm;
-import org.pyhc.propertyfinder.settings.SearchLocation;
+import org.pyhc.propertyfinder.settings.SuburbDetails;
 import org.pyhc.propertyfinder.settings.SearchLocationPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +23,10 @@ public class AnalysisController {
 
     @RequestMapping("/analysis")
     public String settingHome(Model model) {
-        List<SearchLocation> searchLocations = searchLocationPort.getSavedSearchLocations();
+        List<SuburbDetails> suburbDetails = searchLocationPort.getSavedSearchLocations();
 
         model.addAttribute("pageHeader", "Analyse");
-        model.addAttribute("savedSearches", searchLocations);
+        model.addAttribute("savedSearches", suburbDetails);
         model.addAttribute("searchLocationForm", new SearchLocationForm());
         return "analysis";
     }
@@ -34,16 +34,16 @@ public class AnalysisController {
     @RequestMapping(value = "/analysis/locations", method = RequestMethod.GET)
     @ResponseBody
     public List<String> getSearchableLocations() {
-        List<SearchLocation> searchableLocations = searchLocationPort.getSearchableLocations();
+        List<SuburbDetails> searchableLocations = searchLocationPort.getSearchableLocations();
         return searchableLocations
                 .stream()
-                .map(SearchLocation::toString)
+                .map(SuburbDetails::toString)
                 .collect(Collectors.toList());
     }
 
     @RequestMapping(value = "/analysis/locations", method = RequestMethod.POST)
-    public String addSavedLocation(@ModelAttribute("searchLocationForm") SearchLocationForm searchLocationForm) {
-        searchLocationPort.addSavedLocation(searchLocationForm.parseData());
+    public String recordSearch(@ModelAttribute("searchLocationForm") SearchLocationForm searchLocationForm) {
+        searchLocationPort.recordSearch(searchLocationForm.parseData());
         return "redirect:/analysis";
     }
 

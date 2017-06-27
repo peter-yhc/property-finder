@@ -6,7 +6,7 @@ import org.pyhc.propertyfinder.scraper.realestate.RealEstateSoldPropertiesParser
 import org.pyhc.propertyfinder.scraper.realestate.query.RealEstateSoldQuery;
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyLink;
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyProfile;
-import org.pyhc.propertyfinder.settings.SearchLocation;
+import org.pyhc.propertyfinder.settings.SuburbDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,17 +25,17 @@ public class WebScraper implements Scraper {
     }
 
     @Override
-    public CompletableFuture<Integer> getSoldPropertiesCount(SearchLocation searchLocation) {
-        RealEstateSoldQuery realEstateSoldQuery = RealEstateSoldQuery.fromSearchOptions(searchLocation);
+    public CompletableFuture<Integer> getSoldPropertiesCount(SuburbDetails suburbDetails) {
+        RealEstateSoldQuery realEstateSoldQuery = RealEstateSoldQuery.fromSearchOptions(suburbDetails);
         return completableRestTemplate.performGet(realEstateSoldQuery)
                 .thenApply(RealEstateSoldPropertiesParser::getSoldPropertiesCount);
     }
 
     @Override
-    public CompletableFuture<Void> searchSoldProperties(SearchLocation searchLocation, Integer page) {
-        RealEstateSoldQuery realEstateSoldQuery = RealEstateSoldQuery.fromSearchOptions(searchLocation, page);
+    public CompletableFuture<Void> searchSoldProperties(SuburbDetails suburbDetails, Integer page) {
+        RealEstateSoldQuery realEstateSoldQuery = RealEstateSoldQuery.fromSearchOptions(suburbDetails, page);
         return completableRestTemplate.performGet(realEstateSoldQuery)
-                .thenApply(document -> RealEstateSoldPropertiesParser.parseSoldProperties(document, searchLocation))
+                .thenApply(document -> RealEstateSoldPropertiesParser.parseSoldProperties(document, suburbDetails))
                 .thenAccept(profiles -> profiles.forEach(profile -> scraperResultPublisher.publishProfileResult(profile)));
     }
 

@@ -3,7 +3,7 @@ package org.pyhc.propertyfinder.controller.form;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.pyhc.propertyfinder.settings.SearchLocation;
+import org.pyhc.propertyfinder.settings.SuburbDetails;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 public class SearchLocationForm {
     private String content;
 
-    public SearchLocation parseData() {
+    public SuburbDetails parseData() {
         Pattern pattern = Pattern.compile("([A-Za-z ]+), (NSW|WA|NT|QLD|SA|TA|VIC) ([0-9]{4})");
         Matcher matcher = pattern.matcher(content);
         if (!matcher.matches()) {
@@ -22,6 +22,6 @@ public class SearchLocationForm {
         String suburb = matcher.group(1);
         String state = matcher.group(2);
         String postcode = matcher.group(3);
-        return SearchLocation.builder().suburbName(suburb).state(state).postcode(Integer.parseInt(postcode)).build();
+        return SuburbDetails.builder().suburbName(suburb).state(state).postcode(Integer.parseInt(postcode)).build();
     }
 }

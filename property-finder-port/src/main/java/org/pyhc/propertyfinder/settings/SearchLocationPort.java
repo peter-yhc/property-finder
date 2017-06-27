@@ -5,11 +5,11 @@ import java.util.UUID;
 
 public interface SearchLocationPort {
 
-    List<SearchLocation> getSavedSearchLocations();
+    List<SuburbDetails> getSavedSearchLocations();
 
-    List<SearchLocation> getSearchableLocations();
+    List<SuburbDetails> getSearchableLocations();
 
-    void addSavedLocation(SearchLocation searchLocation);
+    void recordSearch(SuburbDetails suburbDetails);
 
     void removeSavedLocation(UUID savedLocationId);
 }

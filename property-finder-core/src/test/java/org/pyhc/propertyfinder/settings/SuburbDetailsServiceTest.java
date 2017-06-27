@@ -25,9 +25,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {DatabaseConfiguration.class, SearchLocationServiceTest.ContextConfiguration.class})
+@SpringBootTest(classes = {DatabaseConfiguration.class, SuburbDetailsServiceTest.ContextConfiguration.class})
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class, MongoExecutionListener.class})
-public class SearchLocationServiceTest {
+public class SuburbDetailsServiceTest {
 
     @Autowired
     private PreviousSearchRepository previousSearchRepository;
@@ -40,7 +40,7 @@ public class SearchLocationServiceTest {
 
     @Test
     public void canSave_andRetreive_Location() throws Exception {
-        searchLocationService.addSavedLocation(SearchLocation.builder().suburbName("Toowoomba").state("QLD").postcode(4350).build());
+        searchLocationService.recordSearch(SuburbDetails.builder().suburbName("Toowoomba").state("QLD").postcode(4350).build());
 
         PreviousSearch previousSearch = previousSearchRepository.findAll().get(0);
         assertThat(previousSearch.getName(), is("Toowoomba"));
@@ -51,11 +51,11 @@ public class SearchLocationServiceTest {
 
     @Test
     public void shouldNotSaveSameSearchLocationMoreThanOnce() throws Exception {
-        SearchLocation searchLocation = SearchLocation.builder().suburbName("Toowoomba").state("QLD").postcode(4350).build();
-        searchLocationService.addSavedLocation(searchLocation);
-        searchLocationService.addSavedLocation(searchLocation);
-        searchLocationService.addSavedLocation(searchLocation);
-        searchLocationService.addSavedLocation(searchLocation);
+        SuburbDetails suburbDetails = SuburbDetails.builder().suburbName("Toowoomba").state("QLD").postcode(4350).build();
+        searchLocationService.recordSearch(suburbDetails);
+        searchLocationService.recordSearch(suburbDetails);
+        searchLocationService.recordSearch(suburbDetails);
+        searchLocationService.recordSearch(suburbDetails);
 
         assertThat(previousSearchRepository.findAll().size(), is(1));
     }
@@ -79,7 +79,7 @@ public class SearchLocationServiceTest {
         suburbRepository.save(Suburb.builder().name("A5").state("B5").postcode(5).build());
         suburbRepository.save(Suburb.builder().name("A6").state("B6").postcode(6).build());
 
-        List<SearchLocation> searchableLocations = searchLocationService.getSearchableLocations();
+        List<SuburbDetails> searchableLocations = searchLocationService.getSearchableLocations();
         assertThat(searchableLocations.size(), is(6));
         assertThat(searchableLocations.get(0).getSuburbName(), is("A1"));
         assertThat(searchableLocations.get(1).getSuburbName(), is("A2"));

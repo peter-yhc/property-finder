@@ -4,27 +4,27 @@ import org.pyhc.propertyfinder.model.PreviousSearch;
 import org.pyhc.propertyfinder.model.Suburb;
 
 public interface DataObjectConverter {
-    static SearchLocation convertToSearchLocation(PreviousSearch previousSearch) {
-        return SearchLocation.builder()
+    static SuburbDetails convertToSearchLocation(PreviousSearch previousSearch) {
+        return SuburbDetails.builder()
                 .suburbName(previousSearch.getName())
                 .state(previousSearch.getState())
                 .postcode(previousSearch.getPostcode())
                 .uuid(previousSearch.getUuid())
                 .build();
     }
-    static SearchLocation convertToSearchLocation(Suburb suburb) {
-        return SearchLocation.builder()
+    static SuburbDetails convertToSearchLocation(Suburb suburb) {
+        return SuburbDetails.builder()
                 .suburbName(suburb.getName())
                 .state(suburb.getState())
                 .postcode(suburb.getPostcode())
                 .build();
     }
 
-    static PreviousSearch convertToSavedSearch(SearchLocation searchLocation) {
+    static PreviousSearch convertToSavedSearch(SuburbDetails suburbDetails) {
         return PreviousSearch.builder()
-                .name(searchLocation.getSuburbName())
-                .state(searchLocation.getState())
-                .postcode(searchLocation.getPostcode())
+                .name(suburbDetails.getSuburbName())
+                .state(suburbDetails.getState())
+                .postcode(suburbDetails.getPostcode())
                 .build();
     }
 }

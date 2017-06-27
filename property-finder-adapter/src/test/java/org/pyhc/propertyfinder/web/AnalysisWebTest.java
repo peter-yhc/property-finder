@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.pyhc.propertyfinder.settings.SearchLocation;
+import org.pyhc.propertyfinder.settings.SuburbDetails;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +33,8 @@ public class AnalysisWebTest extends AbstractWebTest {
     @Test
     public void canViewSettingsPage() {
         when(searchLocationPort.getSavedSearchLocations()).thenReturn(asList(
-                SearchLocation.builder().suburbName("Homebush").postcode(2140).state("NSW").build(),
-                SearchLocation.builder().suburbName("Strathfield").postcode(2135).state("NSW").build()
+                SuburbDetails.builder().suburbName("Homebush").postcode(2140).state("NSW").build(),
+                SuburbDetails.builder().suburbName("Strathfield").postcode(2135).state("NSW").build()
         ));
 
         goTo("http://localhost:" + serverPort + "/analysis");
@@ -54,11 +54,11 @@ public class AnalysisWebTest extends AbstractWebTest {
     @Test
     public void autocompleteOnSearchBar_ReturnsCorrectMatches() {
         when(searchLocationPort.getSearchableLocations()).thenReturn(asList(
-                SearchLocation.builder().suburbName("Homebush").postcode(2140).state("NSW").build(),
-                SearchLocation.builder().suburbName("Homebush West").postcode(2140).state("NSW").build(),
-                SearchLocation.builder().suburbName("Sydney Olympic Park").postcode(2127).state("NSW").build(),
-                SearchLocation.builder().suburbName("Auburn").postcode(2144).state("NSW").build(),
-                SearchLocation.builder().suburbName("Strathfield").postcode(2135).state("NSW").build()
+                SuburbDetails.builder().suburbName("Homebush").postcode(2140).state("NSW").build(),
+                SuburbDetails.builder().suburbName("Homebush West").postcode(2140).state("NSW").build(),
+                SuburbDetails.builder().suburbName("Sydney Olympic Park").postcode(2127).state("NSW").build(),
+                SuburbDetails.builder().suburbName("Auburn").postcode(2144).state("NSW").build(),
+                SuburbDetails.builder().suburbName("Strathfield").postcode(2135).state("NSW").build()
         ));
 
         goTo("http://localhost:" + serverPort + "/analysis");
@@ -76,11 +76,11 @@ public class AnalysisWebTest extends AbstractWebTest {
     @Test
     public void canUseAutocompleteOnSearchBar_ReturnsNothingForNoMatches() {
         when(searchLocationPort.getSearchableLocations()).thenReturn(asList(
-                SearchLocation.builder().suburbName("Homebush").postcode(2140).state("NSW").build(),
-                SearchLocation.builder().suburbName("Homebush West").postcode(2140).state("NSW").build(),
-                SearchLocation.builder().suburbName("Sydney Olympic Park").postcode(2127).state("NSW").build(),
-                SearchLocation.builder().suburbName("Auburn").postcode(2144).state("NSW").build(),
-                SearchLocation.builder().suburbName("Strathfield").postcode(2135).state("NSW").build()
+                SuburbDetails.builder().suburbName("Homebush").postcode(2140).state("NSW").build(),
+                SuburbDetails.builder().suburbName("Homebush West").postcode(2140).state("NSW").build(),
+                SuburbDetails.builder().suburbName("Sydney Olympic Park").postcode(2127).state("NSW").build(),
+                SuburbDetails.builder().suburbName("Auburn").postcode(2144).state("NSW").build(),
+                SuburbDetails.builder().suburbName("Strathfield").postcode(2135).state("NSW").build()
         ));
 
         goTo("http://localhost:" + serverPort + "/analysis");
@@ -97,8 +97,8 @@ public class AnalysisWebTest extends AbstractWebTest {
     public void clickingDeleteButton_ForFirstRow_RemovesSavedSearch() throws Exception {
         UUID homebushUuid = randomUUID();
         when(searchLocationPort.getSavedSearchLocations()).thenReturn(asList(
-                SearchLocation.builder().suburbName("Homebush").postcode(2140).state("NSW").uuid(homebushUuid).build(),
-                SearchLocation.builder().suburbName("Strathfield").postcode(2135).state("NSW").uuid(randomUUID()).build()
+                SuburbDetails.builder().suburbName("Homebush").postcode(2140).state("NSW").uuid(homebushUuid).build(),
+                SuburbDetails.builder().suburbName("Strathfield").postcode(2135).state("NSW").uuid(randomUUID()).build()
         ));
 
         goTo("http://localhost:" + serverPort + "/analysis");
@@ -119,8 +119,8 @@ public class AnalysisWebTest extends AbstractWebTest {
     public void clickingDeleteButton_ForSecondRow_RemovesSavedSearch() throws Exception {
         UUID strathfieldUuid = UUID.randomUUID();
         when(searchLocationPort.getSavedSearchLocations()).thenReturn(asList(
-                SearchLocation.builder().suburbName("Homebush").postcode(2140).state("NSW").uuid(randomUUID()).build(),
-                SearchLocation.builder().suburbName("Strathfield").postcode(2135).state("NSW").uuid(strathfieldUuid).build()
+                SuburbDetails.builder().suburbName("Homebush").postcode(2140).state("NSW").uuid(randomUUID()).build(),
+                SuburbDetails.builder().suburbName("Strathfield").postcode(2135).state("NSW").uuid(strathfieldUuid).build()
         ));
         doNothing().when(searchLocationPort).removeSavedLocation(any());
 
@@ -143,9 +143,9 @@ public class AnalysisWebTest extends AbstractWebTest {
         when(searchLocationPort.getSavedSearchLocations())
                 .thenReturn(emptyList())
                 .thenReturn(singletonList(
-                        SearchLocation.builder().suburbName("North Strathfield").postcode(2067).state("NSW").build()
+                        SuburbDetails.builder().suburbName("North Strathfield").postcode(2067).state("NSW").build()
                 ));
-        doNothing().when(searchLocationPort).addSavedLocation(any());
+        doNothing().when(searchLocationPort).recordSearch(any());
 
         goTo("http://localhost:" + serverPort + "/analysis");
 
@@ -157,13 +157,13 @@ public class AnalysisWebTest extends AbstractWebTest {
 
         $("#pf-search-location-add").click();
 
-        ArgumentCaptor<SearchLocation> argumentCaptor = ArgumentCaptor.forClass(SearchLocation.class);
-        verify(searchLocationPort).addSavedLocation(argumentCaptor.capture());
+        ArgumentCaptor<SuburbDetails> argumentCaptor = ArgumentCaptor.forClass(SuburbDetails.class);
+        verify(searchLocationPort).recordSearch(argumentCaptor.capture());
 
-        SearchLocation searchLocation = argumentCaptor.getValue();
-        assertThat(searchLocation.getSuburbName(), is("North Strathfield"));
-        assertThat(searchLocation.getState(), is("NSW"));
-        assertThat(searchLocation.getPostcode(), is(2067));
+        SuburbDetails suburbDetails = argumentCaptor.getValue();
+        assertThat(suburbDetails.getSuburbName(), is("North Strathfield"));
+        assertThat(suburbDetails.getState(), is("NSW"));
+        assertThat(suburbDetails.getPostcode(), is(2067));
 
         await().until(() -> $("#pf-saved-searches-item-0").present());
     }
@@ -181,7 +181,7 @@ public class AnalysisWebTest extends AbstractWebTest {
         $("#pf-search-location-add").click();
         assertThat(getDriver().findElement(By.id("pf-saved-searches-error")).getCssValue("display"), is("block"));
         assertThat($("#pf-saved-searches-error").text(), is("Format should be 'Suburb State, PostCode' (ex. Sydney NSW, 2000)"));
-        verify(searchLocationPort, times(0)).addSavedLocation(any());
+        verify(searchLocationPort, times(0)).recordSearch(any());
     }
 
     static class SelectorOptionsMatcher extends TypeSafeMatcher<List<WebElement>> {

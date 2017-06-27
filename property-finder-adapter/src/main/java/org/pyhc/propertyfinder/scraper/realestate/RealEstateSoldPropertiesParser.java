@@ -5,7 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.pyhc.propertyfinder.scraper.realestate.result.SoldPropertyProfile;
-import org.pyhc.propertyfinder.settings.SearchLocation;
+import org.pyhc.propertyfinder.settings.SuburbDetails;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -36,14 +36,14 @@ public class RealEstateSoldPropertiesParser {
         return 0;
     }
 
-    public static List<SoldPropertyProfile> parseSoldProperties(Document document, SearchLocation searchLocation) {
+    public static List<SoldPropertyProfile> parseSoldProperties(Document document, SuburbDetails suburbDetails) {
         return document.getElementsByTag("article")
                 .stream()
-                .map(articleElement -> parseResultSummary(articleElement, searchLocation))
+                .map(articleElement -> parseResultSummary(articleElement, suburbDetails))
                 .collect(toList());
     }
 
-    private static SoldPropertyProfile parseResultSummary(Element summary, SearchLocation searchLocation) {
+    private static SoldPropertyProfile parseResultSummary(Element summary, SuburbDetails suburbDetails) {
         String propertyLink = "https://www.realestate.com.au" + summary.getElementsByClass("property-card__link").attr("href");
 
         Integer beds;
@@ -70,8 +70,8 @@ public class RealEstateSoldPropertiesParser {
                 .builder()
                 .price(price)
                 .address(address)
-                .suburb(WordUtils.capitalize(searchLocation.getSuburbName()))
-                .postcode(searchLocation.getPostcode())
+                .suburb(WordUtils.capitalize(suburbDetails.getSuburbName()))
+                .postcode(suburbDetails.getPostcode())
                 .soldDate(soldDate)
                 .bed(beds)
                 .bath(baths)

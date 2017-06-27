@@ -6,7 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.pyhc.propertyfinder.scraper.Scraper;
-import org.pyhc.propertyfinder.settings.SearchLocation;
+import org.pyhc.propertyfinder.settings.SuburbDetails;
 import org.pyhc.propertyfinder.settings.service.SearchLocationService;
 
 import static java.util.Collections.singletonList;
@@ -29,15 +29,15 @@ public class PropertyProcessorTest {
 
     @Test
     public void canSearchSoldProperties() throws Exception {
-        SearchLocation searchLocation = SearchLocation.builder().suburbName("Homebush").postcode(2140).build();
+        SuburbDetails suburbDetails = SuburbDetails.builder().suburbName("Homebush").postcode(2140).build();
 
-        when(searchLocationService.getSavedSearchLocations()).thenReturn(singletonList(searchLocation));
-        when(scraper.getSoldPropertiesCount(searchLocation)).thenReturn(completedFuture(3));
+        when(searchLocationService.getSavedSearchLocations()).thenReturn(singletonList(suburbDetails));
+        when(scraper.getSoldPropertiesCount(suburbDetails)).thenReturn(completedFuture(3));
 
         propertyProcessor.searchForSoldProperties();
 
         verify(searchLocationService).getSavedSearchLocations();
-        verify(scraper).getSoldPropertiesCount(searchLocation);
+        verify(scraper).getSoldPropertiesCount(suburbDetails);
         verify(scraper).searchSoldProperties(any(), any());
     }
 
