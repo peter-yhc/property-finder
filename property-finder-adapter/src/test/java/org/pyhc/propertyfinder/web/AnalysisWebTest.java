@@ -169,18 +169,17 @@ public class AnalysisWebTest extends AbstractWebTest {
     }
 
     @Test
-    @Ignore
     public void showError_WhenAddingInvalidSearchLocation() throws Exception {
         goTo("http://localhost:" + serverPort + "/analysis");
-        assertThat(getDriver().findElement(By.id("pf-saved-searches-error")).getCssValue("display"), is("none"));
+        assertThat($("#pf-search-location-input").attribute("class").contains("invalid"), is(false));
 
         WebElement searchInput = getDriver().findElement(By.id("pf-search-location-input"));
         searchInput.click();
         searchInput.sendKeys("blah blah wrong format");
 
         $("#pf-search-location-add").click();
-        assertThat(getDriver().findElement(By.id("pf-saved-searches-error")).getCssValue("display"), is("block"));
-        assertThat($("#pf-saved-searches-error").text(), is("Format should be 'Suburb State, PostCode' (ex. Sydney NSW, 2000)"));
+        assertThat($("#pf-search-location-input").attribute("class").contains("invalid"), is(true));
+        assertThat($("#pf-search-location-input-label").attribute("data-error"), is("Format should be 'Suburb, State PostCode' (ex. Sydney, NSW 2000)"));
         verify(searchLocationPort, times(0)).recordSearch(any());
     }
 

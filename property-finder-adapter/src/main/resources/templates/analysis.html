@@ -14,15 +14,14 @@
     <div class="col s10 offset-s1">
         <div class="row">
             <h5>Scan new location</h5>
-            <div id="pf-saved-searches-error" class="alert alert-danger" role="alert">
-                <span></span>
-            </div>
             <form id="pf-search-location-form" action="#" th:action="@{/analysis/locations}"
                   th:object="${searchLocationForm}" method="post">
                 <div class="input-field">
-                    <input id="pf-search-location-input" type="text" class="form-control autocomplete"
+                    <input id="pf-search-location-input" type="text"
+                           class="form-control autocomplete"
                            placeholder="Ex. Sydney, NSW 2000"
                            th:field="*{content}"/>
+                    <label id="pf-search-location-input-label" for="pf-search-location-input" data-error="Format should be 'Suburb, State PostCode' (ex. Sydney, NSW 2000)">Location</label>
                     <button id="pf-search-location-add" class="btn" type="button">Add</button>
                 </div>
             </form>

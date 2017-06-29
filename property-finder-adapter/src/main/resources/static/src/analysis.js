@@ -44,9 +44,9 @@ $("#pf-search-location-add").click(function (event) {
     try {
         parseSearchLocationText(saveSearchInput);
         $("#pf-search-location-form").submit();
+        $("#pf-search-location-input").removeClass("invalid");
     } catch (err) {
-        $("#pf-saved-searches-error span").text("Format should be 'Suburb, State PostCode' (ex. Sydney, NSW 2000)");
-        $("#pf-saved-searches-error").show();
+        $("#pf-search-location-input").addClass("invalid");
     }
 });
 
