@@ -6,7 +6,6 @@ $(document).ready(function () {
 function getSearchableLocationsForAutocomplete() {
     $.get("/analysis/locations",
         function (searchableLocations) {
-            console.log(JSON.stringify(searchableLocations));
             let reformedData = {};
             searchableLocations.forEach(function (x) {
                 reformedData[x] = null;
@@ -24,10 +23,10 @@ function getSearchableLocationsForAutocomplete() {
 }
 
 $(".pf-saved-searches-delete-button").click(function (event) {
-    let savedSearchUuid = event.target.closest('a').getAttribute('pf-uuid');
+    let searchUuid = event.target.closest('a').getAttribute('pf-uuid');
     let index = event.target.closest('a').getAttribute('pf-index');
     $.ajax({
-        url: "/analysis/locations/" + savedSearchUuid,
+        url: "/analysis/locations/" + searchUuid,
         type: "DELETE",
         contentType: "application/json",
         success: function () {

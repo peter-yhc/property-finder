@@ -12,6 +12,7 @@ public interface DataObjectConverter {
                 .uuid(previousSearch.getUuid())
                 .build();
     }
+
     static SuburbDetails convertToSearchLocation(Suburb suburb) {
         return SuburbDetails.builder()
                 .suburbName(suburb.getName())

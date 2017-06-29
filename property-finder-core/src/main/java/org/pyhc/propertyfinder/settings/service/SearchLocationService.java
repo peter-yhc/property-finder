@@ -1,11 +1,11 @@
 package org.pyhc.propertyfinder.settings.service;
 
 import org.pyhc.propertyfinder.model.PreviousSearch;
-import org.pyhc.propertyfinder.settings.DataObjectConverter;
-import org.pyhc.propertyfinder.settings.SuburbDetails;
-import org.pyhc.propertyfinder.settings.SearchLocationPort;
 import org.pyhc.propertyfinder.model.PreviousSearchRepository;
 import org.pyhc.propertyfinder.model.SuburbRepository;
+import org.pyhc.propertyfinder.settings.DataObjectConverter;
+import org.pyhc.propertyfinder.settings.SearchLocationPort;
+import org.pyhc.propertyfinder.settings.SuburbDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

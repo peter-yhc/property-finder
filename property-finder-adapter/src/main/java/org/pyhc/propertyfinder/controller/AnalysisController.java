@@ -47,10 +47,10 @@ public class AnalysisController {
         return "redirect:/analysis";
     }
 
-    @RequestMapping(value = "/analysis/locations/{savedSearchId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/analysis/locations/{searchUuid}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ResponseEntity<Void> removeSavedLocation(@PathVariable("savedSearchId") @NotNull @Valid UUID savedSearchId) {
-        searchLocationPort.removeSavedLocation(savedSearchId);
+    public ResponseEntity<Void> removeSavedLocation(@PathVariable("searchUuid") @NotNull @Valid UUID searchUuid) {
+        searchLocationPort.removeSavedLocation(searchUuid);
         return ResponseEntity.ok().build();
     }
 
