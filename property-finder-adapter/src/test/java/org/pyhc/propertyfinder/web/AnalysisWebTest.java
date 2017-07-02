@@ -183,6 +183,20 @@ public class AnalysisWebTest extends AbstractWebTest {
         verify(searchLocationPort, times(0)).recordSearch(any());
     }
 
+    @Test
+    public void addingNewLocationLoadsResultTemplate() {
+        goTo("http://localhost:" + serverPort + "/analysis");
+
+        assertThat($("#pf-result-loader").present(), is(false));
+
+        WebElement searchInput = getDriver().findElement(By.id("pf-search-location-input"));
+        searchInput.click();
+        searchInput.sendKeys("North Strathfield, NSW 2067");
+
+        $("#pf-search-location-add").click();
+        assertThat($("#pf-analysis-results").present(), is(true));
+    }
+
     static class SelectorOptionsMatcher extends TypeSafeMatcher<List<WebElement>> {
 
         private List<String> options;

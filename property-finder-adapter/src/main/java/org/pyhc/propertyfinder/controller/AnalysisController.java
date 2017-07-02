@@ -41,10 +41,11 @@ public class AnalysisController {
                 .collect(Collectors.toList());
     }
 
+    @ResponseBody
     @RequestMapping(value = "/analysis/locations", method = RequestMethod.POST)
-    public String recordSearch(@ModelAttribute("searchLocationForm") SearchLocationForm searchLocationForm) {
+    public ResponseEntity<Void> recordSearch(@ModelAttribute("searchLocationForm") SearchLocationForm searchLocationForm) {
         searchLocationPort.recordSearch(searchLocationForm.parseData());
-        return "redirect:/analysis";
+        return ResponseEntity.ok().build();
     }
 
     @RequestMapping(value = "/analysis/locations/{searchUuid}", method = RequestMethod.DELETE)

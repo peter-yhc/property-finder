@@ -14,7 +14,7 @@
     <div class="col s10 offset-s1">
         <div class="row">
             <h5>Scan new location</h5>
-            <form id="pf-search-location-form" action="#" th:action="@{/analysis/locations}"
+            <form id="pf-search-location-form" action="#"
                   th:object="${searchLocationForm}" method="post">
                 <div class="input-field">
                     <input id="pf-search-location-input" type="text"
@@ -27,7 +27,7 @@
             </form>
         </div>
         <br/>
-        <div class="row">
+        <div id="pf-analysis-results" class="row hide">
             <h5>Results</h5>
             <ul id="pf-saved-searches-list" class="collection">
                 <li th:each="previousSearch,iter : ${savedSearches}"

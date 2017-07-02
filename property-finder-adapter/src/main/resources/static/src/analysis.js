@@ -40,6 +40,22 @@ $(".pf-saved-searches-delete-button").click(function (event) {
 
 $("#pf-search-location-add").click(function (event) {
     event.preventDefault();
+
+    // th:action="@{/analysis/locations}"
+
+    $.ajax({
+        url: "/analysis/locations",
+        type: "post",
+        contentType: "application/json",
+        data: $("#pf-search-location-form").serialize(),
+        success: function() {
+            console.log("success")
+        },
+        error: function() {
+            console.log("failure")
+        }
+    });
+
     let saveSearchInput = $("#pf-search-location-input").val();
     try {
         parseSearchLocationText(saveSearchInput);
@@ -48,6 +64,8 @@ $("#pf-search-location-add").click(function (event) {
     } catch (err) {
         $("#pf-search-location-input").addClass("invalid");
     }
+
+    $("#pf-analysis-results").removeClass("hide");
 });
 
 let parseSearchLocationText = function (locationText) {
