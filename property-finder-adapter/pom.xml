@@ -68,10 +68,5 @@
             <artifactId>selenium-chrome-driver</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>net.sourceforge.htmlunit</groupId>
-            <artifactId>htmlunit</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 </project>
