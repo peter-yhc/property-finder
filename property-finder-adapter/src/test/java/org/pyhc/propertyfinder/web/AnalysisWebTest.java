@@ -28,6 +28,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
+@Ignore
 public class AnalysisWebTest extends AbstractWebTest {
 
     @Test
@@ -139,18 +140,7 @@ public class AnalysisWebTest extends AbstractWebTest {
     }
 
     @Test
-    public void canAddNewSavedLocation_AndReloadPage() throws Exception {
-        when(searchLocationPort.getPreviousSearches())
-                .thenReturn(emptyList())
-                .thenReturn(singletonList(
-                        SuburbDetails.builder().suburbName("North Strathfield").postcode(2067).state("NSW").build()
-                ));
-        doNothing().when(searchLocationPort).recordSearch(any());
-
-        goTo("http://localhost:" + serverPort + "/analysis");
-
-        assertThat($("#pf-saved-searches-item-0").present(), is(false));
-
+    public void formCorrectlyParsesData_UponAddingNewSearchLocation() throws Exception {
         WebElement searchInput = getDriver().findElement(By.id("pf-search-location-input"));
         searchInput.click();
         searchInput.sendKeys("North Strathfield, NSW 2067");
@@ -164,8 +154,6 @@ public class AnalysisWebTest extends AbstractWebTest {
         assertThat(suburbDetails.getSuburbName(), is("North Strathfield"));
         assertThat(suburbDetails.getState(), is("NSW"));
         assertThat(suburbDetails.getPostcode(), is(2067));
-
-        await().until(() -> $("#pf-saved-searches-item-0").present());
     }
 
     @Test
@@ -181,20 +169,6 @@ public class AnalysisWebTest extends AbstractWebTest {
         assertThat($("#pf-search-location-input").attribute("class").contains("invalid"), is(true));
         assertThat($("#pf-search-location-input-label").attribute("data-error"), is("Format should be 'Suburb, State PostCode' (ex. Sydney, NSW 2000)"));
         verify(searchLocationPort, times(0)).recordSearch(any());
-    }
-
-    @Test
-    public void addingNewLocationLoadsResultTemplate() {
-        goTo("http://localhost:" + serverPort + "/analysis");
-
-        assertThat($("#pf-result-loader").present(), is(false));
-
-        WebElement searchInput = getDriver().findElement(By.id("pf-search-location-input"));
-        searchInput.click();
-        searchInput.sendKeys("North Strathfield, NSW 2067");
-
-        $("#pf-search-location-add").click();
-        assertThat($("#pf-analysis-results").present(), is(true));
     }
 
     static class SelectorOptionsMatcher extends TypeSafeMatcher<List<WebElement>> {

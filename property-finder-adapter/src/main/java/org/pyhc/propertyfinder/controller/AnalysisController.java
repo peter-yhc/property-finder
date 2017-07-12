@@ -1,6 +1,6 @@
 package org.pyhc.propertyfinder.controller;
 
-import org.pyhc.propertyfinder.controller.form.SearchLocationForm;
+import org.pyhc.propertyfinder.controller.model.SearchLocationForm;
 import org.pyhc.propertyfinder.settings.SuburbDetails;
 import org.pyhc.propertyfinder.settings.SearchLocationPort;
 import org.springframework.beans.factory.annotation.Autowired;

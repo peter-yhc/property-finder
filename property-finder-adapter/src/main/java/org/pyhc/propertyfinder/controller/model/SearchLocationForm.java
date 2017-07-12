@@ -1,4 +1,4 @@
-package org.pyhc.propertyfinder.controller.form;
+package org.pyhc.propertyfinder.controller.model;
 
 
 import lombok.Getter;
