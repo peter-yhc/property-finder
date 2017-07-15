@@ -10,11 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
-@RequestMapping(path = "/locations")
+@RequestMapping(path = "/api/locations")
 public class LocationController {
 
     private SearchLocationPort searchLocationPort;
@@ -27,7 +30,16 @@ public class LocationController {
     @RequestMapping(produces = {APPLICATION_JSON_VALUE}, method = GET)
     public ResponseEntity<LocationsDTO> getSearchableLocations() {
         List<SuburbDetails> searchableLocations = searchLocationPort.getSearchableLocations();
+        LocationsDTO response = new LocationsDTO(searchableLocations);
+        response.add(linkTo(methodOn(LocationController.class).getSearchableLocations()).withSelfRel());
+        response.add(linkTo(methodOn(LocationController.class).addSearchLocation()).withRel("search"));
 
-        return ResponseEntity.ok(new LocationsDTO(searchableLocations));
+        return ResponseEntity.ok(response);
+    }
+
+    @RequestMapping(produces = {APPLICATION_JSON_VALUE}, method = POST)
+    public ResponseEntity<Void> addSearchLocation() {
+
+        return ResponseEntity.accepted().build();
     }
 }

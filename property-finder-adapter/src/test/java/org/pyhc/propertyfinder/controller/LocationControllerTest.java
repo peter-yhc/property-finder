@@ -7,6 +7,7 @@ import org.pyhc.propertyfinder.configuration.AdapterConfiguration;
 import org.pyhc.propertyfinder.settings.SearchLocationPort;
 import org.pyhc.propertyfinder.settings.SuburbDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -22,7 +23,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {AdapterConfiguration.class}, webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@SpringBootTest(classes = {AdapterConfiguration.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@EnableAutoConfiguration
 public class LocationControllerTest {
 
     @Autowired
@@ -40,13 +42,23 @@ public class LocationControllerTest {
 
     @Test
     public void canGetSearchableLocations() throws Exception {
-        when(searchLocationPort.getSearchableLocations()).thenReturn(
-                singletonList(SuburbDetails.builder().suburbName("Milsons Point").state("NSW").postcode(2061).build())
-        );
-
-        mockMvc.perform(get("/locations"))
+        happyCaseMocks();
+        mockMvc.perform(get("/api/locations"))
                 .andDo(print())
                 .andExpect(jsonPath("$.locations.length()", is(1)));
     }
 
+    @Test
+    public void searchableLocations_HaveSelfLinks() throws Exception {
+        happyCaseMocks();
+        mockMvc.perform(get("/api/locations"))
+                .andDo(print())
+                .andExpect(jsonPath("$.links[0].href", is("http://localhost/api/locations")));
+    }
+
+    private void happyCaseMocks() {
+        when(searchLocationPort.getSearchableLocations()).thenReturn(
+                singletonList(SuburbDetails.builder().suburbName("Milsons Point").state("NSW").postcode(2061).build())
+        );
+    }
 }
