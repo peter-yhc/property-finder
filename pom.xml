@@ -43,6 +43,13 @@
             </dependency>
             <dependency>
                 <groupId>org.pyhc</groupId>
+                <artifactId>property-finder-port</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+                <scope>test</scope>
+                <type>test-jar</type>
+            </dependency>
+            <dependency>
+                <groupId>org.pyhc</groupId>
                 <artifactId>property-finder-adapter</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>

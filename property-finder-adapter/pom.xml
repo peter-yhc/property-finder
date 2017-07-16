@@ -17,6 +17,12 @@
             <artifactId>property-finder-port</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.pyhc</groupId>
+            <artifactId>property-finder-port</artifactId>
+            <scope>test</scope>
+            <type>test-jar</type>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
