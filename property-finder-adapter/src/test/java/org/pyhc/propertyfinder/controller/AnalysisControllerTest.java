@@ -17,11 +17,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.Collections;
+import java.util.stream.Stream;
 
 import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 import static org.pyhc.propertyfinder.settings.TestSuburbDetailsBuilder.randomSuburbDetails;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -59,5 +59,19 @@ public class AnalysisControllerTest {
                 .andExpect(jsonPath("$.suburbs[0].state", is(suburbDetails.getState())))
                 .andExpect(jsonPath("$.suburbs[0].postcode", is(suburbDetails.getPostcode())))
                 .andExpect(jsonPath("$.suburbs[0].uuid", is(suburbDetails.getUuid().toString())));
+    }
+
+    @Test
+    public void hasBasicPagination() throws Exception {
+        when(searchLocationPort.getPreviousSearches()).thenReturn(
+                Stream.generate(TestSuburbDetailsBuilder::randomSuburbDetails).limit(20).collect(toList())
+        );
+
+        mockMvc.perform(get("/analysis").contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(jsonPath("$.totalElements", is(20)))
+                .andExpect(jsonPath("$.totalPages", is(1)))
+                .andExpect(jsonPath("$.size", is(20)))
+                .andExpect(jsonPath("$.next", is("http://localhost/analysis/?page=2")));
     }
 }

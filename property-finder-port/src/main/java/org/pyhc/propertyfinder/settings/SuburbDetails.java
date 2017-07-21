@@ -25,8 +25,4 @@ public class SuburbDetails {
     @NotNull
     private UUID uuid;
 
-    @Override
-    public String toString() {
-        return String.format("%s, %s %s", suburbName, state, postcode);
-    }
 }

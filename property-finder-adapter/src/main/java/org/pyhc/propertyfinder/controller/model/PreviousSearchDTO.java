@@ -1,15 +1,19 @@
 package org.pyhc.propertyfinder.controller.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.pyhc.propertyfinder.settings.SuburbDetails;
 
 import java.util.List;
 
 @Data
-@AllArgsConstructor
-public class PreviousSearchDTO {
+@EqualsAndHashCode(callSuper = false)
+public class PreviousSearchDTO extends PageResource {
 
     private List<SuburbDetails> suburbs;
 
+    public PreviousSearchDTO(List<SuburbDetails> suburbs) {
+        this.suburbs = suburbs;
+        setPagination(suburbs);
+    }
 }

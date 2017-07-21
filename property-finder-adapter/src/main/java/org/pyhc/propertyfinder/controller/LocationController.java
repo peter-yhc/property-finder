@@ -4,8 +4,10 @@ import org.pyhc.propertyfinder.controller.model.LocationsDTO;
 import org.pyhc.propertyfinder.settings.SearchLocationPort;
 import org.pyhc.propertyfinder.settings.SuburbDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -27,11 +29,25 @@ public class LocationController {
     }
 
     @RequestMapping(produces = {APPLICATION_JSON_VALUE}, method = GET)
-    public ResponseEntity<LocationsDTO> getSearchableLocations() {
+    public ResponseEntity<LocationsDTO> getSearchableLocations(@RequestParam(value = "page", required = false) Integer currentPage) {
         List<SuburbDetails> searchableLocations = searchLocationPort.getSearchableLocations();
         LocationsDTO response = new LocationsDTO(searchableLocations);
-        response.add(linkTo(methodOn(LocationController.class).getSearchableLocations()).withSelfRel());
-
+        response.add(linkTo(methodOn(LocationController.class).getSearchableLocations(null)).withSelfRel());
+        response.add(getPageLink(currentPage, response));
         return ResponseEntity.ok(response);
+    }
+
+    private Link getPageLink(Integer currentPage, LocationsDTO response) {
+
+        if (currentPage == null) {
+            currentPage = 1;
+        }
+        if (response.getTotalElements() > currentPage * response.getPageSize()) {
+            currentPage++;
+        } else {
+            return null;
+        }
+        String nextPage = linkTo(methodOn(LocationController.class).getSearchableLocations(currentPage)).toString();
+        return new Link(nextPage, "nextPage");
     }
 }

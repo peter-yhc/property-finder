@@ -15,7 +15,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static java.util.Collections.singletonList;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -42,7 +44,7 @@ public class LocationControllerTest {
 
     @Test
     public void canGetSearchableLocations() throws Exception {
-        happyCaseMocks();
+        happyCaseMocks(1);
         mockMvc.perform(get("/api/locations"))
                 .andDo(print())
                 .andExpect(jsonPath("$.locations.length()", is(1)));
@@ -50,15 +52,43 @@ public class LocationControllerTest {
 
     @Test
     public void searchableLocations_HaveSelfLinks() throws Exception {
-        happyCaseMocks();
+        happyCaseMocks(1);
         mockMvc.perform(get("/api/locations"))
                 .andDo(print())
-                .andExpect(jsonPath("$.links[0].href", is("http://localhost/api/locations")));
+                .andExpect(jsonPath("$.links[0].href", is("http://localhost/api/locations")))
+                .andExpect(jsonPath("$.links[0].rel", is("self")))
+                .andExpect(jsonPath("$.totalElements", is(1)))
+                .andExpect(jsonPath("$.totalPages", is(1)))
+                .andExpect(jsonPath("$.pageSize", is(20)));
     }
 
-    private void happyCaseMocks() {
+    @Test
+    public void searchableLocations_HaveElementStats() throws Exception {
+        happyCaseMocks(1);
+        mockMvc.perform(get("/api/locations"))
+                .andDo(print())
+                .andExpect(jsonPath("$.totalElements", is(1)))
+                .andExpect(jsonPath("$.totalPages", is(1)))
+                .andExpect(jsonPath("$.pageSize", is(20)));
+    }
+
+    @Test
+    public void searchableLocations_HasNextRel_WhenMoreThanOnePage() throws Exception {
+        happyCaseMocks(35);
+
+        mockMvc.perform(get("/api/locations"))
+                .andDo(print())
+                .andExpect(jsonPath("$.totalElements", is(35)))
+                .andExpect(jsonPath("$.totalPages", is(2)))
+                .andExpect(jsonPath("$.pageSize", is(20)))
+                .andExpect(jsonPath("$.links[1].rel", is("nextPage")))
+                .andExpect(jsonPath("$.links[1].href", is("http://localhost/api/locations?page=2")));
+    }
+
+    private void happyCaseMocks(int count) {
+        SuburbDetails exampleSuburb = SuburbDetails.builder().suburbName("Milsons Point").state("NSW").postcode(2061).build();
         when(searchLocationPort.getSearchableLocations()).thenReturn(
-                singletonList(SuburbDetails.builder().suburbName("Milsons Point").state("NSW").postcode(2061).build())
+                Stream.generate(() -> exampleSuburb).limit(count).collect(Collectors.toList())
         );
     }
 }
