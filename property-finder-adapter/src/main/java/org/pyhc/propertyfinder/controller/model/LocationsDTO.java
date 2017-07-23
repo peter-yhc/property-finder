@@ -2,7 +2,7 @@ package org.pyhc.propertyfinder.controller.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.pyhc.propertyfinder.settings.SuburbDetails;
+import org.pyhc.propertyfinder.suburb.SuburbDetails;
 
 import java.util.List;
 

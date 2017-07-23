@@ -6,8 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.pyhc.propertyfinder.scraper.Scraper;
-import org.pyhc.propertyfinder.settings.SuburbDetails;
-import org.pyhc.propertyfinder.settings.service.SearchLocationService;
+import org.pyhc.propertyfinder.suburb.SuburbDetails;
+import org.pyhc.propertyfinder.suburb.SearchLocationService;
 
 import static java.util.Collections.singletonList;
 import static java.util.concurrent.CompletableFuture.completedFuture;

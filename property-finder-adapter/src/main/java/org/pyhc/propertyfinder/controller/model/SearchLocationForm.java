@@ -3,7 +3,7 @@ package org.pyhc.propertyfinder.controller.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.pyhc.propertyfinder.settings.SuburbDetails;
+import org.pyhc.propertyfinder.suburb.SuburbDetails;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

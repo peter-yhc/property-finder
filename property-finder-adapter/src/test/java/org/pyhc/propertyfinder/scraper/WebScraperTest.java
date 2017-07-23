@@ -14,7 +14,7 @@ import org.pyhc.propertyfinder.scraper.realestate.query.RealEstateSoldQuery;
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyLink;
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyProfile;
 import org.pyhc.propertyfinder.scraper.realestate.result.SoldPropertyProfile;
-import org.pyhc.propertyfinder.settings.SuburbDetails;
+import org.pyhc.propertyfinder.suburb.SuburbDetails;
 
 import java.io.IOException;
 import java.nio.file.Files;

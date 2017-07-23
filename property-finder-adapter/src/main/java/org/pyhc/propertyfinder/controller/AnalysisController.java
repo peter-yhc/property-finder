@@ -1,8 +1,8 @@
 package org.pyhc.propertyfinder.controller;
 
 import org.pyhc.propertyfinder.controller.model.PreviousSearchDTO;
-import org.pyhc.propertyfinder.settings.SearchLocationPort;
-import org.pyhc.propertyfinder.settings.SuburbDetails;
+import org.pyhc.propertyfinder.suburb.SearchLocationPort;
+import org.pyhc.propertyfinder.suburb.SuburbDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;

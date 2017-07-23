@@ -2,7 +2,7 @@ package org.pyhc.propertyfinder.scraper;
 
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyLink;
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyProfile;
-import org.pyhc.propertyfinder.settings.SuburbDetails;
+import org.pyhc.propertyfinder.suburb.SuburbDetails;
 
 import java.util.concurrent.CompletableFuture;
 

@@ -5,7 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.pyhc.propertyfinder.scraper.realestate.result.SoldPropertyProfile;
-import org.pyhc.propertyfinder.settings.SuburbDetails;
+import org.pyhc.propertyfinder.suburb.SuburbDetails;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

@@ -6,7 +6,7 @@ import org.pyhc.propertyfinder.scraper.realestate.RealEstateSoldPropertiesParser
 import org.pyhc.propertyfinder.scraper.realestate.query.RealEstateSoldQuery;
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyLink;
 import org.pyhc.propertyfinder.scraper.realestate.result.PropertyProfile;
-import org.pyhc.propertyfinder.settings.SuburbDetails;
+import org.pyhc.propertyfinder.suburb.SuburbDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

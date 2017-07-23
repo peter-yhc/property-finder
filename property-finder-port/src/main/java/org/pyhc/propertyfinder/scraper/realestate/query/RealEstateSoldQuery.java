@@ -3,7 +3,7 @@ package org.pyhc.propertyfinder.scraper.realestate.query;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.pyhc.propertyfinder.settings.SuburbDetails;
+import org.pyhc.propertyfinder.suburb.SuburbDetails;
 
 import static java.lang.String.format;
 

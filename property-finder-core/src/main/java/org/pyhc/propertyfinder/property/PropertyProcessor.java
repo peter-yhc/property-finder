@@ -2,8 +2,8 @@ package org.pyhc.propertyfinder.property;
 
 import org.apache.log4j.Logger;
 import org.pyhc.propertyfinder.scraper.Scraper;
-import org.pyhc.propertyfinder.settings.SuburbDetails;
-import org.pyhc.propertyfinder.settings.SearchLocationPort;
+import org.pyhc.propertyfinder.suburb.SuburbDetails;
+import org.pyhc.propertyfinder.suburb.SearchLocationPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
