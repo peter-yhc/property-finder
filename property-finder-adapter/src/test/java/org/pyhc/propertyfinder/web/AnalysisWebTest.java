@@ -109,7 +109,7 @@ public class AnalysisWebTest extends AbstractWebTest {
         await().until(() -> !$("#pf-saved-searches-item-0").present());
 
         ArgumentCaptor<UUID> argumentCaptor = ArgumentCaptor.forClass(UUID.class);
-        verify(searchLocationPort).removeSavedLocation(argumentCaptor.capture());
+        verify(searchLocationPort).removeSavedSearch(argumentCaptor.capture());
 
         assertThat(argumentCaptor.getValue(), is(homebushUuid));
     }
@@ -121,7 +121,7 @@ public class AnalysisWebTest extends AbstractWebTest {
                 SuburbDetails.builder().suburbName("Homebush").postcode(2140).state("NSW").uuid(randomUUID()).build(),
                 SuburbDetails.builder().suburbName("Strathfield").postcode(2135).state("NSW").uuid(strathfieldUuid).build()
         ));
-        doNothing().when(searchLocationPort).removeSavedLocation(any());
+        doNothing().when(searchLocationPort).removeSavedSearch(any());
 
         goTo("http://localhost:" + serverPort + "/analysis");
 
@@ -132,7 +132,7 @@ public class AnalysisWebTest extends AbstractWebTest {
         await().until(() -> !$("#pf-saved-searches-item-1").present());
 
         ArgumentCaptor<UUID> argumentCaptor = ArgumentCaptor.forClass(UUID.class);
-        verify(searchLocationPort).removeSavedLocation(argumentCaptor.capture());
+        verify(searchLocationPort).removeSavedSearch(argumentCaptor.capture());
 
         assertThat(argumentCaptor.getValue(), is(strathfieldUuid));
     }

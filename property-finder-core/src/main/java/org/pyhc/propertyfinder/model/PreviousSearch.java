@@ -17,11 +17,11 @@ public class PreviousSearch {
     private UUID uuid;
 
     @Builder
-    private PreviousSearch(String name, String state, Integer postcode) {
+    private PreviousSearch(String name, String state, Integer postcode, UUID uuid) {
         this.name = name;
         this.state = state;
         this.postcode = postcode;
-        this.uuid = UUID.randomUUID();
+        this.uuid = uuid;
     }
 
     private PreviousSearch() {

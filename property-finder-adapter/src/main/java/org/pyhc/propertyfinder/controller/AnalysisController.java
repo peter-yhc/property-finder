@@ -44,8 +44,8 @@ public class AnalysisController {
 //
 //    @RequestMapping(value = "/analysis/locations/{searchUuid}", method = RequestMethod.DELETE)
 //    @ResponseBody
-//    public ResponseEntity<Void> removeSavedLocation(@PathVariable("searchUuid") @NotNull @Valid UUID searchUuid) {
-//        searchLocationPort.removeSavedLocation(searchUuid);
+//    public ResponseEntity<Void> removeSavedSearch(@PathVariable("searchUuid") @NotNull @Valid UUID searchUuid) {
+//        searchLocationPort.removeSavedSearch(searchUuid);
 //        return ResponseEntity.ok().build();
 //    }
 
