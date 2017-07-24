@@ -11,9 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
-import static org.pyhc.propertyfinder.suburb.DataObjectConverter.convertToSavedSearch;
 
 @Service
 public class SearchLocationService implements SearchLocationPort {
@@ -48,7 +48,13 @@ public class SearchLocationService implements SearchLocationPort {
             suburbDetails.getPostcode()
         );
         if (!savedSearchOptional.isPresent()) {
-            previousSearchRepository.save(convertToSavedSearch(suburbDetails));
+            PreviousSearch previousSearch = PreviousSearch.builder()
+                    .name(suburbDetails.getSuburbName())
+                    .state(suburbDetails.getState())
+                    .postcode(suburbDetails.getPostcode())
+                    .uuid(UUID.randomUUID())
+                    .build();
+            previousSearchRepository.save(previousSearch);
         }
     }
 

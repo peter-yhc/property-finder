@@ -21,11 +21,4 @@ public interface DataObjectConverter {
                 .build();
     }
 
-    static PreviousSearch convertToSavedSearch(SuburbDetails suburbDetails) {
-        return PreviousSearch.builder()
-                .name(suburbDetails.getSuburbName())
-                .state(suburbDetails.getState())
-                .postcode(suburbDetails.getPostcode())
-                .build();
-    }
 }
