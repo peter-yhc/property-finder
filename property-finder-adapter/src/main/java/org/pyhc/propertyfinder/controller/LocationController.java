@@ -4,6 +4,9 @@ import org.pyhc.propertyfinder.controller.model.LocationsDTO;
 import org.pyhc.propertyfinder.suburb.SearchLocationPort;
 import org.pyhc.propertyfinder.suburb.SuburbDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,11 +33,12 @@ public class LocationController {
 
     @RequestMapping(produces = {APPLICATION_JSON_VALUE}, method = GET)
     public ResponseEntity<LocationsDTO> getSearchableLocations(@RequestParam(value = "page", required = false) Integer currentPage) {
-        List<SuburbDetails> searchableLocations = searchLocationPort.getSearchableLocations();
-        LocationsDTO response = new LocationsDTO(searchableLocations);
-        response.add(linkTo(methodOn(LocationController.class).getSearchableLocations(null)).withSelfRel());
-        response.add(getPageLink(currentPage, response));
-        return ResponseEntity.ok(response);
+//        List<SuburbDetails> searchableLocations = searchLocationPort.getSearchableLocations();
+//        LocationsDTO response = new LocationsDTO(searchableLocations);
+//        response.add(linkTo(methodOn(LocationController.class).getSearchableLocations(null)).withSelfRel());
+//        response.add(getPageLink(currentPage, response));
+//        return ResponseEntity.ok(response);
+        return ResponseEntity.ok().build();
     }
 
     private Link getPageLink(Integer currentPage, LocationsDTO response) {

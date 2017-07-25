@@ -86,9 +86,9 @@ public class LocationControllerTest {
     }
 
     private void happyCaseMocks(int count) {
-        SuburbDetails exampleSuburb = SuburbDetails.builder().suburbName("Milsons Point").state("NSW").postcode(2061).build();
-        when(searchLocationPort.getSearchableLocations()).thenReturn(
-                Stream.generate(() -> exampleSuburb).limit(count).collect(Collectors.toList())
-        );
+//        SuburbDetails exampleSuburb = SuburbDetails.builder().suburbName("Milsons Point").state("NSW").postcode(2061).build();
+//        when(searchLocationPort.getSearchableLocations()).thenReturn(
+//                Stream.generate(() -> exampleSuburb).limit(count).collect(Collectors.toList())
+//        );
     }
 }
