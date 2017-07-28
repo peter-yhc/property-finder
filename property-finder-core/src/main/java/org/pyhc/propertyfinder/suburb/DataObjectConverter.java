@@ -6,7 +6,7 @@ import org.pyhc.propertyfinder.model.Suburb;
 public interface DataObjectConverter {
     static SuburbDetails convertToSearchLocation(PreviousSearch previousSearch) {
         return SuburbDetails.builder()
-                .suburbName(previousSearch.getName())
+                .name(previousSearch.getName())
                 .state(previousSearch.getState())
                 .postcode(previousSearch.getPostcode())
                 .uuid(previousSearch.getUuid())
@@ -15,7 +15,7 @@ public interface DataObjectConverter {
 
     static SuburbDetails convertToSearchLocation(Suburb suburb) {
         return SuburbDetails.builder()
-                .suburbName(suburb.getName())
+                .name(suburb.getName())
                 .state(suburb.getState())
                 .postcode(suburb.getPostcode())
                 .build();

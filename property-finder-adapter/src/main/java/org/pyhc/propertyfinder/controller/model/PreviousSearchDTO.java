@@ -14,6 +14,6 @@ public class PreviousSearchDTO extends PageResource {
 
     public PreviousSearchDTO(List<SuburbDetails> suburbs) {
         this.suburbs = suburbs;
-        setPagination(suburbs);
+//        setPagination(suburbs);
     }
 }

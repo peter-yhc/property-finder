@@ -70,7 +70,7 @@ public class RealEstateSoldPropertiesParser {
                 .builder()
                 .price(price)
                 .address(address)
-                .suburb(WordUtils.capitalize(suburbDetails.getSuburbName()))
+                .suburb(WordUtils.capitalize(suburbDetails.getName()))
                 .postcode(suburbDetails.getPostcode())
                 .soldDate(soldDate)
                 .bed(beds)

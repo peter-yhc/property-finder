@@ -43,13 +43,13 @@ public class SearchLocationService implements SearchLocationPort {
     @Transactional
     public void recordSearch(SuburbDetails suburbDetails) {
         Optional<PreviousSearch> savedSearchOptional = previousSearchRepository.findByNameAndStateAndPostcode(
-            suburbDetails.getSuburbName(),
+            suburbDetails.getName(),
             suburbDetails.getState(),
             suburbDetails.getPostcode()
         );
         if (!savedSearchOptional.isPresent()) {
             PreviousSearch previousSearch = PreviousSearch.builder()
-                    .name(suburbDetails.getSuburbName())
+                    .name(suburbDetails.getName())
                     .state(suburbDetails.getState())
                     .postcode(suburbDetails.getPostcode())
                     .uuid(UUID.randomUUID())
@@ -62,7 +62,7 @@ public class SearchLocationService implements SearchLocationPort {
     @Transactional
     public void removeSavedSearch(SuburbDetails suburbDetails) {
         previousSearchRepository.findByNameAndStateAndPostcode(
-            suburbDetails.getSuburbName(),
+            suburbDetails.getName(),
             suburbDetails.getState(),
             suburbDetails.getPostcode()
         ).ifPresent((previousSearch) -> previousSearchRepository.delete(previousSearch));

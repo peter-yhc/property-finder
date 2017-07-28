@@ -14,7 +14,7 @@ import java.util.UUID;
 public class SuburbDetails {
 
     @NotNull
-    private String suburbName;
+    private String name;
 
     @NotNull
     private String state;

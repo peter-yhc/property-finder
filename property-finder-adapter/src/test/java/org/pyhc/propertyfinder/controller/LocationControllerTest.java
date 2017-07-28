@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -19,6 +22,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -44,51 +48,45 @@ public class LocationControllerTest {
 
     @Test
     public void canGetSearchableLocations() throws Exception {
-        happyCaseMocks(1);
+        happyCaseMocks(500, 0, 100, 100);
         mockMvc.perform(get("/api/locations"))
                 .andDo(print())
-                .andExpect(jsonPath("$.locations.length()", is(1)));
+                .andExpect(jsonPath("$.locations.length()", is(100)))
+                .andExpect(jsonPath("$.locations.[0].name", is("Milsons Point")))
+                .andExpect(jsonPath("$.locations.[0].state", is("NSW")))
+                .andExpect(jsonPath("$.locations.[0].postcode", is(2061)));
     }
 
     @Test
     public void searchableLocations_HaveSelfLinks() throws Exception {
-        happyCaseMocks(1);
+        happyCaseMocks(1, 0, 20, 1);
         mockMvc.perform(get("/api/locations"))
                 .andDo(print())
-                .andExpect(jsonPath("$.links[0].href", is("http://localhost/api/locations")))
-                .andExpect(jsonPath("$.links[0].rel", is("self")))
-                .andExpect(jsonPath("$.totalElements", is(1)))
-                .andExpect(jsonPath("$.totalPages", is(1)))
-                .andExpect(jsonPath("$.pageSize", is(20)));
+                .andExpect(jsonPath("$.links[0].href", is("http://localhost/api/locations{?page}")))
+                .andExpect(jsonPath("$.links[0].rel", is("self")));
     }
 
     @Test
-    public void searchableLocations_HaveElementStats() throws Exception {
-        happyCaseMocks(1);
+    public void hasPageableLinks() throws Exception {
+        happyCaseMocks(1, 0, 20, 1);
         mockMvc.perform(get("/api/locations"))
                 .andDo(print())
-                .andExpect(jsonPath("$.totalElements", is(1)))
-                .andExpect(jsonPath("$.totalPages", is(1)))
-                .andExpect(jsonPath("$.pageSize", is(20)));
+                .andExpect(jsonPath("$.page.first", is(true)))
+                .andExpect(jsonPath("$.page.last", is(true)))
+                .andExpect(jsonPath("$.page.totalElements", is(1)))
+                .andExpect(jsonPath("$.page.totalPages", is(1)))
+                .andExpect(jsonPath("$.page.number", is(0)));
     }
 
-    @Test
-    public void searchableLocations_HasNextRel_WhenMoreThanOnePage() throws Exception {
-        happyCaseMocks(35);
-
-        mockMvc.perform(get("/api/locations"))
-                .andDo(print())
-                .andExpect(jsonPath("$.totalElements", is(35)))
-                .andExpect(jsonPath("$.totalPages", is(2)))
-                .andExpect(jsonPath("$.pageSize", is(20)))
-                .andExpect(jsonPath("$.links[1].rel", is("nextPage")))
-                .andExpect(jsonPath("$.links[1].href", is("http://localhost/api/locations?page=2")));
-    }
-
-    private void happyCaseMocks(int count) {
-//        SuburbDetails exampleSuburb = SuburbDetails.builder().suburbName("Milsons Point").state("NSW").postcode(2061).build();
-//        when(searchLocationPort.getSearchableLocations()).thenReturn(
-//                Stream.generate(() -> exampleSuburb).limit(count).collect(Collectors.toList())
-//        );
+    private void happyCaseMocks(int itemCount, int currentPage, int pageSize, int pageCount) {
+        Pageable pageable = new PageRequest(currentPage, pageSize);
+        SuburbDetails exampleSuburb = SuburbDetails.builder().name("Milsons Point").state("NSW").postcode(2061).build();
+        when(searchLocationPort.getSearchableLocations(any())).thenReturn(
+                new PageImpl<>(
+                        Stream.generate(() -> exampleSuburb).limit(pageCount).collect(Collectors.toList()),
+                        pageable,
+                        itemCount
+                )
+        );
     }
 }

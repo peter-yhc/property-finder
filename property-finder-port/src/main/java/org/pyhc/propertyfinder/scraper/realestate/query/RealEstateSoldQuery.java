@@ -33,7 +33,7 @@ public class RealEstateSoldQuery extends Query {
 
     public static RealEstateSoldQuery fromSearchOptions(SuburbDetails suburbDetails, Integer page) {
         return new RealEstateSoldQuery(
-                suburbDetails.getSuburbName(),
+                suburbDetails.getName(),
                 suburbDetails.getPostcode(),
                 page
         );

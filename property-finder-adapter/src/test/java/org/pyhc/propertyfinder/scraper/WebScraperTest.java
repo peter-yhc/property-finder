@@ -31,7 +31,7 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class WebScraperTest {
 
-    private static final SuburbDetails HOMEBUSH = SuburbDetails.builder().suburbName("homebush").postcode(2140).build();
+    private static final SuburbDetails HOMEBUSH = SuburbDetails.builder().name("homebush").postcode(2140).build();
 
     @InjectMocks
     private WebScraper webScraper;

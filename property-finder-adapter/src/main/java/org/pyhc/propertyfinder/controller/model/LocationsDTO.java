@@ -11,8 +11,8 @@ import java.util.List;
 public class LocationsDTO extends PageResource {
     List<SuburbDetails> locations;
 
-    public LocationsDTO(List<SuburbDetails> locations) {
-        this.locations = locations;
+    public LocationsDTO(org.springframework.data.domain.Page<SuburbDetails> locations) {
+        this.locations = locations.getContent();
         setPagination(locations);
     }
 }

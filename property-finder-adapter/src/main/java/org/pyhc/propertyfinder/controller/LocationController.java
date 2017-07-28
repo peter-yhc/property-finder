@@ -33,25 +33,11 @@ public class LocationController {
 
     @RequestMapping(produces = {APPLICATION_JSON_VALUE}, method = GET)
     public ResponseEntity<LocationsDTO> getSearchableLocations(@RequestParam(value = "page", required = false) Integer currentPage) {
-//        List<SuburbDetails> searchableLocations = searchLocationPort.getSearchableLocations();
-//        LocationsDTO response = new LocationsDTO(searchableLocations);
-//        response.add(linkTo(methodOn(LocationController.class).getSearchableLocations(null)).withSelfRel());
-//        response.add(getPageLink(currentPage, response));
-//        return ResponseEntity.ok(response);
-        return ResponseEntity.ok().build();
-    }
+        Pageable pageable = new PageRequest(currentPage == null ? 0 : currentPage, 20);
+        Page<SuburbDetails> searchableLocations = searchLocationPort.getSearchableLocations(pageable);
 
-    private Link getPageLink(Integer currentPage, LocationsDTO response) {
-
-        if (currentPage == null) {
-            currentPage = 1;
-        }
-        if (response.getTotalElements() > currentPage * response.getPageSize()) {
-            currentPage++;
-        } else {
-            return null;
-        }
-        String nextPage = linkTo(methodOn(LocationController.class).getSearchableLocations(currentPage)).toString();
-        return new Link(nextPage, "nextPage");
+        LocationsDTO response = new LocationsDTO(searchableLocations);
+        response.add(linkTo(methodOn(LocationController.class).getSearchableLocations(currentPage)).withSelfRel());
+        return ResponseEntity.ok(response);
     }
 }

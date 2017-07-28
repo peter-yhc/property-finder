@@ -29,7 +29,7 @@ public class PropertyProcessorTest {
 
     @Test
     public void canSearchSoldProperties() throws Exception {
-        SuburbDetails suburbDetails = SuburbDetails.builder().suburbName("Homebush").postcode(2140).build();
+        SuburbDetails suburbDetails = SuburbDetails.builder().name("Homebush").postcode(2140).build();
 
         when(searchLocationService.getPreviousSearches()).thenReturn(singletonList(suburbDetails));
         when(scraper.getSoldPropertiesCount(suburbDetails)).thenReturn(completedFuture(3));

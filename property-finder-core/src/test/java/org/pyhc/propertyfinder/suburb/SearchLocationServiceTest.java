@@ -48,7 +48,7 @@ public class SearchLocationServiceTest {
         when(previousSearchRepository.findByNameAndStateAndPostcode(any(), any(), any()))
                 .thenReturn(Optional.empty());
 
-        SuburbDetails suburbDetails = SuburbDetails.builder().suburbName("Toowoomba").state("QLD").postcode(4350).build();
+        SuburbDetails suburbDetails = SuburbDetails.builder().name("Toowoomba").state("QLD").postcode(4350).build();
         searchLocationService.recordSearch(suburbDetails);
 
         ArgumentCaptor<PreviousSearch> captor = ArgumentCaptor.forClass(PreviousSearch.class);
@@ -66,7 +66,7 @@ public class SearchLocationServiceTest {
         when(previousSearchRepository.findByNameAndStateAndPostcode("Toowoomba", "QLD", 4350))
                 .thenReturn(Optional.of(PreviousSearch.builder().build()));
 
-        SuburbDetails suburbDetails = SuburbDetails.builder().suburbName("Toowoomba").state("QLD").postcode(4350).build();
+        SuburbDetails suburbDetails = SuburbDetails.builder().name("Toowoomba").state("QLD").postcode(4350).build();
         searchLocationService.recordSearch(suburbDetails);
 
         verify(previousSearchRepository, times(0)).save(any(PreviousSearch.class));
@@ -78,7 +78,7 @@ public class SearchLocationServiceTest {
         when(previousSearchRepository.findByNameAndStateAndPostcode("Toowoomba", "QLD", 4350))
                 .thenReturn(Optional.of(PreviousSearch.builder().uuid(uuid).build()));
 
-        SuburbDetails suburbDetails = SuburbDetails.builder().suburbName("Toowoomba").state("QLD").postcode(4350).build();
+        SuburbDetails suburbDetails = SuburbDetails.builder().name("Toowoomba").state("QLD").postcode(4350).build();
         searchLocationService.removeSavedSearch(suburbDetails);
 
         verify(previousSearchRepository).delete(any(PreviousSearch.class));
@@ -100,7 +100,7 @@ public class SearchLocationServiceTest {
         assertThat(searchableLocations.getTotalElements(), is(1L));
 
         SuburbDetails suburbDetails = searchableLocations.getContent().get(0);
-        assertThat(suburbDetails.getSuburbName(), is("Wollongong"));
+        assertThat(suburbDetails.getName(), is("Wollongong"));
         assertThat(suburbDetails.getState(), is("NSW"));
         assertThat(suburbDetails.getPostcode(), is(1000));
     }

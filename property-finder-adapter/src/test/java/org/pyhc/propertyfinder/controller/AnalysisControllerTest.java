@@ -55,7 +55,7 @@ public class AnalysisControllerTest {
 
         mockMvc.perform(get("/analysis").contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(jsonPath("$.suburbs[0].suburbName", is(suburbDetails.getSuburbName())))
+                .andExpect(jsonPath("$.suburbs[0].suburbName", is(suburbDetails.getName())))
                 .andExpect(jsonPath("$.suburbs[0].state", is(suburbDetails.getState())))
                 .andExpect(jsonPath("$.suburbs[0].postcode", is(suburbDetails.getPostcode())))
                 .andExpect(jsonPath("$.suburbs[0].uuid", is(suburbDetails.getUuid().toString())));
