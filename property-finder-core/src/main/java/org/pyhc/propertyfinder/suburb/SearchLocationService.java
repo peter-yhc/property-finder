@@ -60,11 +60,11 @@ public class SearchLocationService implements SearchLocationPort {
 
     @Override
     @Transactional
-    public void removeSavedSearch(SuburbDetails suburbDetails) {
-        previousSearchRepository.findByNameAndStateAndPostcode(
-            suburbDetails.getName(),
-            suburbDetails.getState(),
-            suburbDetails.getPostcode()
-        ).ifPresent((previousSearch) -> previousSearchRepository.delete(previousSearch));
+    public void removeSavedSearch(UUID uuid) {
+//        previousSearchRepository.findByNameAndStateAndPostcode(
+//            suburbDetails.getName(),
+//            suburbDetails.getState(),
+//            suburbDetails.getPostcode()
+//        ).ifPresent((previousSearch) -> previousSearchRepository.delete(previousSearch));
     }
 }

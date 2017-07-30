@@ -79,7 +79,7 @@ public class SearchLocationServiceTest {
                 .thenReturn(Optional.of(PreviousSearch.builder().uuid(uuid).build()));
 
         SuburbDetails suburbDetails = SuburbDetails.builder().name("Toowoomba").state("QLD").postcode(4350).build();
-        searchLocationService.removeSavedSearch(suburbDetails);
+//        searchLocationService.removeSavedSearch(suburbDetails);
 
         verify(previousSearchRepository).delete(any(PreviousSearch.class));
     }

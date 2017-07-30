@@ -21,14 +21,18 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.lang.String.format;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.ACCEPTED;
+import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -96,6 +100,16 @@ public class LocationControllerTest {
             .andExpect(status().is(ACCEPTED.value()));
 
         verify(searchLocationPort).recordSearch(suburbDetails);
+    }
+
+    @Test
+    public void canDeleteSearchLocation() throws Exception {
+        UUID uuid = UUID.randomUUID();
+        mockMvc.perform(delete(format("/api/locations/%s", uuid.toString())))
+            .andDo(print())
+            .andExpect(status().is(OK.value()));
+
+        verify(searchLocationPort).removeSavedSearch(uuid);
     }
 
     private void happyCaseMocks(int itemCount, int currentPage, int pageSize, int pageCount) {

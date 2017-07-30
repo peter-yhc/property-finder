@@ -8,16 +8,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 @RequestMapping(path = "/api/locations")
@@ -44,5 +42,11 @@ public class LocationController {
     public ResponseEntity<Void> saveNewSearchLocation(@RequestBody SuburbDetails suburbDetails) {
         searchLocationPort.recordSearch(suburbDetails);
         return ResponseEntity.accepted().build();
+    }
+
+    @RequestMapping(value = "/{uuid}", method = DELETE)
+    public ResponseEntity<Void> deleteSearchLocation(@PathVariable UUID uuid) {
+        searchLocationPort.removeSavedSearch(uuid);
+        return ResponseEntity.ok().build();
     }
 }

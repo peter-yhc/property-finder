@@ -14,5 +14,5 @@ public interface SearchLocationPort {
 
     void recordSearch(SuburbDetails suburbDetails);
 
-    void removeSavedSearch(SuburbDetails suburbDetails);
+    void removeSavedSearch(UUID uuid);
 }
