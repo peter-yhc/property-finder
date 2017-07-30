@@ -7,18 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
 @RequestMapping(path = "/api/locations")
@@ -39,5 +38,11 @@ public class LocationController {
         LocationsDTO response = new LocationsDTO(searchableLocations);
         response.add(linkTo(methodOn(LocationController.class).getSearchableLocations(currentPage)).withSelfRel());
         return ResponseEntity.ok(response);
+    }
+
+    @RequestMapping(consumes = {APPLICATION_JSON_VALUE}, method = POST)
+    public ResponseEntity<Void> saveNewSearchLocation(@RequestBody SuburbDetails suburbDetails) {
+        searchLocationPort.recordSearch(suburbDetails);
+        return ResponseEntity.accepted().build();
     }
 }

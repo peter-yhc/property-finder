@@ -1,16 +1,14 @@
 package org.pyhc.propertyfinder.suburb;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Getter
 @Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
+@EqualsAndHashCode
 public class SuburbDetails {
 
     @NotNull
