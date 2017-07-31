@@ -1,21 +1,5 @@
 package org.pyhc.propertyfinder.suburb;
 
-import static java.util.Collections.singletonList;
-import static java.util.stream.Collectors.toList;
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
-import static org.apache.commons.lang3.RandomUtils.nextInt;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
-
-import java.util.Optional;
-import java.util.UUID;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -30,6 +14,23 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
+
+import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+import static org.apache.commons.lang3.RandomUtils.nextInt;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SearchLocationServiceTest {
@@ -46,7 +47,7 @@ public class SearchLocationServiceTest {
     @Test
     public void canRecordNewSearchLocation() throws Exception {
         when(previousSearchRepository.findByNameAndStateAndPostcode(any(), any(), any()))
-                .thenReturn(Optional.empty());
+            .thenReturn(Optional.empty());
 
         SuburbDetails suburbDetails = SuburbDetails.builder().name("Toowoomba").state("QLD").postcode(4350).build();
         searchLocationService.recordSearch(suburbDetails);
@@ -64,7 +65,7 @@ public class SearchLocationServiceTest {
     @Test
     public void shouldNotRecordSameSearchLocationMoreThanOnce() throws Exception {
         when(previousSearchRepository.findByNameAndStateAndPostcode("Toowoomba", "QLD", 4350))
-                .thenReturn(Optional.of(PreviousSearch.builder().build()));
+            .thenReturn(Optional.of(PreviousSearch.builder().build()));
 
         SuburbDetails suburbDetails = SuburbDetails.builder().name("Toowoomba").state("QLD").postcode(4350).build();
         searchLocationService.recordSearch(suburbDetails);
@@ -73,13 +74,27 @@ public class SearchLocationServiceTest {
     }
 
     @Test
+    public void canGetPreviousSearches() throws Exception {
+        when(previousSearchRepository.findAll()).thenReturn(singletonList(
+            PreviousSearch.builder().name("ABC").postcode(5678).state("SA").build()
+        ));
+
+        List<SuburbDetails> previousSearches = searchLocationService.getPreviousSearches();
+        SuburbDetails suburbDetails = previousSearches.get(0);
+        assertThat(suburbDetails.getName(), is("ABC"));
+        assertThat(suburbDetails.getState(), is("SA"));
+        assertThat(suburbDetails.getPostcode(), is(5678));
+
+        verify(previousSearchRepository).findAll();
+    }
+
+    @Test
     public void canRemoveSavedSearchLocation() throws Exception {
         UUID uuid = UUID.randomUUID();
-        when(previousSearchRepository.findByNameAndStateAndPostcode("Toowoomba", "QLD", 4350))
-                .thenReturn(Optional.of(PreviousSearch.builder().uuid(uuid).build()));
+        when(previousSearchRepository.findByUuid(uuid))
+            .thenReturn(Optional.of(PreviousSearch.builder().uuid(uuid).build()));
 
-        SuburbDetails suburbDetails = SuburbDetails.builder().name("Toowoomba").state("QLD").postcode(4350).build();
-//        searchLocationService.removeSavedSearch(suburbDetails);
+        searchLocationService.removeSavedSearch(uuid);
 
         verify(previousSearchRepository).delete(any(PreviousSearch.class));
     }
@@ -88,11 +103,11 @@ public class SearchLocationServiceTest {
     public void canGetSearchableLocations() throws Exception {
         Pageable pageable = new PageRequest(0, 20);
         when(suburbRepository.findAll(pageable)).thenReturn(
-                new PageImpl<>(singletonList(Suburb.builder()
-                        .name("Wollongong")
-                        .postcode(1000)
-                        .state("NSW")
-                        .build()))
+            new PageImpl<>(singletonList(Suburb.builder()
+                .name("Wollongong")
+                .postcode(1000)
+                .state("NSW")
+                .build()))
         );
 
         Page<SuburbDetails> searchableLocations = searchLocationService.getSearchableLocations(pageable);
@@ -109,7 +124,7 @@ public class SearchLocationServiceTest {
     public void canGetPageableResults() throws Exception {
         Pageable pageable = new PageRequest(0, 20);
         when(suburbRepository.findAll(pageable)).thenReturn(
-                new PageImpl<>(Stream.generate(randomSuburb()).limit(20).collect(toList()), pageable, 250)
+            new PageImpl<>(Stream.generate(randomSuburb()).limit(20).collect(toList()), pageable, 250)
         );
 
         Page<SuburbDetails> searchableLocations = searchLocationService.getSearchableLocations(pageable);
@@ -121,9 +136,9 @@ public class SearchLocationServiceTest {
 
     private static Supplier<Suburb> randomSuburb() {
         return () -> Suburb.builder()
-                .name(randomAlphabetic(10))
-                .postcode(nextInt())
-                .state(randomAlphabetic(3))
-                .build();
+            .name(randomAlphabetic(10))
+            .postcode(nextInt())
+            .state(randomAlphabetic(3))
+            .build();
     }
 }
